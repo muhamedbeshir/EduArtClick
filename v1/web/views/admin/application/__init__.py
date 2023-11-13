@@ -1,0 +1,1 @@
+from .views import course_calculate_cost, submit_application, ApplicationListView, DeleteApplication, ApplicationDetailView, ApplicationSendLinkView, ApplicationSendLinkSuccesMessage, GeneratePDF, ApplicationAprovelLetter, ApplicationRejectLetter, DownloadApplicationPDF, DownloadTransactionPDF

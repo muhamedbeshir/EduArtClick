@@ -1,0 +1,41 @@
+<label>Course Price List <span style="color:red;">*</span></label>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Selected</th>
+			<th>Week Length</th>
+			<th>Price(per week)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if price %}
+		{% for price in price %}
+		<tr>
+			<td>
+				<input type="checkbox" name="s_price" value="{{price.id}}" class="price_option" id="id_s_price" checked
+					disabled readonly>
+				<input type="hidden" name="s_price" value="{{price.id}}" />
+			</td>
+			<td>
+				{{price.min_weak}} - {{price.max_weak}} Weeks
+			</td>
+			<td>
+				{{price.ref_school_course.ref_school.ref_currency.currency_short}} {{price.price}}
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% elif error %}
+		<tr>
+			<td colspan="3" style="color:red;">{{error}}</td>
+		</tr>
+		{% else %}
+		{% endif %}
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$('.price_option').on('change', function () {
+		$('input[name="' + this.name + '"]').not(this).prop('checked', false);
+	});
+</script>

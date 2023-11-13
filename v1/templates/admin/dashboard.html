@@ -1,0 +1,607 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Dashboard{% endblock %}
+{% load static %}
+{% load auth_extras %}
+{% load multifor %}
+
+{% block extra_head %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="https://www.cssscript.com/demo/family-organization-tree-json-maker/tree_maker-min.css">
+<script src="https://www.cssscript.com/demo/family-organization-tree-json-maker/tree_maker-min.js"></script>
+
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+{% endblock%}
+
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block px-5 py-3 mt-5">
+
+		<!-- Content Header (Page header) -->
+    	<div class="content-header">
+			<div class="row">
+				{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" or request.user|has_group:"student" or request.user|has_group:"aggent" %}
+					<div class="col-sm-6">
+						<h4 class="mb-4">Dashboard</h4>
+					</div>
+				{% elif request.user|has_group:"organization" %}
+					{% if user.organizationuserprofile %}
+					<div class="col-sm-6">
+						<h4 class="mb-4">Organization: {{ user.organizationuserprofile.ref_organization}}</h4>
+						<!-- <h4 class="mb-4">Dashboard</h4> -->
+					</div>
+					{% endif %}
+				{% else %}
+				{% endif %}
+			</div>
+		</div>
+
+		{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" %}
+		<div class="row mb-5">
+			<div class="col">
+				<div class="bg-white p-4 shadow" style="border-left: 0px solid; border-bottom: 7px solid; border-radius: 10px;">
+					<h2 class="fs-5 text-muted">
+						<i class="ri-organization-chart menu-icon"></i>
+						Organizations</h2>
+					<h2 class="fs-4 mb-0 text-end">{{ total_organizations }}</h2>
+				</div>
+			</div>
+			<div class="col">
+				<div class="bg-white p-4 shadow" style="border-left: 0px solid; border-bottom: 7px solid; border-radius: 10px;">
+					<h2 class="fs-5 text-muted">
+						<i class="ri-global-line menu-icon"></i>
+						Countries</h2>
+					<h2 class="fs-4 mb-0 text-end">{{ total_countries }}</h2>
+				</div>
+			</div>
+			<div class="col">
+				<div class="bg-white p-4 shadow" style="border-left: 0px solid; border-bottom: 7px solid; border-radius: 10px;">
+					<h2 class="fs-5 text-muted">
+						<i class="ri-building-2-line menu-icon"></i>
+						Cities</h2>
+					<h2 class="fs-4 mb-0 text-end">{{ total_cities }}</h2>
+				</div>
+			</div>
+			<div class="col">
+				<div class="bg-white p-4 shadow" style="border-left: 0px solid; border-bottom: 7px solid; border-radius: 10px;">
+					<h2 class="fs-5 text-muted">
+						<i class="ri-building-line menu-icon"></i>
+						Schools</h2>
+					<h2 class="fs-4 mb-0 text-end">{{ total_schools }}</h2>
+				</div>
+			</div>
+			<div class="col">
+				<div class="bg-white p-4 shadow" style="border-left: 0px solid; border-bottom: 7px solid; border-radius: 10px;">
+					<h2 class="fs-5 text-muted">
+						<i class="ri-user-3-line menu-icon"></i>
+						Users</h2>
+					<h2 class="fs-4 mb-0 text-end">{{ total_users }}</h2>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
+
+		<div class="row d-flex justify-content-between mb-5">
+			<div class="col-md-6">
+				<h2 class="fs-4 text-muted">Application Status</h2>
+				<div id="donutchart" class="shadow" style="height: 500px;"></div>
+			</div>
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" %}
+			<div class="col-md-6">
+				<h2 class="fs-4 text-muted">Countries Details</h2>
+				<div id="regions_div" class="shadow" style="height: 500px;"></div>
+			</div>
+			{% endif %}
+		</div>
+
+		{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" %}
+		<div class="mb-5">
+			<h2 class="fs-4 text-muted">Application Details</h2>
+			<div id="columnchart_material" class="shadow p-3" style="height: 500px;"></div>
+		</div>
+
+		<!-- <div id="chartdiv" class="mb-5" style="width: 100%; height: 500px;"></div> -->
+		{% endif %}
+
+		<section class="content">
+			<div class="row">
+				{% if request.user|has_group:"school" %}
+				<div class="col-xl-8 col-lg-6 col-md-6 col-sm-12 col-12 mb-3">
+					<!-- BAR CHART -->
+					<div class="card rounded shadow">
+						<div class="card-header border-0 mb-0 pb-0">
+							<strong class="h6">School Payroll Status</strong>
+						</div>
+						<div class="card-body">	
+							<div class="row d-flex justify-content-end">
+								<!-- <label for="">Select Year</label> -->
+								<div  class="col-3">
+									<select name="select_category_year" class="form-select" id="select_category_year">
+										<option value="" selected>---------</option>
+									</select>
+								</div>
+								<div  class="col-3">
+									<select name="select_category" class="form-select" id="select_category">
+										<option value="" selected>---------</option>
+										<option value="Course">Course</option>
+										<option value="Service">Service</option>
+										<!-- <option value="Teacher">Teacher</option>
+										<option value="Other">Other</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="row" id="myChartBarCourse_div">
+								<canvas id="myChartBarCourse"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</section>
+
+  	</div> 
+
+		
+	  
+
+{% endblock %}
+
+{% block extra_script %}
+
+{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" %}
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['bar']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		const dataset= "{{transcations_list}}".replaceAll('&quot;', '"');
+		const datasets_json = JSON.parse(dataset);
+        const datasets = []
+        for(let record of datasets_json){
+            datasets.push(record);
+        }
+
+	  const data = google.visualization.arrayToDataTable(datasets);
+
+	  const options = {
+		chart: {
+		  title: '',
+		  subtitle: '',
+		},
+		legend: {
+			position: 'none'
+		}
+	  };
+
+	  const chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+	  chart.draw(data, google.charts.Bar.convertOptions(options));
+	}
+</script>
+
+<script type="text/javascript">
+	google.charts.load('current', {
+	  'packages':['geochart'],
+	});
+	google.charts.setOnLoadCallback(drawRegionsMap);
+
+	function drawRegionsMap() {
+		const dataset= "{{application_country_wise}}".replaceAll('&quot;', '"');
+		const dataset_json = JSON.parse(dataset);
+        const datasets = []
+        for(let record of dataset_json){
+            datasets.push(record);
+        }
+
+		const data = google.visualization.arrayToDataTable(
+			datasets
+		);
+
+	  const options = {};
+
+	  const chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+	  chart.draw(data, options);
+	}
+</script>
+
+<!-- Chart code -->
+<script>
+	am5.ready(function() {
+	
+	// Create root element
+	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+	var root = am5.Root.new("chartdiv");
+	
+	
+	// Set themes
+	// https://www.amcharts.com/docs/v5/concepts/themes/
+	root.setThemes([
+	  am5themes_Animated.new(root)
+	]);
+	
+	
+	// Create wrapper container
+	var container = root.container.children.push(am5.Container.new(root, {
+	  width: am5.percent(100),
+	  height: am5.percent(100),
+	  layout: root.verticalLayout
+	}));
+	
+	
+	// Create series
+	// https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+	var series = container.children.push(am5hierarchy.Tree.new(root, {
+	  singleBranchOnly: false,
+	  downDepth: 1,
+	  initialDepth: 10,
+	  valueField: "value",
+	  categoryField: "name",
+	  childDataField: "children"
+	}));
+	
+	
+	// Generate and set data
+	// https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+	var maxLevels = 3;
+	var maxNodes = 3;
+	var maxValue = 100;
+	
+	var data = {
+	  name: "Root",
+	  children: []
+	}
+	generateLevel(data, "", 0);
+	
+	series.data.setAll([data]);
+	series.set("selectedDataItem", series.dataItems[0]);
+	
+	function generateLevel(data, name, level) {
+	  for (var i = 0; i < Math.ceil(maxNodes * Math.random()) + 1; i++) {
+		var nodeName = name + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i];
+		var child;
+		if (level < maxLevels) {
+		  child = {
+			name: nodeName + level
+		  }
+	
+		  if (level > 0 && Math.random() < 0.5) {
+			child.value = Math.round(Math.random() * maxValue);
+		  }
+		  else {
+			child.children = [];
+			generateLevel(child, nodeName + i, level + 1)
+		  }
+		}
+		else {
+		  child = {
+			name: name + i,
+			value: Math.round(Math.random() * maxValue)
+		  }
+		}
+		data.children.push(child);
+	  }
+	
+	  level++;
+	  return data;
+	}
+	
+	
+	// Make stuff animate on load
+	series.appear(1000, 100);
+	
+	}); // end am5.ready()
+</script>
+{% endif %}
+
+<!-- Application Status -->
+<script type="text/javascript">
+	google.charts.load("current", {packages:["corechart"]});
+	google.charts.setOnLoadCallback(drawChart);
+
+	const dataset = "{{application_status_graph}}".replaceAll('&quot;', '"');
+	const dataset_json = JSON.parse(dataset);
+	const slices = {}
+	for(let d of dataset_json){
+		(d[0] == 'Accepted') ? slices[0] = { color: 'green' } : '' ;
+		(d[0] == 'Pending') ? slices[1] = { color: 'orange' } : '' ;
+		(d[0] == 'Rejected') ? slices[2] = { color: 'red' } : '' ;
+	}
+
+	console.log(dataset);
+
+	function drawChart() {
+	  const data = google.visualization.arrayToDataTable(dataset_json);
+		
+	  const options = {
+		title: '',
+		pieHole: 0.4,
+		slices: slices,
+		legend: {
+			position: 'bottom'
+		}
+	  };
+
+	  const chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+	  chart.draw(data, options);
+	}
+</script>
+
+{% if request.user|has_group:"school" %}
+	<!-- ChartJS -->
+	<script src="{% static 'admin/plugins/chart.js/Chart.min.js' %}"></script>
+	<!-- <script>
+		const labels = [], data = [], background = [], hoverbackground = []
+
+		// Get data from backend
+		"{% for level in application.level; value in application.value %}"
+			// console.log("{{ level }}", "{{ value }}");
+			labels["{{ forloop.counter0 }}"] = "{{ level }}";
+			data["{{ forloop.counter0 }}"] = "{{ value }}";
+
+			"{% if level|lower == 'accepted' %}"
+				background["{{ forloop.counter0 }}"] = "#46BFBD";
+				hoverbackground["{{ forloop.counter0 }}"] = "#5AD3D1";
+			"{% elif level|lower == 'pendding' %}"
+				background["{{ forloop.counter0 }}"] = "#4D5360";
+				hoverbackground["{{ forloop.counter0 }}"] = "#616774";
+			"{% elif level|lower == 'renew' %}"
+				background["{{ forloop.counter0 }}"] = "#E59851";
+				hoverbackground["{{ forloop.counter0 }}"] = "#FFA95A";
+			"{% elif level|lower == 'rejected' %}"
+				background["{{ forloop.counter0 }}"] = "#F7464A";
+				hoverbackground["{{ forloop.counter0 }}"] = "#FF5A5E";
+			"{% endif %}"
+			
+		"{% endfor %}"
+		//doughnut
+		let ctxD = document.getElementById("doughnutChart").getContext('2d');
+		let myLineChart = new Chart(ctxD, {
+		type: 'doughnut',
+		data: {
+			labels: labels,
+			datasets: [{
+				data: data,
+				backgroundColor: background,
+				hoverBackgroundColor: hoverbackground
+			}]
+		},
+		options: {
+			responsive: true,
+			cutoutPercentage: 80,
+			legend: {
+				position: 'bottom'
+			}
+		}
+		});
+	</script> -->
+
+	<!-- For Expenses -->
+	<script>
+		function generate_multiple_bar_chat(exp_category, exp_year, exp_months, expenses, earnings, datasets) {
+			$('#myChartBarCourse_div').html('');
+			$('#myChartBarCourse_div').html(
+				'<canvas id="myChartBarCourse"></canvas>'
+			);
+			const canvas = document.getElementById("myChartBarCourse");
+			const ctx = canvas.getContext("2d");
+			
+			if (datasets.length > 0) {
+				console.log('Dataset Found!');
+				new Chart(ctx, {
+					type: "bar",
+					data: {
+						labels: exp_months,
+						datasets: datasets,
+					},
+					options: {
+						title: {
+							text: `School ${exp_category} Expenses in ${exp_year}`,
+							display: true
+						},
+						legend:
+						{
+						    display: false
+						}
+					}
+				});
+			} else {
+				console.log('Dataset Not Found!');
+				new Chart(ctx, {
+					type: "bar",
+					data: {
+						labels: exp_months,
+						datasets: [
+							{
+								label: "Monthly Expenses",
+								backgroundColor: "#79AEC8",
+								borderColor: "#417690",
+								data: expenses,
+							},
+							{
+								label: "Monthly Earning",
+								backgroundColor: "#AEC879",
+								borderColor: "#C879AE",
+								data: earnings,
+							},
+						]
+					},
+					options: {
+						title: {
+							text: `School ${exp_category} Expenses in ${exp_year}`,
+							display: true
+						}
+					}
+				});
+			}
+		}
+		
+		let exp_year = '', exp_months = [], expenses = [], earnings = [], datasets = [], select_year_html = [], school_expenses = '', years = [], yearly_data = [];
+
+		bgcolors_expenses = ['#e9967a', '#ff6347', '#cd5c5c', '#ff4500', '#dc143c', '#b22222', '#8b0000', '#800000', '#ff6961', '#fe6f5e']
+		bgcolors_earnings = ['#ceff00', '#32cd32', '#3fff00', '#7cfc00', '#a7fc00', '#cae00d', '#a6d608', '#8bbe1b', '#9dc209', '#648c11']
+
+		school_expenses= "{{expenses}}".replaceAll('&quot;', '"');
+		school_expenses = JSON.parse(school_expenses);
+
+		years = Object.keys(school_expenses['year_wise_data']).reverse();
+
+		years.forEach(function(year) {
+			select_year_html.push(`<option value="${year}">${year}</option>`);
+		});
+		exp_year = years[0];
+
+
+		yearly_data = school_expenses['year_wise_data'][exp_year];
+		yearly_data['months'].forEach(function(month, idx){
+			exp_months.push(month)
+			expenses.push(school_expenses['year_wise_data'][exp_year]['total_expenses'][idx])
+			earnings.push(school_expenses['year_wise_data'][exp_year]['total_earnings'][idx])
+		});
+
+		$('#select_category_year').html(select_year_html)
+
+		$(document).on('change', '#select_category_year', function(){
+			exp_months = [], expenses = [], earnings = [], datasets = [];
+
+			exp_year = $('#select_category_year :selected').val();
+			$("#select_category").val($("#select_category select_category:eq(0)").val());
+
+			yearly_data = school_expenses['year_wise_data'][exp_year];
+
+			yearly_data['months'].forEach(function(month, idx){
+				exp_months.push(month)
+				expenses.push(school_expenses['year_wise_data'][exp_year]['total_expenses'][idx])
+				earnings.push(school_expenses['year_wise_data'][exp_year]['total_earnings'][idx])
+			});
+
+			generate_multiple_bar_chat('', exp_year, exp_months, expenses, earnings, datasets);
+		});
+		
+		generate_multiple_bar_chat('', exp_year, exp_months, expenses, earnings, datasets);
+
+		$(document).on('change', '#select_category', function(){
+			exp_months = [], expenses = [], earnings = [], datasets = [];
+			exp_year = $('#select_category_year :selected').val();
+			
+			yearly_data = school_expenses['year_wise_data'][exp_year];
+
+			switch ($(this).val()) {
+				case 'Course':
+					course_names = Object.keys(school_expenses['year_wise_data'][exp_year]['course_expenses']);
+					course_names.forEach(function(course, idx){
+						datasets.push(
+							{
+								name: course,
+								etype: 'expenses',
+								label: `${course} Expenses`,
+								backgroundColor: bgcolors_expenses[idx],
+								borderColor: bgcolors_expenses[idx],
+								data: [],
+							},
+							{
+								name: course,
+								etype: 'earnings',
+								label: `${course} Earnings`,
+								backgroundColor: bgcolors_earnings[idx],
+								borderColor: bgcolors_earnings[idx],
+								data: [],
+							}
+						);
+					});
+					yearly_data['months'].forEach(function(month, idx){
+						exp_months.push(month)
+						datasets.forEach(function(element){
+							if (element.etype == "expenses") {
+								element.data.push(school_expenses['year_wise_data'][exp_year]['course_expenses'][element.name][idx]);
+							} else {
+								element.data.push(school_expenses['year_wise_data'][exp_year]['course_earnings'][element.name][idx]);
+							}
+						});
+						// expenses.push(school_expenses['year_wise_data'][exp_year]['total_course_expenses'][idx])
+						// earnings.push(school_expenses['year_wise_data'][exp_year]['total_course_earnings'][idx])
+					});
+					console.log(datasets);
+					break;
+				
+				case 'Service':
+					service_names = Object.keys(school_expenses['year_wise_data'][exp_year]['service_expenses']);
+					service_names.forEach(function(service, idx){
+						datasets.push(
+							{
+								name: service,
+								etype: 'expenses',
+								label: `${service} Expenses`,
+								backgroundColor: bgcolors_expenses[idx],
+								borderColor: bgcolors_expenses[idx],
+								data: [],
+							},
+							{
+								name: service,
+								etype: 'earnings',
+								label: `${service} Earnings`,
+								backgroundColor: bgcolors_earnings[idx],
+								borderColor: bgcolors_earnings[idx],
+								data: [],
+							}
+						);
+					});
+					yearly_data['months'].forEach(function(month, idx){
+						exp_months.push(month)
+						datasets.forEach(function(element){
+							if (element.etype == "expenses") {
+								element.data.push(school_expenses['year_wise_data'][exp_year]['service_expenses'][element.name][idx]);
+							} else {
+								element.data.push(school_expenses['year_wise_data'][exp_year]['service_earnings'][element.name][idx]);
+							}
+						});
+						// expenses.push(school_expenses['year_wise_data'][exp_year]['total_course_expenses'][idx])
+						// earnings.push(school_expenses['year_wise_data'][exp_year]['total_course_earnings'][idx])
+					});
+					console.log(datasets);
+					break;
+					// yearly_data['months'].forEach(function(month, idx){
+					// 	exp_months.push(month)
+					// 	expenses.push(school_expenses['year_wise_data'][exp_year]['total_service_expenses'][idx])
+					// 	earnings.push(school_expenses['year_wise_data'][exp_year]['total_service_earnings'][idx])
+					// });
+					// break;
+
+				// case 'Teacher':
+				// 	yearly_data['months'].forEach(function(month, idx){
+				// 		exp_months.push(month)
+				// 		expenses.push(school_expenses['year_wise_data'][exp_year]['total_teacher_expenses'][idx])
+				// 		earnings.push(school_expenses['year_wise_data'][exp_year]['total_teacher_earnings'][idx])
+				// 	});
+				// 	break;
+
+				// case 'Other':
+				// 	yearly_data['months'].forEach(function(month, idx){
+				// 		exp_months.push(month)
+				// 		expenses.push(school_expenses['year_wise_data'][exp_year]['total_other_expenses'][idx])
+				// 		earnings.push(school_expenses['year_wise_data'][exp_year]['total_other_earnings'][idx])
+				// 	});
+				// 	break;
+			
+				default:
+					yearly_data['months'].forEach(function(month, idx){
+						exp_months.push(month)
+						expenses.push(school_expenses['year_wise_data'][exp_year]['total_expenses'][idx])
+						earnings.push(school_expenses['year_wise_data'][exp_year]['total_earnings'][idx])
+					});
+					break;
+			}
+			
+			// Generate Bar Chart
+			generate_multiple_bar_chat($(this).val(), exp_year, exp_months, expenses, earnings, datasets);
+		});
+		
+	</script>
+{% endif %}
+
+	
+{% endblock %}

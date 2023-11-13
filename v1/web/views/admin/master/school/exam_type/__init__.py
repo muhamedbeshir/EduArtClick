@@ -1,0 +1,1 @@
+from .views import AddSchoolExamType, ListSchoolExamType , EditSchoolExamType , DeleteSchoolExamType

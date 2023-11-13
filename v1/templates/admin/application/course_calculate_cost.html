@@ -1,0 +1,832 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add Admission Form{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<style>
+	thead {
+		background-color: gray;
+		color: white;
+		position: sticky;
+		position: -webkit-sticky;
+		top: 0px;
+		z-index: 2;
+	}
+
+	tr th {
+		color: #fff !important;
+	}
+
+	.table> :not(caption)>*>* {
+		padding: 0.625rem 0.9rem
+	}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add Admission Form</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:application_list' %}">Applications</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add Admission Form</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" id="clientForm"
+			data-city-url="{% url 'web:get_city' %}" data-schools-url="{% url 'web:get_schools' %}"
+			data-course-url="{% url 'web:get_course_ajax' %}" data-level-url="{% url 'web:get_level_ajax' %}"
+			data-service-url="{% url 'web:get_service_ajax' %}" data-class-url="{% url 'web:get_course_class_ajax' %}"
+			data-course-price-url="{% url 'web:get_course_price_ajax' %}"
+			data-school-address-url="{% url 'web:get_school_address' %}"
+			data-course-type-url="{% url 'web:get_course_type_ajax' %}"
+			data-accommodation-url="{% url 'web:get_accommodation_ajax' %}"
+			data-course-discount-url="{% url 'web:get_course_discount' %}"
+			data-study-period-url="{% url 'web:get_study_period_ajax' %}"
+			data-class-days-url="{% url 'web:get_course_class_days_ajax' %}"
+			data-course-class-price-url="{% url 'web:get_course_class_price_ajax' %}"
+			data-accommodation-type-url="{% url 'web:get_accommodation_type_ajax' %}" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">School Details</a>
+								</li>
+								<li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill" data-bs-target="#tab-2"
+										type="button" role="tab" aria-controls="v-pills-profile"
+										aria-selected="false">Course Details</a>
+								</li>
+								<li>
+									<span>3</span>
+									<a class="nav-link" id="tab-3-link" type="button" role="tab"
+									aria-controls="v-pills-messages" aria-selected="false">Service Details</a>
+								</li>
+								<!-- <li>
+									<span>4</span>
+									<a class="nav-link" id="tab-4-link" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Sponsor Details</a>
+								</li> -->
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel"
+								aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="id_s_country">Select Country <strong
+															class="text-danger">*</strong></label>
+													{{ form.s_country }}
+												</div>
+												<div class="col">
+													<label class="form-label" for="id_s_city">Select City <strong
+															class="text-danger">*</strong></label>
+													{{ form.s_city }}
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="id_s_school">Select School <strong
+														class="text-danger">*</strong></label>
+												{{ form.s_school }}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" id="school_address"></label>
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<a id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="true"
+													class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"
+								aria-labelledby="v-pills-profile-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label">Select
+														Course <strong class="text-danger">*</strong></label>
+													{{ form.s_course }}
+												</div>
+												<div class="col">
+													<label class="form-label">Select
+														Course Type<strong class="text-danger">*</strong></label>
+													{{ form.ref_course_type }}
+												</div>
+											</div>
+											<div class="mb-3">
+												<div id="class_data" style="overflow: auto; max-height:200px;">
+												</div>
+												{{ form.course_class }}
+											</div>
+											<div class="mb-3">
+												<div id="price_data" style="overflow: auto; max-height:200px;">
+												</div>
+											</div>
+											<div class="mb-3">
+												<div class="row text-muted mb-2" id="hidediv" style="display: none;">
+													<div class="col">
+														<label for="id_study_period">Select Study Period <strong
+																class="text-danger">*</strong></label>
+														{{form.study_period}}
+
+													</div>
+													<div class="col">
+														<label>Start Date <strong class="text-danger">*</strong></label>
+														<div class="input-group date" id="reservationdate"
+															data-target-input="nearest">
+															<!-- <input type="date" class="form-control form-control-lg datetimepicker-input" name="s_start_date" required /> -->
+
+															<input type="text"
+																class="form-control form-control-lg datetimepicker-input"
+																name="s_start_date" id="datepicker"
+																placeholder="yyyy-mm-dd" required />
+															<div class="input-group-append"
+																data-target="#reservationdate"
+																data-toggle="datetimepicker">
+																<div class="input-group-text h-100">
+																	<i class="ri-calendar-line ri-lg"></i>
+																</div>
+															</div>
+
+
+															<!-- <input type="text" class="form-control datetimepicker-input" name="s_start_date" id="datepicker" required /> -->
+															<!-- <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+																<div class="input-group-text h-100">
+																<i class="ri-calendar-line ri-lg"></i>
+																</div>
+															</div> -->
+														</div>
+													</div>
+
+													<!--
+													<div class="col-4">
+														<label>End Date</label>
+														<div class="input-group">
+														
+														<input type="text" value="" class="form-control float-right" readonly>
+														</div>
+													</div>-->
+												</div>
+											</div>
+											<div class="row mb-3">
+												<!-- <div class="col">
+													<label class="form-label" for="id_s_level">Select Level <strong
+															class="text-danger">*</strong></label>
+													{{ form.s_level }}
+												</div> -->
+												<div class="col">
+													<label class="form-label" for="">Select Coupon </label>
+													{{ form.ref_ap_coupon }}
+												</div>
+											</div>
+											
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1"
+													type="button" role="tab" aria-controls="tab-1" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-3" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-3" id="tab-3" role="tabpanel"
+								aria-labelledby="v-pills-messages-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_s_school">Select Accommodation
+													Type<strong class="text-danger">*</strong></label>
+												<select name="accommodation_type" class="form-select form-select-lg"
+													required="" id="id_accommodation_type">
+													<option value="" selected>---------</option>
+												</select>
+											</div>
+											<div class="mb-3">
+												<div id="accommodation_data"
+													style="overflow: auto; max-height:200px; border-bottom: 3px solid;">
+												</div>
+											</div>
+											<div class="mb-3">
+												<div id="service_data"
+													style="overflow: auto; max-height:200px; border-bottom: 3px solid;">
+												</div>
+												<!-- <div id="price_data"></div>   -->
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-4" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-1" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit"
+												class="btn btn-success px-4 d-flex align-items-center">Submit <i
+													class="ri-arrow-right-line ms-3 me-0"></i></button>
+												<!-- <a id="btn-tab-5" data-bs-toggle="pill" data-bs-target="#tab-4"
+													type="button" role="tab" aria-controls="tab-4" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a> -->
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<!-- <div class="tab-pane fade tab-4" id="tab-4" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											
+											<div class="col">
+												<label for="id_study_period">Select Sponsor <strong
+														class="text-danger">*</strong></label>
+												{{form.ref_sponsor}}
+
+											</div>
+
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-6" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit"
+													class="btn btn-success px-4 d-flex align-items-center">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<!-- <script src="{% static 'admin/js/datepicker.js'%}"></script> -->
+
+<script src="{% static 'js/button_navigation.js' %}"></script>
+<script src="{% static 'admin/plugins/moment/moment.min.js'%}"></script>
+<script src="{% static 'admin/plugins/inputmask/jquery.inputmask.min.js'%}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js'%}"></script>
+
+<script>
+	$("#id_s_country").change(function () {
+		var url = $("#clientForm").attr("data-city-url");  // get the url of the `load_schools` view
+		var countryId = $(this).val();  // get the selected country ID from the HTML input
+
+		$.ajax({                       // initialize an AJAX request
+			url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+			data: {
+				'country': countryId       // add the country id to the GET parameters
+			},
+			success: function (data) {   // `data` is the return of the `load_cities` view function
+				$("#id_s_city").html(data);  // replace the contents of the city input with the data that came from the server
+			}
+		});
+
+	});
+
+	$("#id_s_city").change(function () {
+		var url = $("#clientForm").attr("data-schools-url");  // get the url of the `load_schools` view
+		var cityId = $(this).val();  // get the selected country ID from the HTML input
+
+		$.ajax({                       // initialize an AJAX request
+			url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+			data: {
+				'city': cityId       // add the country id to the GET parameters
+			},
+			success: function (data) {
+				$("#id_s_school").html(data);
+			}
+		});
+
+	});
+
+	$("#id_s_school").change(function () {
+		var url = $("#clientForm").attr("data-course-url");
+		var schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId       // add the country id to the GET parameters
+			},
+			success: function (data) {
+				$("#id_s_course").html(data);
+			}
+		});
+
+	});
+
+	// Get School Address
+	$("#id_s_school").change(function () {
+		var url = $("#clientForm").attr("data-school-address-url");
+		var schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId       // add the country id to the GET parameters
+			},
+			success: function (data) {
+				$("#school_address").html(data);
+			}
+		});
+
+	});
+
+	$("#id_s_school").change(function () {
+		var url = $("#clientForm").attr("data-level-url");
+		var schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId       // add the country id to the GET parameters
+			},
+			success: function (data) {
+				$("#id_s_level").html(data);
+			}
+		});
+
+	});
+
+	$("#id_s_school").change(function () {
+		var url = $("#clientForm").attr("data-service-url");
+		schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId       // add the country id to the GET parameters
+			},
+			success: function (data) {
+				$("#service_data").html(data);
+			}
+		});
+	});
+
+	$("#id_accommodation_type").change(function () {
+		var url = $("#clientForm").attr("data-accommodation-url");
+		schoolId = $("#id_s_school option:selected").val();
+		let acco_type = $("#id_accommodation_type option:selected").val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId,       // add the country id to the GET parameters
+				'acco_type': acco_type,
+			},
+			success: function (data) {
+				$("#accommodation_data").html(data);
+			}
+		});
+
+	});
+
+	// Set Accommodation Type
+	$("#id_s_school").change(function () {
+		$("#accommodation_data").html('');
+		$("#class_data").html('');
+
+		var url = $("#clientForm").attr("data-accommodation-type-url");
+		schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId
+			},
+			success: function (data) {
+				$("#id_accommodation_type").html(data);
+			}
+		});
+	});
+
+	// Set Course Type
+	$("#id_s_school").change(function () {
+		$("#id_ref_course_type").html('');
+
+		var url = $("#clientForm").attr("data-course-type-url");
+		schoolId = $(this).val();
+
+		$.ajax({
+			url: url,
+			data: {
+				'school': schoolId
+			},
+			success: function (data) {
+				$("#id_ref_course_type").html(data);
+			}
+		});
+	});
+
+	$("#id_s_course").change(function () {
+		if ($("#id_s_course").val() == "") {
+			$("#price_data").html("");
+			$("#id_ref_ap_coupon").html(`<option value="" selected="">---------</option>`);
+			$("#hidediv").hide();
+
+		} else {
+			$("#id_study_period").html('<option value="" selected="">---------</option>');
+		}
+	});
+
+	// For course Class Details
+	$("#id_s_course").change(function () {
+		var url = $("#clientForm").attr("data-course-discount-url");
+		let school = $("#id_s_school option:selected").val();
+		let course = $("#id_s_course option:selected").val();
+
+		if (school && course) {
+			$.ajax({
+				url: url,
+				data: {
+					'school': school,
+					'course': course,
+				},
+				success: function (data) {
+					$("#id_ref_ap_coupon").html(data);
+				}
+			});
+		}
+	});
+
+	// For course Class Details
+	$("#id_s_course, #id_ref_course_type").change(function () {
+		var url = $("#clientForm").attr("data-class-url");
+		let school = $("#id_s_school option:selected").val();
+		let course = $("#id_s_course option:selected").val();
+		let course_type = $("#id_ref_course_type option:selected").val();
+
+		if (school && course && course_type) {
+			$.ajax({
+				url: url,
+				data: {
+					'school': school,
+					'course': course,
+					'course_type': course_type,
+				},
+				success: function (data) {
+					$("#class_data").html(data);
+				}
+			});
+		} else {
+			$("#class_data").html('');
+		}
+
+		$("#price_data").html('');
+		$("#hidediv").hide();
+	});
+
+	// For Class Details Click Or Select Option
+	$(document).on('click', 'input:radio[name="course_class_details"]', function (e) {
+		var url = $("#clientForm").attr("data-course-class-price-url");
+		let course_class = $(this).val();
+
+		if (course_class) {
+			$.ajax({
+				url: url,
+				data: {
+					'course_class': course_class,
+				},
+				success: function (data) {
+					let sorry_found = data.includes("Sorry, You can't apply on these days. try another days");
+					if (sorry_found) {
+						$("#id_study_period").html('');
+						$("#hidediv").hide();
+					}
+					$("#price_data").html(data);
+					$('#id_course_class').val(course_class)
+				}
+			});
+		}
+	});
+
+	// For Class Start Days
+	$(document).on('click', 'input:radio[name="course_class_details"]', function (e) {
+		var url = $("#clientForm").attr("data-class-days-url");
+		let course = $(this).val();
+
+		let current_year = parseInt("{% now 'Y' %}");
+		let next_year = current_year + 1
+		let current_month = parseInt("{% now 'm' %}");
+		let current_day = parseInt("{% now 'd' %}");
+		let minDate = new Date(current_year, current_month - 1, current_day)
+
+		$('#datepicker').datepicker("destroy");
+
+		if (course) {
+			$.ajax({
+				url: url,
+				data: {
+					'course': course,
+				},
+				success: function (data) {
+					// Implementation of Study Start Date
+					let class_days_str = JSON.stringify(data);
+					let class_days_obj = JSON.parse(class_days_str);
+					let class_days = class_days_obj['days'];
+					// ============ Custom Datepicker ==========
+
+					$('#datepicker').datepicker({
+						beforeShowDay: function (date) {
+							var dayOfWeek = date.getDay();
+							// 0 : Sunday, 1 : Monday, ...
+							if (class_days.includes(dayOfWeek)) return [true];
+							else return [false];
+						},
+						dateFormat: 'yy-mm-dd',
+						// yearRange: `${current_year}:${next_year}`,
+						minDate: minDate,
+						// maxDate: "+7D",
+					});
+
+					let start_dates = class_days_obj['start_date'].split('-');
+					let course_start_date = new Date(start_dates[0], start_dates[1] - 1 , start_dates[2]);
+
+					(course_start_date >= minDate) ? $('#datepicker').datepicker("option", "minDate", course_start_date) : '';
+					
+					// If Course Type is Regular or Others
+					let course_type = $('#id_ref_course_type option:selected').text();
+					if (course_type == "Regular") {
+						$('#datepicker').datepicker("option", "maxDate", class_days_obj['end_date']);
+					} else {
+						$('#datepicker').datepicker("option", "maxDate", "+7D");
+					}
+
+					
+				}
+			});
+		}
+	});
+
+	// For Course Study Period
+	$(document).on('click', 'input:radio[name="course_class_details"]', function (e) {
+		var url = $("#clientForm").attr("data-study-period-url");
+		let course_class = $(this).val();
+
+		if (course_class) {
+			$.ajax({
+				url: url,
+				data: {
+					'course_class': course_class,
+				},
+				success: function (data) {
+					$("#id_study_period").html(data);
+					$("#hidediv").show();
+				}
+			});
+		}
+	});
+
+	$("#id_study_period").change(function () {//#id_s_course, 
+		var url = $("#clientForm").attr("data-course-price-url");
+
+		courseId = $('input:radio[name="course_class_details"]:checked').val();
+		periodId = $("#id_study_period").val();
+
+		let current_element = $(this).attr("id");
+
+		$.ajax({
+			url: url,
+			data: {
+				'course': courseId,
+				'period': periodId
+			},
+			success: function (data) {
+				// console.log('Data :: ', data); 
+				$("#price_data").html(data);
+			}
+		});
+	});
+
+</script>
+<script>
+	$(document).ready(() => {
+		$('#btn-tab-1').addClass('disabled');
+		$('#btn-tab-3').addClass('disabled');
+		$('#btn-tab-5').addClass('disabled');
+
+		// Step-1
+		$('select[name="s_country"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				if ($('select[name="s_city"]').val() && $('select[name="s_school"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$('select[name="s_city"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				if ($('select[name="s_country"]').val() && $('select[name="s_school"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$('select[name="s_school"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				if ($('select[name="s_country"]').val() && $('select[name="s_city"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+
+		// Step-2
+		function validateStepTwo(s_course, ref_course_type, study_period, s_start_date, course_class_details) {
+			let validate = false;
+
+			course = $(`select[name="${s_course}"]`);
+			course_type = $(`select[name="${ref_course_type}"]`);
+			c_study_period = $(`select[name="${study_period}"]`);
+			c_start_date = $(`input[name="${s_start_date}"]`);
+			class_details = $('input:radio[name="course_class_details"]');
+
+			(course.val() && course_type.val() && c_study_period.val() && c_start_date.val() && $(class_details).is(':checked')) ? validate = true : validate = false;
+
+			return validate;
+		}
+
+		function validateStepTwoFields() {
+			let validate = validateStepTwo('s_course', 'ref_course_type', 'study_period', 's_start_date', 'course_class_details');
+			
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled');
+		}
+
+		$('select[name="s_course"], select[name="ref_course_type"], select[name="study_period"], input[name="s_start_date"]').change(function (e) {
+			validateStepTwoFields();
+		});
+
+
+		$(document).on('click', 'input:radio[name="course_class_details"]', function (e) {
+			validateStepTwoFields();
+		});
+
+		// Step-3
+		$(document).on('click', 'input:checkbox[name="s_accommodation"]', function (e) {
+			let validate = false;
+
+			$(this).is(':checked') ? validate = true : validate = false;
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		$('select[name="accommodation_type"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+
+				if ($(this).val() == -1) {  // Manual Accommodations
+					($('#manual_postal_code').val()) ? validate = true : validate = false;
+				} else {
+					$('#accommodation_data').find('input:checkbox[name="s_accommodation"]').each(function (idx, field) {
+						if ($(this).is(':checked')) {
+							validate = true;
+							return false;
+						}
+					});
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+		// $(document).on('click', 'input:checkbox[name="s_service"]', function (e) {
+		// 	let validate = false;
+		// 	$('#service_data').find('input:checkbox[name="s_service"]').each(function (idx, field) {
+		// 		$(this).is(':checked') ? validate = true : ''
+		// 	});
+
+		// 	(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		// });
+
+		$(document).on('keyup', '#manual_postal_code', function (e) {
+			let validate = false;
+
+			if ($(this).val()) {
+				($('select[name="accommodation_type"]').val()) ? validate = true : validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		// $(document).on('keyup', '#manual_address', function (e) {
+		// 	let validate = false;
+
+		// 	if ($(this).val()) {
+		// 		($('select[name="accommodation_type"]').val() && $('#manual_postal_code').val()) ? validate = true : validate = false;
+		// 	}
+
+		// 	(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		// });
+
+	});
+</script>
+
+<script>
+	$(function () {
+		$('#reservationdate').children().attr('type', 'text').attr("min", "{{cdate}}");
+		// //Date range picker
+		// //$('#reservation').daterangepicker()
+		// var test = moment().day("Monday").week(1);
+		// exports.getDateFromWeek = function(week, year) {
+		// return moment().day("Sunday").year(year).week(week).toDate();
+		// };
+
+		// $('#datepicker').datepicker({
+		// 	beforeShowDay: function (date) {
+		// 		var dayOfWeek = date.getDay();
+		// 		// 0 : Sunday, 1 : Monday, ...
+		// 		if (dayOfWeek == 0 || dayOfWeek == 6) return [false];
+		// 		else return [true];
+		// 	}
+		// });
+
+		$(document).on("keyup, keydown, keypress", "#datepicker", function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+	});
+</script>
+{% endblock%}

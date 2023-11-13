@@ -1,0 +1,247 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add School Student User{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+	  <!-- Main content -->
+	  <section class="content">
+		  <div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>
+			  <div class="error-content">
+				  <h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				  <p>We could not find the page you were looking for.</p>
+			  </div>
+		  </div>
+	  </section>
+	</div>
+  <!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add School Student User</h4>
+		<nav aria-label="breadcrumb mb-4">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' school.id %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add School Student User</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<!-- <form action="" method="post" enctype="multipart/form-data" autocomplete="off"> -->
+			<!-- {% csrf_token %} -->
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Student User Details</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5" style="overflow: auto; max-height: 350px;">
+										<div class="forms h-100 d-flex flex-column">
+											<div class="mb-3">
+												<label class="form-label" for="">Student Create By <strong class="text-danger">*</strong></label>
+												<select id="createById" class="form-select form-select-lg" onchange="createBy(this);">
+													<option value="" selected="">Select one</option>
+													<option value="0">Manual</option>
+													<option value="1">By Aplication No</option>
+												</select>
+											</div>
+											<div class="mb-3">
+												<div id="hiddenFormFiled"></div>
+											</div>
+											<!-- <div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div> -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		<!-- </form> -->
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script type="text/javascript">
+	
+  function createBy(sel)
+	{
+	    var createById = document.getElementById('createById');
+	    var hiddenFormFiledData = document.getElementById('hiddenFormFiled');
+	    if ( sel.options[sel.selectedIndex].value == "1" ) {
+	    hiddenFormFiledData.innerHTML = `
+		<form action="{% url 'web:create_school_student_user_by_school_by_app_no'%}" method="GET">
+			<div class="form-group">
+				<label class="form-label" for="">Application No <strong class="text-danger">*</strong></label>
+				<div class="input-group input-group-sm">
+					<input type="text" class="form-control form-control-lg" placeholder="Application Number" name="apno" required>
+					<button type="submit" class="btn btn-primary">Next</button>
+				</div>
+			</div>
+		</form>`;
+	    } 
+	    else if ( sel.options[sel.selectedIndex].value == "0" ) {
+	    hiddenFormFiledData.innerHTML = `
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<div class="row mb-3">
+				<div class="col form-group">
+					<label class="form-label" for="">First Name <strong class="text-danger">*</strong></label>
+					<input type="text" class="form-control form-control-lg text-capitalize" placeholder="First name" name="first_name" autocomplete="off" required>
+				</div>
+				<div class="col form-group">
+					<label class="form-label" for="">Last Name <strong class="text-danger">*</strong></label>
+					<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Last name" name="last_name" autocomplete="off" required>
+				</div>
+			</div>
+			<div class="mb-3 form-group">
+				<label class="form-label" for="">Email <strong class="text-danger">*</strong></label>
+				<input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Enter email" name="email" autocomplete="false" required>
+			</div>
+			<div class="row mb-3">
+				<div class="col form-group">
+					<label class="form-label"  for="">Gender <strong class="text-danger">*</strong></label>
+					<select class="form-select form-select-lg" name="gender" required id="id_gender">
+						<option value="" selected="">---------</option>
+						<option value="0">Male</option>
+						<option value="1">Female</option>
+					</select>
+				</div>
+				<div class="col form-group">
+					<div class="form-group">
+						<label class="form-label" >Date of Birth <strong class="text-danger">*</strong></label></label>
+						<div class="input-group" id="id_date_of_birth">
+							<input type="date" id="id_ap_date_of_birth" name="date_of_birth" class="form-control form-control-lg" required="" placeholder="YYYY-MM-DD" max="{{pdate}}">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group mb-3">
+				<label class="form-label"  for="">Home address <strong class="text-danger">*</strong></label>
+				<textarea name="home_address" required="" class="form-control form-control-lg text-capitalize" placeholder="Home Address" id="id_home_address"></textarea>
+			</div>
+			<div class="row mb-3">
+				<div class="col form-group">
+					<label class="form-label" >Post Code</label>
+					<input type="text" name="post_code" class="form-control form-control-lg" placeholder="Post Code" id="id_post_code">
+				</div>
+				<div class="col form-group">
+					<label class="form-label"  for="">Nationality <strong class="text-danger">*</strong></label>
+					<input type="text" name="nationality" class="form-control form-control-lg text-capitalize" placeholder="Nationality" value="" id="id_nationality" required="">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col form-group">
+					<label class="form-label"  for="">Mobile Number (+ Country Code)</label>
+					<input type="text" name="phone" class="form-control form-control-lg" placeholder="Mobile Number" value="" id="id_phone">
+				</div>
+				<div class="col form-group">
+					<label class="form-label" >Religion</label>
+					<input type="text" name="religion" class="form-control form-control-lg text-capitalize" placeholder="Religion" id="id_religion">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col form-group">
+					<label class="form-label" >Passport Number <strong class="text-danger">*</strong></label>
+					<input type="text" name="passport_number" class="form-control form-control-lg text-uppercase" placeholder="Passport Number" required="" id="id_passport_number">
+				</div>
+				<div class="col form-group">
+					<label class="form-label" >Passport Expiry Date <strong class="text-danger">*</strong></label></label>
+					<div class="input-group" id="id_passport_expiry_data" data-target-input="nearest">
+						<input type="date" id="id_ap_passport_expiry_data" name="passport_expiry_date" class="form-control form-control-lg" required="" placeholder="YYYY-MM-DD" min="{{cdate}}">
+					</div>
+				</div>
+			</div>
+			<div class="form-group mb-3">
+				<label class="form-label"  for="">Picture</label>
+				<div class="col-6">
+					{{form.avtar}}
+				</div>
+			</div>
+			<div class="form-group mb-3 d-flex justify-content-end">
+				<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit 
+					<i class="ri-arrow-right-line ms-3 me-0"></i></button>
+			</div>
+		</form>`;
+	    }
+	    else if ( sel.options[sel.selectedIndex].value == "" ) {
+	    hiddenFormFiledData.innerHTML = '';
+	    }
+
+	}
+	
+</script>
+<script >
+	$(document).ready(function(){
+		$('#id_ap_date_of_birth').children().attr('type', 'date').attr("max", "{{pdate}}")
+		$('#id_ap_passport_expiry_data').children().attr('type', 'date').attr("min", "{{cdate}}")
+	})
+
+	$(function () {
+    //Date range picker
+    // $('#id_date_of_birth').datetimepicker({
+    //     format: 'YYYY-MM-DD'
+    // });
+    // $('#id_passport_expiry_data').datetimepicker({
+    //     format: 'YYYY-MM-DD'
+    // });
+
+  })
+// gepicker()
+</script>
+{% endblock%}

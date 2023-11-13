@@ -1,0 +1,63 @@
+
+
+
+<label>Course Price list</label>
+<table class="table">
+	<thead>
+		<tr>
+			
+			<th>Week Length</th>
+			<th>Course price</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for price in price_list %}
+		<tr>
+			
+			<td>
+				{{price.min_weak}}-{{price.max_weak}}
+			</td>
+			<td>
+
+				{{price.price}}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% if services %}
+<label>Select service</label>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Select</th>
+			<th>Service Name</th>
+			<th>Service Type</th>
+			<th>Service price</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for service in services %}
+		<tr>
+			<td>
+				<input type="checkbox" name="service_id" value="{{service.id}}">
+			</td>
+			<td>
+				{{service.service_name}}
+			</td>
+			<td>
+
+				{{service.service_type_title}}
+			</td>
+			<td>
+				{{service.ref_school.ref_currency.currency_short}} {{service.price}}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	
+</table>
+
+
+
+{% endif %}

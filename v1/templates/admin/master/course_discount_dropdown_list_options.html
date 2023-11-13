@@ -1,0 +1,4 @@
+<option value="" selected>---------</option>
+{% for discount in discounts %}
+<option value="{{ discount.id }}">{{ discount.coupon_code }} - {{ discount.discount }} %</option>
+{% endfor %}

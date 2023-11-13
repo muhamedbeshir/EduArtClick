@@ -1,0 +1,17 @@
+<div class="row mb-3">
+    <div class="col">
+        <label class="form-label">
+            POSTAL CODE <strong class="text-danger">*</strong></label>
+        <input type="number" class="form-control form-control-lg" placeholder="eg: 123456"
+            onkeypress="if(this.value.length > 5) return false;" id="manual_postal_code">
+    </div>
+    <div class="col">
+        <label class="form-label">PRICE (PER WEEK) <strong class="text-danger">*</strong></label>
+        <input type="number" class="form-control form-control-lg" value="0.0" disabled readonly>
+    </div>
+</div>
+<div class="">
+    <label class="form-label">ADDRESS</label>
+    <input type="text" class="form-control form-control-lg" placeholder="eg: 123 Road, etc." maxlength="255"
+        id="manual_address">
+</div>

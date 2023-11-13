@@ -1,0 +1,74 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add Address{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/add_page.css' %}" />
+{% endblock %} 
+
+{% block content %}
+
+{% if permission %}
+<div class="content-wrapper d-block d-block px-5 py-3" style="min-height: 1602px;">
+    <!-- Main content -->
+    <section class="content">
+		<div class="error-page">
+			<h2 class="headline text-warning"> 403 Error</h2>
+			<div class="error-content">
+				<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				<p>We could not find the page you were looking for.</p>
+			</div>
+		</div>
+	</section>
+    <!-- /.content -->
+  </div>
+{% else %}
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h4 class="m-0">Address Delete</h4>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+        		<div class="card-body">
+					<div class="row d-flex justify-content-center">
+						<div class="col-xl-4 col-lg-8 col-md-6 col-sm-8 col-12 rounded shadow p-5 bg-white">
+							<div class="text-center">
+								<!-- <h4>{{ content }}</h4> -->
+								<form method="POST" class="" action="">
+									{% csrf_token %}
+									<h4 class="mb-4">Are you sure you want to delete ?</h4>
+									<button class="btn btn-danger mr-4" type="submit">Yes</button>
+									<a href="" class="btn btn-primary">No</a>
+								</form>
+							</div>
+						</div>
+					</div>
+        		</div>
+        		<!-- /.card-body -->
+      		</div>
+      		<!-- /.card -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+
+{% endblock%}
+

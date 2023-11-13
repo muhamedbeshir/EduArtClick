@@ -1,0 +1,123 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{ title|title }}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{ title|title }}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:list_organization' %}">Organizations</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{ title|title }}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Organization Form</a>
+								</li>
+								<!-- <li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill"
+										data-bs-target="#tab-2" type="button" role="tab"
+										aria-controls="v-pills-profile" aria-selected="false">Organization Logo</a>
+								</li> -->
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_organization_name">Organization Name <strong class="text-danger">*</strong></label>
+												{{ form.organization_name }}
+											</div>
+											<div class="mb-4">
+												<label class="form-label" for="id_web_url">Web Url <strong class="text-danger">*</strong></label>
+												{{ form.web_url }}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="id_organization_logo">Logo <strong class="text-danger">*</strong></label>
+												{{ form.organization_logo }}
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<!-- <a  id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="true" class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next <i class="ri-arrow-right-line ms-3 me-0"></i></a> -->
+												<button type="submit" class="btn btn-success px-4 d-flex align-items-center">Submit <i class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"
+								aria-labelledby="v-pills-profile-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_organization_logo">Logo</label>
+												{{ form.organization_logo }}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a  id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="false"  class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit" class="btn btn-success px-4 d-flex align-items-center">Submit <i class="ri-arrow-right-line ms-3 me-0"></i></button>
+											 </div>
+										</div>
+									</div>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'js/button_navigation.js' %}"></script>
+{% endblock%}

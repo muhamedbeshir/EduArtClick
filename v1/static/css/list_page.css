@@ -1,0 +1,74 @@
+.rounded {
+    border-radius: 1.5rem !important;
+}
+/* .shadow {
+    box-shadow: 0 0rem 3rem rgba(50,100,2000,.3) !important;
+} */
+table#example1 thead tr th {
+    color: #5a5f7d;
+    background: #f8f9fb;
+    border-top: 1px solid #f1f2f6;
+    border-bottom: 1px solid #f1f2f6;
+    white-space: nowrap;
+}
+table thead tr th {
+    color: #5a5f7d;
+    background: #f8f9fb;
+    border-top: 1px solid #f1f2f6;
+    border-bottom: 1px solid #f1f2f6;
+    white-space: nowrap;
+}
+.breadcrumb-main {
+    line-height: 1.8571428571;
+}
+.breadcrumb-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 12px;
+}
+.user-member__form {
+    padding: 15px 25px;
+    background: white;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 5px 20px #9299b808;
+    border-radius: 23px;
+}
+.page-title__left {
+    display: flex;
+    align-items: center;
+}
+.user-member__form svg {
+    width: 20px;
+}
+.user-member__form svg{
+    color: #adb4d2;
+}
+.feather {
+    max-width: 17px;
+    color: #ADB4D2;
+}
+#example1_filter {
+    display: none;
+}
+/* Change the color or icon when user mouse hover trash icon */
+i.ri-delete-bin-line:hover {
+    color: red !important;
+}
+/* Change the color or icon when user mouse hover trash icon */
+i.ri-edit-box-line:hover {
+    color: blue !important;
+}
+/* Change the color or icon when user mouse hover trash icon */
+i.ri-eye-line:hover {
+    color: purple !important;
+}
+/* Change the color or icon when user mouse hover trash icon */
+i.fa-folder:hover {
+    color: #f2f !important;
+    /* background-color: #000 !important; */
+}

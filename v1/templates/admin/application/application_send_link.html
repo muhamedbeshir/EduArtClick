@@ -1,0 +1,203 @@
+{% load i18n %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Application </title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'admin/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'admin/dist/css/adminlte.min.css' %}">
+</head>
+<body class="hold-transition login-page">
+<div class="register-box" style="width:1326px">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-body login-card-body">
+    	<div class="card-header text-center">
+	      <a href="" class="h1">Applicaton</a>
+	    </div>
+    	<div class="card-body">
+            
+          	<div class="row">
+          		<div class="col-sm-6">
+                    <a href="javascript:window.print()" class="btn btn-primary btn-block">Print</a>
+          		</div>
+          		<div class="col-sm-6">
+          			<a href="{% url 'web:application_download' token %}" class="btn btn-primary btn-block">Download</a>
+          		</div>
+          	</div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+
+                <h4>Application code : {{code}}</h4>
+                </div>
+            </div>
+          	<div class="row">
+          		<div class="col-sm-12">
+                    <table class="table table-bordered table-sm">
+                        {% for data in data %}
+                        <tr>
+                            <td><label>First Name :</label> {{data.ap_first_name}}</td>
+                            <td><label>Last Name :</label> {{data.ap_last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Data of Birth :</label> {{data.ap_date_of_birth}}</td>
+                            <td><label>Gender :</label> {{data.ap_gender_title}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><label>Address :</label> {{data.home_address}}</td>
+                            
+                        </tr>
+                        <tr>
+                            <td><label>Post Code :</label> {{data.post_code}}</td>
+                            <td><label>Mobile Number :</label> {{data.ap_phone}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Email Address :</label> {{data.ap_email}}</td>
+                            <td><label>Nationality :</label> {{data.ap_nationality}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>First Language :</label> {{data.first_language}}</td>
+                            <td><label>Religion :</label> {{data.ap_religion}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Passport Number :</label> {{data.ap_passport_number}}</td>
+                            <td><label>Passport Expiry Date :</label> {{data.ap_passport_number}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+          			
+          		</div>
+          	</div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+
+                <h4>Course Detail</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-sm">
+                        {% for data in data %}
+                        
+                        <tr>
+                            <td colspan="3"><label>Course Name :</label> {{data.ap_course_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Study Period :</label> {{data.ap_study_period}} weeks</td>
+                            <td><label>Start Date :</label> {{data.ap_start_date}}</td>
+                            <td><label>End Date :</label> {{data.ap_end_date}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    
+                </div>
+            </div>
+            <br>
+            {% for data in data %}
+                {% if data.rel_ref_application_application_service.all %}
+                
+                
+            <div class="row">
+                <div class="col-sm-6">
+
+                <h4>Service Detail<h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <th>Service Name</th>
+                        </tr>
+                        {% for service in data.rel_ref_application_application_service.all %}
+                        <tr>
+                            
+                            <td>{{service.ap_service_name}}</td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+                {% endif %}
+            {% endfor %}
+        
+        <div class="row">
+            <div class="col-sm-12">
+          	{% if error %}
+          		{{error}}
+          	{% endif %}
+          	<form action="" method="post">
+          		{% csrf_token %}
+          		<input type="hidden" name="token" value="{{token}}">
+          		
+          		<div class="row">
+          			<div class="col-sm-6">
+
+          				<input type="checkbox" class="ap_status" id="showform" name="ap_status" value="1" onchange="showhideForm(this.value);"> <label>Aacepted</label>
+          				<input type="checkbox" class="ap_status" id="showform" name="ap_status" value="2" onchange="showhideForm(this.value);"> <label>Renew</label>
+          			</div>
+          		
+          		</div>
+              <div class="row" id="div1" style="">
+                
+              </div>
+          		
+          		
+          	</form>
+            </div>
+        </div>
+      
+      
+
+      
+    </div>
+
+
+	</div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'admin/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'admin/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'admin/dist/js/adminlte.min.js' %}"></script>
+<script type="text/javascript">
+//Near checkboxes
+    $('.ap_status').click(function(){
+        $(this).siblings('input:checkbox').prop('checked',false);
+    });
+    function showhideForm(showform) {
+        if (showform == "1") {
+            return document.getElementById("div1").innerHTML = '<div class="col-sm-6"><label for="id_ap_approved_file">Upload Approvel Letter<span style="color:red;">*</span> (Only pdf suport)</label>'+ '<br>' +'<input type="file" name="ap_approved_file" id="id_ap_approved_file" accept=".pdf" required><br><br><button type="submit" class="btn btn-info">Approved</button></div>';  
+            
+        } 
+        else if (showform == "2") {
+            return document.getElementById("div1").innerHTML = '<div class="col-sm-6"><button type="submit" class="btn btn-danger">Renew</button></div>'; 
+        }
+        else {
+          return document.getElementById("div1").style.display = 'none'; 
+        }
+    }
+</script>
+<script type="text/javascript">
+    
+</script>
+</body>
+</html>

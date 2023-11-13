@@ -1,0 +1,2 @@
+from .views import AddOrganization, EditOrganization, ListOrganization, DeleteOrganization, organization_school_create_view, organization_school_user_list, \
+		organization_application_list, school_application_list

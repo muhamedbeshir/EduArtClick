@@ -1,0 +1,468 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Teacher Detail{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+	  <!-- Main content -->
+	  <section class="content">
+		  <div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>
+			  <div class="error-content">
+				  <h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				  <p>We could not find the page you were looking for.</p>
+			  </div>
+		  </div>
+	  </section>
+	</div>
+  <!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>School Teacher Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a href="{% url 'web:deatil_school' teacher.ref_school_id %}">School Details</a></li>
+								<li class="breadcrumb-item active" aria-current="page">School Teacher Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-image-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">PHOTO</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{% if teacher.avtar %}
+							<img class="profile-user-img img-fluid img-circle" src="{{teacher.avtar.url}}" alt="Profile Picture">
+							{% else %}
+							<img class="profile-user-img img-fluid img-circle" src="{% static 'img/agent.png' %}" alt="Profile Picture">
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-user-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">NAME</span>
+						</div>
+						<span class="d-block border-top pt-3">{{teacher.first_name}} {{teacher.last_name}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-men-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">GENDER</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{% if teacher.gender == 0 %}
+								Male
+							{% elif teacher.gender == 1 %}
+								Female
+							{% else %}
+								-
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-calendar-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">DOB</span>
+						</div>
+						<span class="d-block border-top pt-3">{{teacher.date_of_birth}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-global-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">LANGUAGE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{teacher.lang_one}} , {{teacher.lang_two}} , {{teacher.lang_three}}</span>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button" class="nav-link {% if 'school-detail' in request.META.HTTP_REFERER or 'teacher-certificate' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} active {% endif %}" role="tab" id="certificate-tab" data-bs-toggle="tab"
+						data-bs-target="#certificate_table"
+						aria-controls="certificate_table" aria-selected="true">
+						Certificate
+						</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link {% if 'teacher-address' in request.META.HTTP_REFERER %} active {% endif %}" role="tab" id="address-tab" data-bs-toggle="tab"
+						data-bs-target="#address_table"
+						aria-controls="address_table" aria-selected="false">Address</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link {% if 'teacher-contact' in request.META.HTTP_REFERER %} active {% endif %}" role="tab" id="contact-tab" data-bs-toggle="tab"
+						data-bs-target="#contact_table"
+						aria-controls="contact_table" aria-selected="false">Contact</button>
+					</li>
+				</ul>
+			</div>
+	
+			<!-- <div class="dropdown">
+				<button class="btn p-0 d-flex align-items-center border px-2" type="button" id="cardOpt4"
+					data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="ri-add-line me-2"></i> Add Service
+				</button>
+				<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+					<a class="dropdown-item" href="{% url 'web:create_certificate_teacher_by_school' teacher.id %}">Certificate</a>
+					<a class="dropdown-item" href="{% url 'web:create_teacher_user_address_by_school' teacher.ref_user.id %}">Address</a>
+					<a class="dropdown-item" href="{% url 'web:create_teacher_user_contact_by_school' teacher.ref_user.id %}">Contact</a>
+				</div>
+			</div> -->
+		</div>
+	
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- certificate Table -->
+					<div role="tabpanel" aria-labelledby="certificate-tab" class="tab-pane fade table-responsive text-nowrap {% if 'school-detail' in request.META.HTTP_REFERER or 'teacher-certificate' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} show active {% endif %}" id="certificate_table">
+
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_certificate_teacher_by_school' teacher.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Certificate
+							</a>
+						</div>
+
+						<table class="table" id="certificate">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Code</th>
+									<th>Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for certificateteacher in certificateteacher %}
+								<tr>
+									<td> {{certificateteacher.name}} </td>
+									<td>
+										{% if certificateteacher.code %}
+											{{certificateteacher.code}}
+										{% else %}
+											-
+										{% endif %}</td>
+									<td>
+										{{certificateteacher.date}}</td>
+									<td>
+										<a class="me-2"	href="{% url 'web:edit_certificate_teacher_by_school' certificateteacher.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{certificateteacher.name}}" data-title="Certificate" href="{% url 'web:delete_certificate_teacher_by_school' certificateteacher.id %}">
+											<i class="ri-delete-bin-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- address Table -->
+					<div role="tabpanel" aria-labelledby="address-tab" class="tab-pane fade table-responsive text-nowrap {% if 'teacher-address' in request.META.HTTP_REFERER %} show active {% endif %}" id="address_table">
+
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_teacher_user_address_by_school' teacher.ref_user.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Address
+							</a>
+						</div>
+
+						<table class="table" id="address">
+							<thead>
+								<tr>
+									<th>Street 1</th>
+									<th>Street 2</th>
+									<th>City</th>
+									<th>State</th>
+									<th>Code</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for address in address %}
+								<tr>
+									<td> {{address.street_1}} </td>
+									<td>
+									{% if address.street_2 %}
+									{{address.street_2}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>{{address.city}}</td>
+									<td>{{address.state}}</td>
+									<td>
+									{% if address.code %}
+										{{address.code}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+										<a class="me-2" href="{% url 'web:edit_teacher_user_address_by_school' address.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{address.street_1}}, {{address.city}}, {{address.state}}" data-title="Address" href="{% url 'web:delete_teacher_user_address_by_school' address.id %}">
+											<i class="ri-delete-bin-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- contact Table -->
+					<div role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade table-responsive text-nowrap {% if 'teacher-contact' in request.META.HTTP_REFERER %} show active {% endif %}" id="contact_table">
+
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_teacher_user_contact_by_school' teacher.ref_user.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Contact
+							</a>
+						</div>
+
+						<table class="table" id="contact">
+							<thead>
+								<tr>
+									<th>Home Phone</th>
+									<th>Office Phone</th>
+									<th>Personal email</th>
+									<th>Work Email</th>
+									<th>Emergency Name</th>
+									<th>Emergency Phone</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for contact in contact %}
+								<tr>
+									<td> {{contact.home_phone}} </td>
+									<td>
+									{% if contact.office_phone %}
+									{{contact.office_phone}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+									{{contact.personal_email}}</td>
+									<td>
+										{{contact.work_email}}
+									</td>
+									<td>
+									{% if contact.emergency_name %}
+										{{contact.emergency_name}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+									{% if contact.emergency_phone %}
+										{{contact.emergency_phone}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+										<a class="me-2" href="{% url 'web:edit_teacher_user_contact_by_school' contact.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{contact.personal_email}}" data-title="Contact" href="{% url 'web:delete_teacher_user_contact_by_school' contact.id%}">
+											<i class="ri-delete-bin-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="delete-model-body">
+		  <p>Do you want to delete the model <b>"model name"</b></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+</div>
+<!-- Delete Model -->
+{% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(document).ready( () => {
+		if ($('button.nav-link active').length  == 0) {
+			// $.each($('button.nav-link'), (i, element) => {
+				// if ($(element).text() == 'Student') {
+					// $('#accomandation-tab').addClass('active')
+					// $('#accommodation_table').addClass('show active')
+				// }
+			// });
+		}
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function() {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)	
+		})
+		$('#delete-model-yes').on('click', function() {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url : del_link,
+				type: "POST",
+				headers:{"X-CSRFToken": $crf_token},
+				success: function(data, textStatus, jqXHR)
+				{
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					console.log('error while ajax calling')
+				}
+			});
+		})
+	})
+	
+	$(function () {
+		$('#certificate').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#address').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#contact').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+</script>
+
+{% endblock %}

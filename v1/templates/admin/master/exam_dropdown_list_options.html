@@ -1,0 +1,4 @@
+<option value="" selected>---------</option>
+{% for exam in exams %}
+<option value="{{ exam.pk }}">{{ exam.code }} - {{ exam }}</option>
+{% endfor %}

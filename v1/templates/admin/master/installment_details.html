@@ -1,0 +1,36 @@
+{% load humanize%}
+
+{% if installment %}
+<table class="table table-borderless table-hover table-striped">
+  <thead class="bg-dark">
+    <tr>
+      <th>SL</th>
+      <th>Amount</th>
+      <th>Extra (%)</th>
+      <th>Net Amount</th>
+    </tr>
+  </thead>
+  <tbody class="table-border-bottom-0">
+    <td>1</td>
+    <td>{{ application.ap_currency }} {{ application.ap_grand_total|intcomma }}</td>
+    <td>{{ installment.charges }} %</td>
+    <td>{{ application.ap_currency }} {{ net_amount|intcomma }}</td>
+  </tbody>
+</table>
+
+<table class="table table-borderless table-hover table-striped">
+  <thead class="bg-dark">
+    <tr>
+      <th>Installment</th>
+      <th>Amount ({{ installment.type }})</th>
+    </tr>
+  </thead>
+  <tbody class="table-border-bottom-0">
+    <tr>
+  
+      <td>{{ total_installments }} Installments</td>
+      <td>{{ application.ap_currency }} {{ installments_amount|intcomma }}</td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}

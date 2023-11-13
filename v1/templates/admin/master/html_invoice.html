@@ -1,0 +1,127 @@
+<table class="table table-striped">
+    <tr>
+        <th><strong>Course Name</strong></th>
+        <th><strong>Unit Price</strong></th>
+        <th><strong>Total Price</strong></th>
+    </tr>
+    {% for course in ctx.cours %}
+    <tr>
+        <td class="d-flex align-items-center">{{ course.coures_name }}</td>
+        <td>{{ ctx.school_currency }} {{ course.coures_unit_price }}</td>
+        <td>{{ ctx.school_currency }} {{ course.coures_price_total }}</td>
+    </tr>
+    {% endfor %}
+    <!-- Discount -->
+    {% if ctx.coupon %}
+    <tr>
+        <th><strong>Coupon Code</strong></th>
+        <th><strong>Discount (%)</strong></th>
+        <th><strong>Amount</strong></th>
+    </tr>
+    <tr>
+        <td class="d-flex align-items-center">{{ctx.coupon}}</td>
+        <td>{{ctx.coupon.discount}} %</td>
+        <td>{{ ctx.school_currency }} {{ctx.coupon_discount}}</td>
+    </tr>
+    {% endif %}
+    <!--  -->
+    {% if ctx.accommodation %}
+    {% for data in ctx.accommodation %}
+    <tr>
+        <th><strong>Accomudation Service</strong></th>
+        <th><strong>Unit Price(Per Week)</strong></th>
+        <th><strong>Total Price</strong></th>
+    </tr>
+    <tr>
+        <td class="d-flex align-items-center">{{data.accommodation_title}}</td>
+        <td>{{ ctx.school_currency }} {{data.accommodation_unit_price}}</td>
+        <td>{{ ctx.school_currency }} {{data.accommodation_total_cost}}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <th><strong>Accomudation Service</strong></th>
+        <th><strong>Unit Price(Per Week)</strong></th>
+        <th><strong>Total Price</strong></th>
+    </tr>
+    <tr>
+        <td class="d-flex align-items-center">Manual</td>
+        <td>{{ ctx.school_currency }} 0.0</td>
+        <td>{{ ctx.school_currency }} 0.0</td>
+    </tr>
+    {% endif %}
+    <!--  -->
+    {% if ctx.service %}
+    {% for data in ctx.service %}
+    {% if data.perweek_total or data.onetime_total %}
+    <tr>
+        <th><strong>Service Name</strong></th>
+        <th><strong>Unit Price</strong></th>
+        <th><strong>Total Price</strong></th>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+    {% for data in ctx.service %}
+    {% if data.perweek %}
+    {% for p in data.perweek %}
+    <tr>
+        <td>
+            <input type="hidden" name="s_ser" value="{{p.p_service_name}}">
+            <input type="hidden" name="s_pr" value="{{p.p_service_price_total}}">
+            {{p.p_service_name}}
+        </td>
+        <td> {{ ctx.school_currency }} {{p.p_service_unit_price}} (per week)</td>
+        <td>
+            {{ ctx.school_currency }} {{p.p_service_price_total}}
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+
+    {% if data.onetime %}
+    {% for o in data.onetime %}
+    <tr>
+        <td>
+            <input type="hidden" name="s_ser" value="{{o.service_name}}">
+            <input type="hidden" name="s_pr" value="{{o.service_price_total}}">{{o.service_name}}
+        </td>
+        <td> {{ctx.school_currency}} {{o.o_service_unit_price}} (one time)</td>
+        <td>{{ ctx.school_currency }} {{o.service_price_total}}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+
+    {% for data in ctx.service %}
+    {% if data.perweek_total or data.onetime_total %}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <tr>
+        <td class="bg-white border-0"></td>
+        <td class="bg-white border-start"><strong>Sub Total:</strong></td>
+        <td class="bg-white border-start">{{ ctx.school_currency }} {{ctx.total_cost}}</td>
+    </tr>
+    {% if ctx.coupon %}
+    <tr>
+        <td class="bg-white border-0"></td>
+        <td class="bg-white border-start"><strong>Discount:</strong></td>
+        <td class="bg-white border-start">{{ ctx.school_currency }} {{ctx.coupon_discount}}</td>
+    </tr>
+    {% endif %}
+
+    <tr>
+        <td class="bg-white border-0"></td>
+        <td class="bg-white border-start"><strong>Tax:</strong></td>
+        <td class="bg-white border-start">{{ ctx.school_currency }} {{ctx.service_tax}}</td>
+    </tr>
+
+    <tr>
+        <td class="bg-white border-0"></td>
+        <td class="bg-white border-0 border-start"><strong>Grand Total:</strong></td>
+        <td class="bg-white border-0 border-start">{{ ctx.school_currency }} {{ctx.grand_total_cost}}</td>
+    </tr>
+
+</table>

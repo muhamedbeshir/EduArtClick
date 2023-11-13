@@ -1,0 +1,115 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Payment Successful{% endblock head_title %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_head %}
+<style>
+	.success-bg {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		/* opacity: .1; */
+	}
+	img.success-bg {
+		opacity: .1;
+	}
+	.success-content {
+		position: relative;
+	}
+	.success-page .success-icon {
+		font-size: 5rem;
+	}
+	.success-img {
+		position: absolute;
+		left: 0;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<img class="success-bg" src="{% static 'img/success-bg.png' %}">
+	<div class="container-xxl container-p-y text-center">
+		<div class="misc-wrapper">
+			<div class="col-md-6 mx-auto my-auto">
+				<div class="card shadow">
+					<div class="card-body success-page mb-3">
+						<img src="{% static 'img/success-png.png' %}" class="w-100 success-img">
+						<div class="success-content">
+							<div class="mt-5">
+								<i class="ri-checkbox-circle-line success-icon text-success"></i>
+							</div>
+							<h2 class="mb-2 mx-2">Payment Successful</h2>
+							<p class="mx-2">Your payment is Successfull </p>
+							<!-- <p class="p-3 rounded bg-light"><strong>Transaction ID:</strong> <span>C1234FEW34</span></p> -->
+							{% if services %}
+							<table class="table table-bordered my-3">
+								<tr>
+									<th>Student</th>
+									<th>School</th>
+									<th>Service Name</th>
+									<th>Total Price</th>
+								</tr>
+								<tr>
+									<td class="d-flex align-items-center"><strong>{{ services.ref_student.ref_user.username }}</strong></td>
+									<td>{{ services.ref_student.ref_school }}</td>
+									<td>{{ services.ref_service.service_type_title }} - {{ services.ref_service.service_name }}</td>
+									<td>{{ services.ref_student.ref_school.ref_currency.currency_short }} {{ services.calculate_amount|intcomma }} /-</td>
+								</tr>
+							</table>
+							{% endif %}
+
+							{% if accommodation %}
+							<table class="table table-bordered my-3">
+								<tr>
+									<th>Student</th>
+									<th>School</th>
+									<th>Accommodation Name</th>
+									<th>Total Price</th>
+								</tr>
+								<tr>
+									<td class="d-flex align-items-center"><strong>{{ accommodation.ref_student.ref_user.username }}</strong></td>
+									<td>{{ accommodation.ref_student.ref_school }}</td>
+									<td>{{ accommodation.ref_accommodation_room.room_type_str }} - {{ accommodation.ref_accommodation_room.accommodation_title }}</td>
+									<td>{{ accommodation.ref_student.ref_school.ref_currency.currency_short }} {{ accommodation.calculate_amount|intcomma }} /-</td>
+								</tr>
+							</table>
+							{% endif %}
+							
+							{% if installment %}
+							<table class="table table-bordered my-3">
+								<tr>
+									<th>Student</th>
+									<th>School</th>
+									<th>Class</th>
+									<th>Installment</th>
+									<th>Total Price</th>
+								</tr>
+								<tr>
+									<td class="d-flex align-items-center"><strong>{{ installment.ref_student.ref_user.username }}</strong></td>
+									<td>{{ installment.ref_student.ref_school }}</td>
+									<td>{{ installment.ref_course.title }}</td>
+									<td>[
+										{% for ins_number in installment_numbers %}
+											{{ ins_number|ordinal }} ,
+										{% endfor %}
+										]
+									</td>
+									<td>{{ installment.installments.0.currency|upper }} {{ installment_amount|intcomma }} /-</td>
+								</tr>
+							</table>
+							{% endif %}
+							
+							<a href="{% url 'web:school_student_dashboard' %}" class="btn btn-primary px-5">Done</a>
+							<button class="btn btn-primary ms-3" type="button" onclick="window.print();">Print Out</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Content wrapper -->
+{% endblock content %}

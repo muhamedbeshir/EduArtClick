@@ -1,0 +1,113 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School User Create{% endblock %}
+{% load auth_extras %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+              {% if user.is_authenticated %}
+                {% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" or request.user|has_group:"student" or request.user|has_group:"aggent" %}
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">Dashboard</h1>
+		          	</div><!-- /.col -->
+                {% elif request.user|has_group:"organization" %}
+                  {% if user.organizationuserprofile %}
+                <div class="col-sm-4">
+                  <img height="50" src="{{ user.organizationuserprofile.ref_organization.organization_logo.url}}">
+                </div><!-- /.col -->
+                <div class="col-sm-8">
+                  <h1 class="m-0">{{ user.organizationuserprofile.ref_organization}}</h1>
+                </div><!-- /.col -->
+                  {% endif %}
+                {% else %}
+                {% endif %}
+              {% endif %}
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+	      	<div class="container-fluid">
+		        <div class="row">
+		          	<!-- left column -->
+		          	<div class="col-md-12">
+		            	<!-- general form elements -->
+		            	<div class="card px-5">
+							<div class="card-header border-0 text-center d-flex justify-content-center">
+							  {% if form.errors %}
+							  <div class="rounded shadow bg-white px-5 py-3 d-flex align-items-center">
+								  <i class="fa-solid fa-triangle-exclamation fa-2x pr-4 text-danger"></i>
+								  {{form.non_field_errors}}
+							  </div>
+							  {% endif %}
+							</div>
+		              		<!-- form start -->
+			              	<form action="" method="post" enctype="multipart/form-data" autocomplete="off" id="userForm">
+			              		{% csrf_token %}
+				                <div class="card-body">
+				                	
+				                	<div class="row">
+				                		<div class="col-6">
+				                			<div class="form-group">
+						                  		<label for="">Select School</label>
+						                    	<select name="ref_school" class="form-control" required="" id="id_ref_school">
+												  <option value="" selected="">---------</option>
+												  {% for school in school%}
+												  <option value="{{school.id}}">{{school.school_name}}</option>
+												  {% endfor %}
+												</select>
+						                    </div>
+				                		</div>
+				                	</div>
+					                <div class="row">
+					                  	<div class="col-3">
+					                  		<div class="form-group">
+						                  		<label for="">First Name</label>
+						                    	<input type="text" class="form-control" placeholder="First name" name="first_name" autocomplete="off">
+						                    </div>
+					                  	</div>
+					                  	<div class="col-3">
+					                  		<div class="form-group">
+						                  		<label for="">Last Name</label>
+						                    	<input type="text" class="form-control" placeholder="Last name" name="last_name" autocomplete="off">
+						                    </div>
+					                  	</div>
+					                </div>
+					                <div class="row">
+					                  	<div class="col-6">
+					                  		<div class="form-group">
+						                  		<label for="">Email</label>
+						                    	<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" name="email" autocomplete="false">
+						                    </div>
+					                  	</div>
+					                </div>
+				                </div>
+				                <!-- /.card-body -->
+
+				                <div class="card-footer">
+				                  	<button type="submit" class="btn btn-primary">Submit</button>
+				                </div>
+			              	</form>
+		            	</div>
+		            	<!-- /.card -->
+
+		          	</div>
+		          	<!--/.col (left) -->
+		        
+		        </div>
+		        <!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+{% block extra_script %}
+
+{% endblock %}

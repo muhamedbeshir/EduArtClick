@@ -1,0 +1,125 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}}{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Exam Found -->
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="border-end pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>{{ title }}</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'web:dashboard' %}">Dashboard</a></li>
+								<li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="bread-number ps-3">
+						<span>{{ exam_list|length }} Exam</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-body">
+				<table id="example1" class="table table-borderless table-hover dataTable dtr-inline">
+					<thead>
+						<tr>
+							<th>SL NO.</th>
+							<th>Exam Title</th>
+							<th>Exam Type</th>
+							<th>Course</th>
+							<th>Duration</th>
+							<th>Date</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody class="table-border-bottom-0">
+						{% for exam in exam_list %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ exam.title }}</td>
+							<td>{{ exam.ref_exam_type }}</td>
+							<td>{{ exam.ref_course }}</td>
+							<td>{{ exam.duration }} Minutes</td>
+							<td>
+								{% if exam.exam_date %}
+								{{ exam.exam_date }}
+								{% else %}
+								-
+								{% endif %}
+							</td>
+							<td>
+								<a class="me-2" href="{% url 'web:student_exam_start' exam.id %}">
+									<i class="ri-timer-flash-line ri-lg"></i>
+								</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+	$(function () {
+		oTable = $('#example1').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+
+		$('#search').keyup(function () {
+			oTable.search($(this).val()).draw();
+		});
+
+		// Hide In-build Searchbar
+		$('#example1_filter').addClass('d-none')
+	});
+</script>
+
+{% endblock%}

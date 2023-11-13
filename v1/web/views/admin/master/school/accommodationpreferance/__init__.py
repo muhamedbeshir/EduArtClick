@@ -1,0 +1,1 @@
+from .views import create_school_accommodation_preferance, edit_school_accommodation_preferance, delete_school_accommodation_preferance

@@ -1,0 +1,605 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Detail{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+<style>
+	.dataTables_filter {
+		display: flex;
+		justify-content: end;
+	}
+
+	.dataTables_length {
+		margin-left: 10px;
+		margin-right: 10px;
+		width: fit-content;
+	}
+
+	.dataTables_length>label,
+	.dataTables_filter>label {
+		display: flex;
+		align-items: center;
+	}
+
+	.dataTables_length>label>select {
+		margin-left: 6px;
+		margin-right: 6px;
+	}
+
+	.dataTables_filter>label>input {
+		margin-left: 6px;
+	}
+
+	table {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Course Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a href="{% url 'web:deatil_school' course.ref_school.pk %}">School Details</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Course Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-building-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCHOOL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.ref_school }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ORGANIZATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.ref_school.ref_organization }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">LOCATION</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{{ course.ref_school.postal_code }} - {{ course.ref_school.ref_city }}, {{ course.ref_school.ref_country }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EMAIL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.ref_school.email }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CURRENCY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.ref_school.ref_currency.currency_short }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">Address</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.ref_school.address }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">Course</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ course.title }}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/exam/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam_table"
+							aria-controls="exam_table" aria-selected="false">Exams</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/certificate/content/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="certificate-tab" data-bs-toggle="tab" data-bs-target="#certificate_table"
+							aria-controls="certificate_table" aria-selected="false">Certificates</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-class/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="class-tab" data-bs-toggle="tab" data-bs-target="#class_table"
+							aria-controls="class_table" aria-selected="false">Classes</button>
+					</li>
+					{% if request.user|has_group:"school" %}
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-course-discount-' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="discount-tab" data-bs-toggle="tab" data-bs-target="#discount_table"
+							aria-controls="course_table" aria-selected="false">Discounts</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if '/selective/exam/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="level_up-tab" data-bs-toggle="tab" data-bs-target="#level_up_table"
+							aria-controls="level_up_table" aria-selected="false">Level
+							Up</button>
+					</li>
+					{% endif %}
+					<!-- <li class="nav-item">
+						<button type="button"
+							class="nav-link {% if '/school-time-table-' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="time_table-tab" data-bs-toggle="tab" data-bs-target="#time_table_table"
+							aria-controls="time_table_table" aria-selected="false">Class Time
+							Table</button>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- exam Table -->
+					<div role="tabpanel" aria-labelledby="exam-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/exam/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="exam_table">
+						
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_exam_create' course.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Exam
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="exam">
+							<thead>
+								<tr>
+									<th>Exam Title</th>
+									<th>Exam Code</th>
+									<th>Exam Duration</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for exam in exams %}
+								<tr>
+									<td> {{exam.title}} </td>
+									<td> {{exam.code}} </td>
+									<td> {{exam.duration}} minutes </td>
+									<td>
+										<a class="" href="{% url 'web:school_exam_details' exam.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- certificate Table -->
+					<div role="tabpanel" aria-labelledby="certificate-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/certificate/content/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="certificate_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_cert_add' course.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Certificate
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="certificate">
+							<thead>
+								<tr>
+									<th>Course</th>
+									<th>Code</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for record in certificates %}
+								<tr>
+									<td> {{record.ref_course}} </td>
+									<td> {{record.code}} </td>
+									<td>
+										<a class="me-2" href="{% url 'web:school_cert_view' record.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:school_cert_edit' record.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{record.code}}" data-title="Certificate"
+											href="{% url 'web:school_cert_delete' record.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- class Table -->
+					<div role="tabpanel" aria-labelledby="class-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-class/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="class_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_class' course.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Class
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="class">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Class Name</th>
+									<th>Course Teacher</th>
+									<th>Course Type</th>
+									<th>Course Schedule</th>
+									<th>Course Timeline</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for course in class %}
+								<tr>
+									<td></td>
+									<td>{{course.title}}</td>
+									<td>{{course.teacher_fullname}}</td>
+									<td>{{course.ref_type_of_course}}</td>
+									<td>{{course.ref_schedule}} </td>
+									<td>{{course.summar_start}} || {{course.summar_end}}</td>
+									<td>
+										<a class="me-2" href="{% url 'web:detail_school_course' course.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_class' course.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{course.ref_course}} - {{course.teacher_fullname}}"
+											data-title="Class" href="{% url 'web:delete_school_class' course.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% if request.user|has_group:"school"%}
+					<!-- discount Table -->
+					<div role="tabpanel" aria-labelledby="discount-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-course-discount-' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="discount_table">
+						
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:add_school_course_discount' course.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Discount
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="discount">
+							<thead>
+								<tr>
+									<th>Coupon Code</th>
+									<th>Discount (%)</th>
+									<th>Valid From</th>
+									<th>Valid Upto</th>
+									<th>Is Active</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for discount in discounts %}
+								<tr>
+									<td> {{discount.coupon_code}} </td>
+									<td> {{discount.discount}} % </td>
+									<td> {{discount.valid_from}} </td>
+									<td> {{discount.valid_upto}} </td>
+									<td> {{discount.is_active}}</td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_course_discount' discount.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{discount.coupon_code}}" data-title="Discount"
+											href="{% url 'web:delete_school_course_discount' discount.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Level Up Table -->
+					<div role="tabpanel" aria-labelledby="level_up-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if '/selective/exam/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="level_up_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:selective_student_exam_add' course.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Level Up
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="level_up">
+							<thead>
+								<tr>
+									<th>SL</th>
+									<th>Exam</th>
+									<th>Exam Type</th>
+									<th>Student</th>
+									<th>Created At</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for levelupexam in levelupexams %}
+								<tr>
+									<td> {{ forloop.counter }} </td>
+									<td> {{ levelupexam.ref_exam }} </td>
+									<td> {{ levelupexam.ref_exam.ref_exam_type }} </td>
+									<td> {{ levelupexam.all_students }} </td>
+									<td> {{ levelupexam.created_at }} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{ levelupexam.ref_exam }}" data-title="Level Up"
+											href="{% url 'web:selective_student_exam_delete' levelupexam.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="delete-model-body">
+				<p>Do you want to delete the model <b>"model name"</b></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Model -->
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(document).ready(() => {
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function () {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)
+		})
+		$('#delete-model-yes').on('click', function () {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url: del_link,
+				type: "POST",
+				headers: { "X-CSRFToken": $crf_token },
+				success: function (data, textStatus, jqXHR) {
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.log('error while ajax calling')
+				}
+			});
+		})
+	})
+
+	$(function () {
+		$('#exam').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#certificate').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#discount').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[4, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#class').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[1, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#level_up').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[4, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+</script>
+{% endblock%}

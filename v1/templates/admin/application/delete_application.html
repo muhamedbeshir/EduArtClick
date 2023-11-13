@@ -1,0 +1,52 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Delete{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+	<link rel="stylesheet" href="{% static 'css/add_page.css' %}">
+{% endblock %}
+
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h4 class="m-0">Application</h4>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+        		<div class="card-body">
+					<div class="row d-flex justify-content-center">
+						<div class="col-xl-4 col-lg-8 col-md-6 col-sm-8 col-12 rounded shadow p-5 bg-white">
+							<div class="text-center">
+								<h5 class="mb-2">Application : {{application}}</h5>
+								<form method="POST" class="" action="">
+									{% csrf_token %}
+									<h4 class="mb-4">Are you sure you want to delete ?</h4>
+									<button class="btn btn-danger mr-4" type="submit">Yes</button>
+									<a href="{% url 'web:application_list' %}" class="btn btn-primary">No</a>
+								</form>
+							</div>
+						</div>
+					</div>
+		        </div>
+        		<!-- /.card-body -->
+      		</div>
+      		<!-- /.card -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}

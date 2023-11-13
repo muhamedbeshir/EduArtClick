@@ -1,0 +1,326 @@
+{% load auth_extras %}
+{% load static %}
+
+<!-- Menu -->
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+	{% if user.is_authenticated %}
+	<div class="app-brand demo">
+		{% if user.is_superuser or request.user|has_group:"admin" %}
+		<a href="{% url 'web:dashboard' %}" class="app-brand-link">
+			<span class="app-brand-logo demo">
+				<img src="{% static 'img/teachia_logo.png' %}">
+			</span>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+		</a>
+		{% elif request.user|has_group:"school_student" %}
+		<a href="{% url 'web:school_student_dashboard' %}" class="app-brand-link">
+			<span class="app-brand-logo demo">
+				<img src="{% static 'img/teachia_logo.png' %}">
+			</span>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+		</a>
+		{% elif request.user|has_group:"school" %}
+		<a href="{% url 'web:dashboard' %}" class="app-brand-link">
+			<span class="app-brand-logo demo">
+				{% if request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting.logo %}
+					<img src="{{request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting.logo.url}}" width="50">
+				{% else %}
+					<img src="{% static 'img/teachia_logo.png' %}">
+				{% endif %}
+			</span>
+			{% if request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting %}
+				<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">{{request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting}}</div><br>
+			{% else %}
+				<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+			{% endif %}
+		</a>
+		{% else %}
+		<a href="{% url 'web:dashboard' %}" class="app-brand-link">
+			<span class="app-brand-logo demo">
+				<img src="{% static 'img/teachia_logo.png' %}">
+			</span>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+		</a>
+		{% endif %}
+
+		<a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+			<i class="bx bx-chevron-left bx-sm align-middle"></i>
+		</a>
+	</div>
+	{% endif %}
+
+	<div class="menu-inner-shadow"></div>
+
+	<ul class="menu-inner py-1">
+		{% if user.is_authenticated %}
+
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"aggent" or request.user|has_group:"student" or request.user|has_group:"organization" or request.user|has_group:"school" or request.user|has_group:"staff" %}
+				{% url 'web:dashboard' as dashboard %}
+				<!-- Dashboard -->
+				<li {% if request.path == dashboard  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ dashboard }}" class="menu-link">
+						<i class="ri-dashboard-line menu-icon"></i>
+						<div data-i18n="Analytics">Dashboard</div>
+					</a>
+				</li>
+			
+			{% elif request.user|has_group:"teacher" %}
+				{% url 'web:school_teacher_dashboard' as school_teacher_dashboard %}
+				{% url 'web:teacher_calender' as calender %}
+				<!-- Dashboard -->
+				<li {% if request.path == school_teacher_dashboard  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_teacher_dashboard }}" class="menu-link">
+						<i class="ri-dashboard-line menu-icon"></i>
+						<div data-i18n="Analytics">Dashboard</div>
+					</a>
+				</li>
+
+				<!-- Calender -->
+				<li {% if request.path == calender  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ calender }}" class="menu-link">
+						<i class="ri-calendar-line menu-icon"></i>
+						<div data-i18n="Analytics">Calender</div>
+					</a>
+				</li>
+			
+			{% elif request.user|has_group:"school_student" %}
+				{% url 'web:school_student_dashboard' as school_student_dashboard %}
+				{% url 'web:calender' as calender %}
+				{% url 'web:school_exam_list' as school_exam_list %}
+				<!-- Dashboard -->
+				<li {% if request.path == school_student_dashboard  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_student_dashboard }}" class="menu-link">
+						<i class="ri-dashboard-line menu-icon"></i>
+						<div data-i18n="Analytics">Dashboard</div>
+					</a>
+				</li>
+
+				<!-- Calender -->
+				<li {% if request.path == calender  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ calender }}" class="menu-link">
+						<i class="ri-calendar-line menu-icon"></i>
+						<div data-i18n="Analytics">Calender</div>
+					</a>
+				</li>
+				
+				<!-- Exam -->
+				<li {% if request.path == school_exam_list  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_exam_list }}" class="menu-link">
+						<i class="ri-time-line menu-icon"></i>
+						<div data-i18n="Analytics">Exam</div>
+					</a>
+				</li>
+			{% endif %}
+		
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" %}
+
+				{% url 'web:list_group' as list_group %}
+				{% url 'web:add_organization' as add_organization %}
+				{% url 'web:list_organization' as list_organization %}
+				{% url 'web:create_user_page' as create_user_page %}
+				{% url 'web:create_user' as create_user %}
+				{% url 'web:add_country' as add_country %}
+				{% url 'web:country_list' as country_list %}
+				{% url 'web:add_city' as add_city %}
+				{% url 'web:city_list' as city_list %}
+				{% url 'web:add_school' as add_school %}
+				{% url 'web:school_list' as school_list %}
+				{% url 'web:school_exam_type_add' as school_exam_type_add %}
+				{% url 'web:school_exam_type_list' as school_exam_type_list %}
+
+				<!-- Organisation -->
+				<li {% if request.path == add_organization or request.path == list_organization  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ list_organization }}" class="menu-link">
+					<i class="ri-organization-chart menu-icon"></i>
+					<div data-i18n="Layouts">Organisation</div>
+					</a>
+
+					<!-- <ul class="menu-sub">
+						<li class="menu-item">
+							<a href="layouts-without-menu.html" class="menu-link">
+							<div data-i18n="Without menu">Without menu</div>
+							</a>
+						</li>
+						<li class="menu-item">
+							<a href="layouts-without-navbar.html" class="menu-link">
+							<div data-i18n="Without navbar">Without navbar</div>
+							</a>
+						</li>
+					</ul> -->
+					
+				</li>
+
+				{% if not request.user|has_group:"staff" %}
+				<!-- Group -->
+				<li {% if request.path == list_group or request.path == list_group  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ list_group }}" class="menu-link">
+						<i class="ri-group-line menu-icon"></i>
+						<div data-i18n="Account Settings">Group</div>
+					</a>
+				</li>
+				
+				<!-- User -->
+				<li {% if request.path == create_user_page or request.path == create_user  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ create_user_page }}" class="menu-link">
+						<i class="ri-user-3-line menu-icon"></i>
+						<div data-i18n="Account Settings">User</div>
+					</a>
+				</li>
+				{% endif %}
+
+				<!-- Country -->
+				<li {% if request.path == country_list or request.path == add_country  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ country_list }}" class="menu-link">
+						<i class="ri-global-line menu-icon"></i>
+						<div data-i18n="Authentications">Country</div>
+					</a>
+				</li>
+
+				<!-- City -->
+				<li {% if request.path == city_list or request.path == add_city  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ city_list }}" class="menu-link">
+						<i class="ri-building-2-line menu-icon"></i>
+						<div data-i18n="Misc">City</div>
+					</a>
+				</li>
+
+				<!-- School -->
+				<li {% if request.path == school_list or request.path == add_school  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_list }}" class="menu-link">
+						<i class="ri-building-line menu-icon"></i>
+						<div data-i18n="User interface">School</div>
+					</a>
+				</li>
+
+				<!-- School Exam Type -->
+				<li {% if request.path == school_exam_type_list or request.path == school_exam_type_add  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_exam_type_list }}" class="menu-link">
+						<i class="ri-file-text-line menu-icon"></i>
+						<div data-i18n="User interface">School Exam Type</div>
+					</a>
+				</li>
+			{% endif %}
+
+
+			{% url 'web:add_course' as add_course %}
+			{% url 'web:list_course' as list_course %}
+			{% url 'web:client_create' as client_create %}
+			{% url 'web:application_list' as application_list %}
+		
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"aggent" or request.user|has_group:"student" %}
+					{% url 'web:course_calculate_cost' as course_calculate_cost %}
+				<!-- Application -->
+				<li {% if request.path == application_list or request.path == course_calculate_cost  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ application_list }}" class="menu-link">
+						<i class="ri-folder-open-line menu-icon"></i>
+						<div data-i18n="User interface">Application</div>
+					</a>
+				</li>
+			{% endif %}
+
+			{% url 'web:create_currency' as create_currency %}
+			{% url 'web:currency_list' as currency_list %}
+			{% url 'web:transaction_list' as transaction_list %}
+			{% url 'web:commission_list' as commission_list %}
+			{% url 'web:agent_commission_list' as agent_commission_list %}
+
+			{% if user.is_superuser or request.user|has_group:"admin" %}
+				<!-- Currency -->
+				<li {% if request.path == currency_list or request.path == create_currency  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ currency_list }}" class="menu-link">
+						<i class="ri-copper-coin-line menu-icon"></i>
+						<div data-i18n="User interface">Currency</div>
+					</a>
+				</li>
+				<!-- Transaction -->
+				<li {% if request.path == transaction_list  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ transaction_list }}" class="menu-link">
+						<i class="ri-arrow-left-right-line menu-icon"></i>
+						<div data-i18n="User interface">Transaction</div>
+					</a>
+				</li>
+				<!-- Commissions -->
+				<li {% if request.path == commission_list  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ commission_list }}" class="menu-link">
+						<i class="ri-money-dollar-circle-line menu-icon"></i>
+						<div data-i18n="User interface">Commission</div>
+					</a>
+				</li>
+				<!-- Agent Commissions -->
+				<li {% if request.path == agent_commission_list  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ agent_commission_list }}" class="menu-link">
+						<i class="ri-money-dollar-circle-line menu-icon"></i>
+						<div data-i18n="User interface">Agent Commission</div>
+					</a>
+				</li>
+			{% endif %}
+
+			{% if request.user|has_group:"organization" %}
+				{% url 'web:create_school_user_by_organization' user.organizationuserprofile.id as create_school_user_by_organization %}
+
+				{% url 'web:organization_school_user_list' user.organizationuserprofile.id as organization_school_user_list %}
+
+				{% url 'web:organization_school_create_view' user.organizationuserprofile.id as organization_school_create_view %}
+
+				{% url 'web:school_list' as school_list %}
+
+				{% url 'web:organization_application_list' user.organizationuserprofile.id as organization_application_list %}
+
+				<!-- User -->
+				<li {% if request.path == organization_school_user_list or request.path == create_school_user_by_organization  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ organization_school_user_list }}" class="menu-link">
+						<i class="ri-user-3-line menu-icon"></i>
+						<div data-i18n="Account Settings">User</div>
+					</a>
+				</li>
+
+				<!-- School -->
+				<li {% if request.path == school_list or request.path == organization_school_create_view  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_list }}" class="menu-link">
+						<i class="ri-building-line menu-icon"></i>
+						<div data-i18n="User interface">School</div>
+					</a>
+				</li>
+
+				<!-- Application -->
+				<li {% if request.path == application_list or request.path == organization_application_list %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ organization_application_list }}" class="menu-link">
+						<i class="ri-folder-open-line menu-icon"></i>
+						<div data-i18n="User interface">Application</div>
+					</a>
+				</li>
+
+			{% elif request.user|has_group:"school" %}
+				{% url 'web:school_application_list' user.organizationuserprofile.id as  school_application_list %}
+				{% url 'web:deatil_school' user.organizationuserprofile.ref_school.id as deatil_school %}
+				{% url 'web:school_calender' as school_calender %}
+
+				<!-- Application -->
+				<li {% if request.path == school_application_list  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_application_list }}" class="menu-link">
+						<i class="ri-folder-open-line menu-icon"></i>
+						<div data-i18n="User interface">Application</div>
+					</a>
+				</li>
+
+				<!-- School Details -->
+				<li {% if request.path == deatil_school %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ deatil_school }}" class="menu-link">
+						<i class="ri-building-line menu-icon"></i>
+						<div data-i18n="User interface">School Details</div>
+					</a>
+				</li>
+
+				<!-- Calender -->
+				<li {% if request.path == school_calender  %} class="menu-item active open" {% else %} class="menu-item" {% endif %}>
+					<a href="{{ school_calender }}" class="menu-link">
+						<i class="ri-calendar-line menu-icon"></i>
+						<div data-i18n="Analytics">Calendar</div>
+					</a>
+				</li>
+			{% endif %}
+		
+		{% endif %}
+	</ul>
+</aside>
+<!-- / Menu -->

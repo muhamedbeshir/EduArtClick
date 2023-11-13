@@ -1,0 +1,1 @@
+from .views import create_certificate_teacher_by_school, edit_certificate_teacher_by_school, delete_certificate_teacher_by_school

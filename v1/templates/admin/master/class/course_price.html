@@ -1,0 +1,136 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}} course{% endblock %}
+{% load static %}
+{% block extra_head %}
+<style type="text/css">
+	#id_file{
+		padding-top: 20px;
+	}
+</style>
+
+{% endblock%}
+
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">Add price for course "{{course.title}}"</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+	      	<div class="container-fluid">
+		        <div class="row">
+		          	<!-- left column -->
+		          	<div class="col-md-12">
+		            	<!-- general form elements -->
+		            	<div class="card card-primary">
+		              		<div class="card-header">
+		                	<h3 class="card-title">Course Price Form</h3>
+		              		</div>
+		              		{% if form.errors %}
+						      <p class="login-box-msg">
+						      	{{form.non_field_errors}}
+						      </p>
+						    {% endif %}
+		              		<!-- form start -->
+			              	<form action="" method="post"  autocomplete="off">
+			              		{% csrf_token %}
+				                <div class="card-body">
+
+					                <div class="row">
+					                  	<div class="col-6">
+					                  		
+						                  		
+						                    	
+						<table class="table form-table table-bordered table-sm">
+                            <thead class="text-center">
+                            <tr>
+                                
+                                <th style="text-align: left;">Min week</th>
+                                <th style="text-align: left;">Max week</th>
+                                <th style="text-align: left;">Price (Per week)</th>
+                                <th style="text-align: left;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for form_data in formset %}
+                                <tr class="item">
+                                    <td>
+                                        {{ form_data.min_weak }}
+                                    </td>
+                                    <td>
+                                    	{{ form_data.max_weak }}
+                                    </td>
+                                    <td>
+                                         
+                                        <div class="input-group">
+						                  <div class="input-group-prepend">
+						                    <span class="input-group-text">{{course.ref_school.ref_currency.currency_short}}</span>
+						                  </div>
+						                  {{ form_data.price }}
+						                  
+						                </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm remove-form-row"
+                                                id="{{ formset.prefix }}">
+                                          
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="9"
+                                    style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+                                    <button type="button" class="btn btn-sm btn-success add-form-row"
+                                            id="{{ formset.prefix }}">
+                                       Add
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {{ formset.management_form }}
+
+
+						                   
+					                  	</div>
+					                </div>
+				                </div>
+				                <!-- /.card-body -->
+
+				                <div class="card-footer">
+				                  	<button type="submit" class="btn btn-primary">Submit</button>
+				                </div>
+			              	</form>
+		            	</div>
+		            	<!-- /.card -->
+
+		          	</div>
+		          	<!--/.col (left) -->
+		        
+		        </div>
+		        <!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+{% block extra_script %}
+
+
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+
+{% endblock%}

@@ -1,0 +1,621 @@
+{% extends "admin_main_base.html" %}
+{% load static %}
+{% load auth_extras %}
+{% load humanize %}
+{% block head_title %}Application Detail{% endblock %}
+
+{% block extra_head %}
+<!-- Stripe -->
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<!-- End Stripe -->
+{% endblock %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Application
+							Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a
+										href="{% url 'web:application_list' %}">Application</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Application
+									Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex align-items-center">
+				{% if application.ap_status == 0 %} <!-- PENDING -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Application Status : </span>
+					<span class="px-3 py-2 rounded btn-secondary">{{application.ap_status_title}}</span>
+				</div>
+				{% elif application.ap_status == 1 %} <!-- ACCEPT -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Application Status : </span>
+					<span class="px-3 py-2 rounded btn-success">{{application.ap_status_title}}</span>
+				</div>
+				{% if application.ap_payment_status == 0 %} <!-- PAYMENT PENDING -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Payment Status : </span>
+					<span class="px-3 py-2 rounded btn-secondary">{{application.ap_payment_status_title}}</span>
+				</div>
+				{% elif application.ap_payment_status == 1 or application.ap_payment_status == 2 %} <!-- PAYMENT DONE -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Payment Status : </span>
+					<span class="px-3 py-2 rounded btn-success">{{application.ap_payment_status_title}}</span>
+				</div>
+				{% endif %}
+				{% elif application.ap_status == 2 %} <!-- RENEW -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Application Status : </span>
+					<span class="px-3 py-2 rounded btn-warning">{{application.ap_status_title}}</span>
+				</div>
+				{% elif application.ap_status == 3 %} <!-- REJECTED -->
+				<div class="p-3 rounded bg-light">
+					<span class="me-2">Application Status : </span>
+					<span class="px-3 py-2 rounded btn-danger">{{application.ap_status_title}}</span>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row mb-5">
+			{% if application.ap_status == 0 %} <!-- PENDING -->
+			<!-- 
+				Approve
+				Reject
+			 -->
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"school" %}
+			<div class="col-md-3 col-sm-4">
+				<a type="button" href="{% url 'web:application_aprovel_letter' pk=application.pk %}"
+					class="d-flex align-items-center btn btn-success w-100">
+					<i class="ri-check-line"></i> Approve
+				</a>
+			</div>
+
+			<div class="col-md-3 col-sm-4">
+				<a type="button" href="{% url 'web:application_reject_letter' pk=application.pk %}"
+					class="d-flex align-items-center btn btn-danger w-100">
+					<i class="ri-close-line"></i> Reject
+				</a>
+			</div>
+			{% endif %}
+			{% elif application.ap_status == 1 %} <!-- ACCEPT -->
+			<div class="col-md-3 col-sm-4">
+				<a href="{% url 'web:application_approved_letter' application.id %}" type="button"
+					class="d-flex align-items-center btn btn-success w-100">
+					<i class="ri-download-2-line"></i> Approved Letter
+				</a>
+			</div>
+			<!-- 
+				Create Payment
+			 -->
+			{% if application.ap_payment_status == 0 %} <!-- PAYMENT PENDING -->
+			<!-- Payment Done by Student -->
+			{% if request.user|has_group:"student" %}
+			<div class="col-md-3 col-sm-4">
+				<button type="button" class="d-flex align-items-center btn btn-primary w-100" id="pay-now" data-bs-toggle="modal" data-bs-target="#payment-model">
+					<i class="ri-bank-card-line"></i> Pay Now
+				</button>
+			</div>
+			{% endif %}
+			<!-- End Payment Done by Student -->
+			{% endif %}
+			{% elif application.ap_status == 2 %} <!-- RENEW -->
+			<!-- 
+				Reject
+				Re-Submit
+			 -->
+			<div class="col-md-3 col-sm-4">
+				<a type="button" href="#" class="d-flex align-items-center btn btn-success w-100">
+					<i class="ri-check-line"></i> Re-Submit
+				</a>
+			</div>
+			{% if user.is_superuser or request.user|has_group:"admin" %}
+			<div class="col-md-3 col-sm-4">
+				<a type="button" href="#" class="d-flex align-items-center btn btn-danger w-100">
+					<i class="ri-close-line"></i> Reject
+				</a>
+			</div>
+			{% endif %}
+			{% elif application.ap_status == 3 %} <!-- REJECTED -->
+			<div class="col-md-3 col-sm-4" style="color: #fff;">
+				<a type="button" class="d-flex align-items-center btn btn-danger w-100 disabled">
+					<i class="ri-close-line"></i> Rejected
+				</a>
+			</div>
+			{% endif %}
+			<div class="col-md-3 col-sm-4">
+				<a type="button" href="javascript:window.print()"
+					class="d-flex align-items-center btn btn-secondary w-100">
+					<i class="ri-printer-line"></i> Print Page
+				</a>
+			</div>
+
+			<div class="col-md-3 col-sm-4">
+				<a href="{% url 'web:application_download_pdf' application.id %}" type="button"
+					class="d-flex align-items-center btn btn-info w-100">
+					<i class="ri-download-2-line"></i> Download Application
+				</a>
+			</div>
+			<!-- If Payment success then download payment slip -->
+			{% if application.ap_payment_status == 1 %}
+			<div class="col-md-3 col-sm-4">
+				<a href="{% url 'web:transaction_download_pdf' application.id %}" type="button"
+					class="d-flex align-items-center btn btn-primary w-100">
+					<i class="ri-download-2-line"></i> Download Transaction
+				</a>
+			</div>
+			{% endif %}
+		</div>
+
+		<div class="details-section mb-2">
+			<h5 class="mb-4"> About School </h5>
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+								<span class="text-center me-2">
+									<i class="ri-building-line"></i>
+								</span>
+								<span class="fw-semibold d-block mb-1 text-center">School Name</span>
+							</div>
+							<span class="d-block border-top pt-3">{{application.ap_school}}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+								<span class="text-center me-2">
+									<i class="ri-map-pin-line"></i>
+								</span>
+								<span class="fw-semibold d-block mb-1 text-center">City</span>
+							</div>
+							<span class="d-block border-top pt-3">{{application.ap_city}}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+								<span class="text-center me-2">
+									<i class="ri-map-pin-line"></i>
+								</span>
+								<span class="fw-semibold d-block mb-1 text-center">COUNTRY</span>
+							</div>
+							<span class="d-block border-top pt-3">{{application.ap_country}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="details-section">
+			<div class="row">
+				<div class="col-md-9">
+					<h5 class="mb-4"> Course Details </h5>
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-book-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Class
+											Name</span>
+									</div>
+									<span class="d-block border-top pt-3">{{course_class_name}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-book-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Course Name</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ap_course_name}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-bar-chart-horizontal-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Level</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ap_level}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-calendar-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Start
+											Date</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ap_start_date}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-calendar-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">End
+											Date</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ap_end_date}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-timer-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Study
+											Period</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ap_study_period}} Weeks</span>
+								</div>
+							</div>
+						</div>
+
+						{% if application.ref_sponsor %}
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-user-voice-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Sponsor Details</span>
+									</div>
+									<span class="d-block border-top pt-3">{{application.ref_sponsor}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+										<span class="text-center me-2">
+											<i class="ri-file-upload-line"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">Sponsor Document</span>
+									</div>
+									<span class="d-block border-top pt-3"></span>
+									<a href="{{application.sponsor_document_file.url}}" target="_blank">Click Here</a>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="h-100">
+						<h5 class="mb-4"> Document </h5>
+						<div class="col-lg-12 mb-4">
+							<div class="card">
+								<div class="card-body">
+									<div
+										class="card-title mb-2 d-flex align-items-start justify-content-start text-dark">
+										<span class="text-center me-2">
+											<i class="ri-link"></i>
+										</span>
+										<span class="fw-semibold d-block mb-1 text-center">File</span>
+									</div>
+									<span class="d-block border-top pt-3">
+										<a href="{{application.document_file.url}}"
+											target="_blank">{{application.document_file.url|truncatechars:30}}</a>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="details-section mt-5">
+			<div class="row">
+				<div class="col-lg-5 col-md-4 col-sm-6 col-12 mb-4">
+					<div class="card">
+						<h5 class="card-header">About</h5>
+						<div class="table-responsive text-nowrap">
+							<table class="table table-striped">
+								<tbody class="table-border-bottom-0">
+									<tr>
+										<td><i class="ri-user-line"></i> <strong>First Name</strong>
+										</td>
+										<td>{{application.ap_first_name}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-user-line"></i> <strong>Last Name</strong></td>
+										<td>{{application.ap_last_name}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-men-line"></i> <strong>Gender</strong></td>
+										<td>{{application.ap_gender_title}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-calendar-line"></i> <strong>Date Of
+												Birth</strong></td>
+										<td>{{application.ap_date_of_birth}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-map-pin-line"></i> <strong>Address</strong>
+										</td>
+										<td>{{application.home_address}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-map-2-line"></i> <strong>Postal Code</strong>
+										</td>
+										<td>{{application.post_code}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-smartphone-line"></i> <strong>Mobile
+												Number</strong></td>
+										<td>{{application.ap_phone}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-mail-line"></i> <strong>Email</strong></td>
+										<td>{{application.ap_email}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-global-line"></i> <strong>Nationality</strong>
+										</td>
+										<td>{{application.ref_ap_nationality}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-double-quotes-l"></i> <strong>First
+												Language</strong></td>
+										<td>{{application.first_language}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-star-line"></i> <strong>Religion</strong></td>
+										<td>{{application.ap_religion}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-passport-line"></i> <strong>Passport
+												Number</strong></td>
+										<td>{{application.ap_passport_number}}</td>
+									</tr>
+									<tr>
+										<td><i class="ri-timer-line"></i> <strong>Passport Expiry Date</strong></td>
+										<td>{{application.ap_passport_expiry_date}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-7 col-md-4 col-sm-6 col-12 mb-4">
+					<div class="card mb-3">
+						<h5 class="card-header">Invoice</h5>
+						<div class="table-responsive text-nowrap">
+							{{application.html_invoice|safe}}
+						</div>
+					</div>
+
+					{% if application.payment_in_installment %}
+					<div class="card">
+						<h5 class="card-header">Installments</h5>
+						<div class="table-responsive text-nowrap">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Installments</th>
+										<th>Type</th>
+										<th>Date</th>
+										<th>Status</th>
+										<th>Amount</th>
+									</tr>
+								</thead>
+								<tbody class="table-border-bottom-0">
+									{% for installment in application.installments %}
+									<tr>
+										<td>{{ installment.id|ordinal }}</td>
+										<td>{{ installment.type }}</td>
+										<td>{{ installment.date }}</td>
+										<td>{{ installment.status }}</td>
+										<td>{{application.ap_currency}} {{ installment.amount|intcomma }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+
+
+<!-- Payment Model -->
+<div class="modal fade" id="payment-model" tabindex="-1" aria-labelledby="payment-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="payment-model-title">Payment Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center" id="payment-model-body">
+				{% if installments %}
+				<div class="payment_type mb-3">
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="payment_options" id="full_payment" value="Full Payment" checked>
+						<label class="form-check-label" for="full_payment">Full Payment</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="payment_options" id="in_installment" value="In Installments">
+						<label class="form-check-label" for="in_installment">In Installments</label>
+					</div>
+				</div>
+				<div class="installment_type mb-3 d-none">
+					{% for installment in installments %}
+					<div class="form-check form-check-inline">
+						<input class="form-check-input installment_options" type="radio" name="installment_options" id="installment_{{ installment.type_str }}" value="{{ installment.type }}">
+						<label class="form-check-label" for="installment_{{ installment.type_str }}">{{ installment.type }}</label>
+					</div>
+					{% endfor %}
+				</div>
+				<div class="installment_details d-none">
+					
+				</div>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<div>
+					<button type="button" class="d-flex align-items-center btn btn-primary w-100" id="create-payment">
+						<i class="ri-bank-card-line"></i> Pay Now
+					</button>
+				</div>
+				<div>
+					<button type="button" class="d-flex align-items-center btn btn-danger w-100" data-bs-dismiss="modal">
+						<i class="ri-close-line"></i> Cancel
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Payment Model -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+	$(document).ready( () => {
+		$(document).on('click', '#full_payment', () => {
+			$('.installment_type, .installment_details').addClass('d-none');
+		});
+
+		$(document).on('click', '#in_installment', () => {
+			$('.installment_type').removeClass('d-none');
+			$('input[name="installment_options"]').each( (idx, elem) => {
+				$(elem).prop('checked', false);
+			});
+			$('.installment_details').addClass('d-none');
+		});
+
+		$(document).on('click', '.installment_options', (e) => {
+			$('.installment_details').removeClass('d-none');
+
+			const installment_type = $('input[name="installment_options"]:checked').val();
+
+			$.ajax({
+				type: "GET",
+				url: "/dashboard/get_installment_details/",
+				data: {
+					school_id: "{{ application.ref_school.pk }}",
+					installment_type: installment_type,
+					class_id: "{{ application.ap_course_class }}",
+					application_id: "{{ application.pk }}",
+				},
+				success: function (result) {
+					$('.installment_details').html(result);
+				},
+				error: function (result) {
+					console.log('error');
+				}
+			});
+
+		});
+	});
+</script>
+<script type="text/javascript">
+	// Create an instance of the Stripe object with your publishable API key
+	let checkoutButton = document.getElementById('create-payment');
+
+	checkoutButton.addEventListener('click', function () {
+		// Create a new Checkout Session using the server-side endpoint you
+		// created in step 3.
+		const payment_type = $('input[name="payment_options"]:checked').val();
+		const installment_type = $('input[name="installment_options"]:checked').val();
+
+		fetch('/dashboard/aplication/payment/', {
+			method: 'POST', // or 'PUT'
+			body: JSON.stringify({ 
+				'application_id': '{{ application.id }}',
+				'payment_type': payment_type,
+				'installment_type': installment_type,
+			}),
+		})
+			.then(function (response) {
+				return response.json();
+			})
+			.then(function (session) {
+				// console.log('Session: ',session);
+				if (session.error) {
+					alert(session.error)
+				}
+				let stripe = Stripe(String(session.stripe_public_key));
+				return stripe.redirectToCheckout({
+					sessionId: session.session_id
+				});
+			})
+			.then(function (result) {
+				// If `redirectToCheckout` fails due to a browser or network
+				// error, you should display the localized error message to your
+				// customer using `error.message`.
+				if (result.error) {
+					alert(result.error.message);
+				}
+			})
+			.catch(function (error) {
+				console.error('Error:', error);
+			});
+	});
+</script>
+{% endblock%}

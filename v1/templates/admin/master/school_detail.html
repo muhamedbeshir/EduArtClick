@@ -1,0 +1,1265 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Detail{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+<style>
+	.dataTables_filter {
+		display: flex;
+		justify-content: end;
+	}
+
+	.dataTables_length {
+		margin-left: 10px;
+		margin-right: 10px;
+		width: fit-content;
+	}
+
+	.dataTables_length>label,
+	.dataTables_filter>label {
+		display: flex;
+		align-items: center;
+	}
+
+	.dataTables_length>label>select {
+		margin-left: 6px;
+		margin-right: 6px;
+	}
+
+	.dataTables_filter>label>input {
+		margin-left: 6px;
+	}
+
+	table {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>School Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a href="{% url 'web:school_list' %}">School</a></li>
+								<li class="breadcrumb-item active" aria-current="page">School Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-building-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCHOOL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ schools }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ORGANIZATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ schools.ref_organization }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">LOCATION</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{{ schools.postal_code }} - {{ schools.ref_city }}, {{ schools.ref_country }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EMAIL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ schools.email }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CURRENCY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ schools.ref_currency.currency_short }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">Address</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ schools.address }}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link 
+						{% if 'create-school' in request.META.HTTP_REFERER or 'school-accommodation-owner' in request.META.HTTP_REFERER or 'school-list' in request.META.HTTP_REFERER or 'school-detail' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="accomandation-tab" data-bs-toggle="tab" data-bs-target="#accommodation_table"
+							aria-controls="accommodation_table" aria-selected="true">
+							Accommodations
+						</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-service' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="service-tab" data-bs-toggle="tab" data-bs-target="#service_table"
+							aria-controls="service_table" aria-selected="false">Services</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-schedule' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule_table"
+							aria-controls="schedule_table" aria-selected="false">Schedules</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-room' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="room-tab" data-bs-toggle="tab" data-bs-target="#room_table"
+							aria-controls="room_table" aria-selected="false">Classrooms</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-course/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="course-tab" data-bs-toggle="tab" data-bs-target="#course_table"
+							aria-controls="course_table" aria-selected="false">Courses</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-course-level' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="courselevel-tab" data-bs-toggle="tab" data-bs-target="#courselevel_table"
+							aria-controls="courselevel_table" aria-selected="false">Course Levels</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-course-type' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="coursetypes-tab" data-bs-toggle="tab" data-bs-target="#coursetypes_table"
+							aria-controls="coursetypes_table" aria-selected="false">Course Types</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/letter/type/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="lettertype-tab" data-bs-toggle="tab" data-bs-target="#lettertype_table"
+							aria-controls="lettertype_table" aria-selected="false">Letter Type</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/letter/type/' in request.META.HTTP_REFERER %} {% elif 'school/letter/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="letter-tab" data-bs-toggle="tab" data-bs-target="#letter_table"
+							aria-controls="letter_table" aria-selected="false">Letters</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-teacher' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="teacher-tab" data-bs-toggle="tab" data-bs-target="#teacher_table"
+							aria-controls="teacher_table" aria-selected="false">Teachers</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-student' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="student-tab" data-bs-toggle="tab" data-bs-target="#student_table"
+							aria-controls="student_table" aria-selected="false">Students</button>
+					</li>
+					{% if request.user|has_group:"school" %}
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-expense-' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense_table"
+							aria-controls="expense_table" aria-selected="false">Expenses</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-payroll-' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="payroll-tab" data-bs-toggle="tab" data-bs-target="#payroll_table"
+							aria-controls="payroll_table" aria-selected="false">Payrolls</button>
+					</li>
+					{% endif %}
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if '/school-sponsor-' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="sponsor-tab" data-bs-toggle="tab" data-bs-target="#sponsor_table"
+							aria-controls="sponsor_table" aria-selected="false">Sponsor</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- Accommodation Table -->
+					<div role="tabpanel" aria-labelledby="accomandation-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'create-school' in request.META.HTTP_REFERER or 'school-accommodation-owner' in request.META.HTTP_REFERER or 'school-list' in request.META.HTTP_REFERER or 'school-detail' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} show active {% endif %}"
+						id="accommodation_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_accommodation_owner' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Accommodation
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="accomandation">
+							<thead>
+								<tr>
+									<th>Accommodation Type</th>
+									<th>Owner name </th>
+									<th>Address</th>
+									<th>City</th>
+									<th>Country</th>
+									<th>Postal code</th>
+									<th>Email</th>
+									<th>Phone</th>
+									<th>Note</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for data in accommodation_owner %}
+								<tr>
+									<td>{% if data.accommodation_type == 0 %}
+										Host family
+										{% elif data.accommodation_type == 1 %}
+										Resident
+										{% elif data.accommodation_type == 2 %}
+										Hotel/Hostel
+										{% else %}
+										{% endif %}
+									</td>
+									<td>
+										{% if data.accommodation_type == 0 %}
+										{{ data.first_name }} {{ data.last_name }}
+										{% elif data.accommodation_type == 1 %}
+										{{ data.company_name }}
+										{% elif data.accommodation_type == 2 %}
+										{{ data.company_name }}
+										{% else %}
+										--
+										{% endif %}
+
+									</td>
+									<td>{{ data.address }}</td>
+									<td>{{ data.city }}</td>
+									<td>{{ data.country }}</td>
+									<td>{{ data.postal_code }}</td>
+									<td>{{ data.email }}</td>
+									<td>{{ data.phone }}</td>
+									<td>{{ data.notes }}</td>
+									<td>
+										<a class="me-2"
+											href="{% url 'web:detail_school_accommodation_owner' data.id %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="
+												{% if data.accommodation_type == 0 %}
+												{{ data.first_name }} {{ data.last_name }}
+												{% elif data.accommodation_type == 1 %}
+												{{ data.company_name }}
+												{% elif data.accommodation_type == 2 %}
+												{{ data.company_name }}
+												{% else %}
+												--
+												{% endif %}
+												" data-title="Accomandation" href="{% url 'web:delete_school_accommodation_owner' data.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- service Table -->
+					<div role="tabpanel" aria-labelledby="service-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-service' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="service_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_service' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Service
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="service">
+							<thead>
+								<tr>
+									<th>Service Name</th>
+									<th>Service Type</th>
+									<th>Price</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for service in service %}
+								<tr>
+									<td> {{service.service_name}} </td>
+									<td> {{service.service_type_title}} </td>
+									<td> {{schools.ref_currency.currency_short}} {{service.price}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_service' service.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{service.service_name}}" data-title="Service"
+											href="{% url 'web:delete_school_service' service.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- schedule Table -->
+					<div role="tabpanel" aria-labelledby="schedule-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-schedule' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="schedule_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_schedule' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Schedule
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="schedule">
+							<thead>
+								<tr>
+									<th>Start Time</th>
+									<th>End Time</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for schedule in schedule %}
+								<tr>
+									<td> {{schedule.start_time|date:"g:i a"|upper}} </td>
+									<td> {{schedule.end_time|date:"g:i a"|upper}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_schedule' schedule.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{schedule.start_time|date:'g:i a'}} - {{schedule.end_time|date:'g:i a'}}"
+											data-title="Schedule"
+											href="{% url 'web:delete_school_schedule' schedule.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- room Table -->
+					<div role="tabpanel" aria-labelledby="room-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-room' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="room_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_room' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Classroom
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="room">
+							<thead>
+								<tr>
+									<th>Classroom</th>
+									<th>Capacity</th>
+									<th>Minimum</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for room in rooms %}
+								<tr>
+									<td> {{room.name}} </td>
+									<td> {{room.capacity}} </td>
+									<td> {{room.minimum}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_room' room.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{room.name}}" data-title="Classroom"
+											href="{% url 'web:delete_school_room' room.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- courselevel Table -->
+					<div role="tabpanel" aria-labelledby="courselevel-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-course-level' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="courselevel_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_course_level' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Course Level
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="courselevel">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for level in level %}
+								<tr>
+									<td> {{level.name}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_course_level' level.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{level.name}}" data-title="Course Level"
+											href="{% url 'web:delete_school_course_level' level.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- coursetypes Table -->
+					<div role="tabpanel" aria-labelledby="coursetypes-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-course-type' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="coursetypes_table">
+						
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_course_type' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Course Type
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="coursetypes">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for type in type %}
+								<tr>
+									<td> {{type.name}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_course_type' type.id%}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{type.name}}" data-title="Course Type"
+											href="{% url 'web:delete_school_course_type' type.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- lettertype Table -->
+					<div role="tabpanel" aria-labelledby="lettertype-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/letter/type/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="lettertype_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_letter_type_add' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Letter Type
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="letter_type">
+							<thead>
+								<tr>
+									<th>Letter Title</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for record in latters_type %}
+								<tr>
+									<td> {{record.name}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:school_letter_type_edit' record.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{record.name}}" data-title="Letter Type"
+											href="{% url 'web:school_letter_type_delete' record.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- letter Table -->
+					<div role="tabpanel" aria-labelledby="letter-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/letter/type/' in request.META.HTTP_REFERER %} {% elif 'school/letter/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="letter_table">
+						
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_letter_add' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Letter
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="letter">
+							<thead>
+								<tr>
+									<th>Letter Type</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for record in latters %}
+								<tr>
+									<td> {{record.ref_type.name}} </td>
+									<td>
+										<a class="me-2" href="{% url 'web:school_letter_view' record.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:school_letter_edit' record.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{record.ref_type.name}}" data-title="Letter"
+											href="{% url 'web:school_letter_delete' record.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- teacher Table -->
+					<div role="tabpanel" aria-labelledby="teacher-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-teacher' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="teacher_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_teacher_user_by_school' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Teacher
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="teacher">
+							<thead>
+								<tr>
+									<th>Picture</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for teacher in teacher %}
+								<tr>
+									<td>
+										{% if teacher.avtar %}
+										<img src="{{teacher.avtar.url}}" width="30" height="30">
+										{% else %}
+
+										{% endif %}
+									</td>
+									<td> {{teacher.first_name}} </td>
+									<td> {{teacher.last_name}} </td>
+									<td> {{teacher.email}} </td>
+									<td>
+										<a class="me-2" href="{% url 'web:school_teacher_detail' teacher.id %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="" href="{% url 'web:update_teacher' teacher.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- student Table -->
+					<div role="tabpanel" aria-labelledby="student-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-student' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="student_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_student_user_by_school' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Student
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="student">
+							<thead>
+								<tr>
+									<th>Username</th>
+									<th>Picture</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for student in students %}
+								<tr>
+									<td>{{student.ref_user.username}}</td>
+									<td>
+										{% if student.avtar %}
+										<img src="{{student.avtar.url}}" width="30" height="30">
+										{% else %}
+
+										{% endif %}
+									</td>
+									<td> {{student.first_name}} </td>
+									<td> {{student.last_name}} </td>
+									<td> {{student.email}} </td>
+									<td>
+										<a class="me-2" href="{% url 'web:detail_school_student_user' student.id %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:update_school_student' student.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{student.first_name}} {{student.last_name}}"
+											data-title="Student"
+											href="{% url 'web:delete_school_student' student.ref_user.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- course Table -->
+					<div role="tabpanel" aria-labelledby="course-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-course/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="course_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_course' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Course
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="course">
+							<thead>
+								<tr>
+									<th>Course name</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for course in course %}
+								<tr>
+									<td> {{course.title}} </td>
+									<td>
+										<a class="me-2"
+											href="{% url 'web:details_school_course' course.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_course' course.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{course.title}}" data-title="Course"
+											href="{% url 'web:delete_school_course' course.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% if request.user|has_group:"school"%}
+					<!-- expense Table -->
+					<div role="tabpanel" aria-labelledby="expense-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-expense-' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="expense_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:add_school_expense' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Expenses
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="expense">
+							<thead>
+								<tr>
+									<th>Expense Type</th>
+									<th>Internal Expense</th>
+									<th>Expense Name</th>
+									<th>Amount</th>
+									<th>Receipt</th>
+									<th>Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for expense in expenses %}
+								<tr>
+									<td> {{expense.expense_type}} </td>
+									<td> {{expense.internal_expense_type}} </td>
+									<td> {{expense.name}} </td>
+									<td> {{expense.amount}} </td>
+									<td>
+										{% if expense.receipt %}
+										<a href="{{ expense.receipt.url }}" target="_blank">Click Here </a>
+										{% else %}
+										Not Found
+										{% endif %}
+									</td>
+									<td> {{expense.expense_date}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_expense' expense.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{expense.name}}" data-title="Expenses"
+											href="{% url 'web:delete_school_expense' expense.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Payroll Table -->
+					<div role="tabpanel" aria-labelledby="payroll-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-payroll-' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="payroll_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:add_school_payroll' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Payroll
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="payroll">
+							<thead>
+								<tr>
+									<th>Code</th>
+									<th>User</th>
+									<th>Amount</th>
+									<th>Receipt</th>
+									<th>Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for payroll in payrolls %}
+								<tr>
+									<td> {{payroll.code}} </td>
+									<td> {{payroll.ref_school_teacher}} </td>
+									<td> {{payroll.amount}} </td>
+									<td>
+										{% if payroll.receipt %}
+										<a href="{{ payroll.receipt.url }}" target="_blank">Click Here </a>
+										{% else %}
+										Not Found
+										{% endif %}
+									</td>
+									<td> {{payroll.payroll_date}} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_payroll' payroll.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{payroll.name}}" data-title="Payrolls"
+											href="{% url 'web:delete_school_payroll' payroll.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% endif %}
+					<!-- School Sponsor Table -->
+					<div role="tabpanel" aria-labelledby="sponsor-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if '/school-sponsor' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="sponsor_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_sponsor' schools.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Sponsor
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table my-4" id="sponsor">
+							<thead>
+								<tr>
+									<th>SL</th>
+									<th>Name</th>
+									<th>Email</th>
+									<th>Address</th>
+									<th>IS Active ?</th>
+									<th>Created At</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for sponsor in sponsors %}
+								<tr>
+									<td> {{ forloop.counter }} </td>
+									<td> {{ sponsor.name }} </td>
+									<td> {{ sponsor.email }}</td>
+									<td> {{ sponsor.address|truncatechars:50 }} </td>
+									<td> 
+										{% if sponsor.status %} 
+										<span class="badge bg-primary">True</span>
+										{% else %}
+										<span class="badge bg-danger">False</span>
+										{% endif %}
+									</td>
+									<td> {{ sponsor.created_at }} </td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:update_school_sponsor' sponsor.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i></a>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{ sponsor.email }}" data-title="School Sponsor"
+											href="{% url 'web:delete_school_sponsor' sponsor.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="delete-model-body">
+				<p>Do you want to delete the model <b>"model name"</b></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Model -->
+{% endif %}
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(document).ready(() => {
+		if ($('button.nav-link active').length == 0) {
+			// $.each($('button.nav-link'), (i, element) => {
+			// if ($(element).text() == 'Student') {
+			// $('#accomandation-tab').addClass('active')
+			// $('#accommodation_table').addClass('show active')
+			// }
+			// });
+		}
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function () {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)
+		})
+		$('#delete-model-yes').on('click', function () {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url: del_link,
+				type: "POST",
+				headers: { "X-CSRFToken": $crf_token },
+				success: function (data, textStatus, jqXHR) {
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.log('error while ajax calling')
+				}
+			});
+		})
+	})
+
+	$(function () {
+		$('#accomandation').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#service').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#course').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#schedule').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#room').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#courselevel').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#coursetypes').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#teacher').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#student').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#letter').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#letter_type').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#expense').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[5, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#payroll').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[5, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#sponsor').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[5, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+</script>
+{% endblock%}

@@ -1,0 +1,420 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add Admission Form{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add Admission Form</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:application_list' %}">Applications</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add Admission Form</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form id="applicationForm" action="{% url 'web:submit_application' %}" method="POST"
+			enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="details-section mt-5">
+				<div class="row">
+					<div class="col-lg-6 col-12 mb-4">
+						<div class="card">
+							<h5 class="card-header">Submit Application Form</h5>
+							<div class="card-body">
+								<div class="row">
+									<input type="number" name="ap_course_class" class="form-control form-control-lg d-none"
+										value="{{ctx.course_class}}" readonly="true" id="id_ap_course_class">
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Country <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_country" class="form-control form-control-lg"
+												value="{{ctx.country}}" readonly="true" id="id_ap_country">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">City <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_city" class="form-control form-control-lg"
+												value="{{ctx.city}}" readonly="true" id="id_ap_city">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="mt-2">
+												<label for="" class="form-label">School <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="ap_school" class="form-control form-control-lg"
+													value="{{ctx.school}}" readonly="true" id="id_ap_school">
+											</div>
+										</div>
+										<div class="col">
+											<div class="mt-2">
+												<label for="" class="form-label">Level <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="ap_level" id="id_ap_level"
+													class="form-control form-control-lg" value="{{ctx.s_level}}"
+													readonly="true">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col col-sm-4 col-4">
+											<div class="mt-2">
+												<label for="" class="form-label">Study Period <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="" class="form-control form-control-lg"
+													value="{{ctx.study_period}} week" readonly="true">
+												<input type="hidden" name="ap_study_period"
+													class="form-control form-control-lg" value="{{ctx.study_period}}"
+													id="id_ap_study_period">
+											</div>
+										</div>
+										<div class="col col-sm-4 col-4">
+											<div class="mt-2">
+												<label for="" class="form-label">Start Date <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="ap_start_date"
+													class="form-control form-control-lg" value="{{ctx.start_date}}"
+													readonly="true" id="id_ap_start_date">
+											</div>
+										</div>
+										<div class="col col-sm-4 col-4">
+											<div class="mt-2">
+												<label for="largeInput" class="form-label">End Date <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="ap_end_date"
+													class="form-control form-control-lg" value="{{ctx.end_date}}"
+													readonly="true" id="id_ap_end_date">
+											</div>
+										</div>
+									</div>
+									<!-- <div class="col-sm-4 col-6"> -->
+									<input type="hidden" name="ref_school" id="id_ref_school"
+										value="{{ ctx.school_id }}">
+									<input type="hidden" name="ref_organization" id="id_ref_organization"
+										value="{{ ctx.organization_id }}">
+									<input type="hidden" class="form-control" name="ap_school_email"
+										id="id_ap_school_email" value="{{ ctx.school_email }}" autocomplete="off"
+										readonly="true">
+									<input type="hidden" name="ap_currency" id="id_ap_currency"
+										value="{{ ctx.school_currency }}">
+
+									{% for course in ctx.cours %}
+									<input type="hidden" name="ap_course_name" id="id_ap_course_name"
+										value="{{ course.coures_name }}">
+									<input type="hidden" name="ap_course_price_total" id="id_ap_course_price_total"
+										value="{{ course.coures_price_total }}">
+									{% endfor %}
+
+									<input type="hidden" name="ref_ap_coupon" id="id_ref_ap_coupon"
+										value="{{ ctx.coupon_id }}">
+									<input type="hidden" name="ap_course_discount" id="id_ap_course_discount"
+										value="{{ ctx.coupon_discount }}">
+
+									<input type="hidden" name="ap_sub_total" id="id_ap_sub_total"
+										value="{{ ctx.total_cost }}">
+									<input type="hidden" name="ap_grand_total" id="id_ap_grand_total"
+										value="{{ ctx.grand_total_cost }}">
+									<input type="hidden" name="ap_json_data" id="id_ap_json_data" value="{{ ctx }}">
+
+									<input type="hidden" name="ap_service_json_data" id="id_ap_service_json_data"
+										value="{{ctx.service}}">
+									<!-- </div> -->
+									<div class="col-sm-6">
+										<div class="mt-2">
+											{% if request.user|has_group:"student" %}
+											<label for="" class="form-label">First Name <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_first_name" class="form-control form-control-lg"
+												value="{{user.first_name}}" id="id_ap_first_name" readonly="true">
+											{% else %}
+											<label for="" class="form-label">First Name <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_first_name" class="form-control form-control-lg"
+												value="" id="id_ap_first_name" required="">
+											{% endif %}
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											{% if request.user|has_group:"student" %}
+											<label for="" class="form-label">Last Name <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_last_name" class="form-control form-control-lg"
+												value="{{user.last_name}}" id="id_ap_last_name" readonly="true">
+											{% else %}
+											<label for="" class="form-label">Last Name <strong
+													class="text-danger">*</strong></label>
+											<input type="text" name="ap_last_name" class="form-control form-control-lg"
+												value="" id="id_ap_last_name" required="">
+											{% endif %}
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Gender <strong
+													class="text-danger">*</strong></label>
+											<select class="form-select form-select-lg" name="ap_gender" required=""
+												id="id_ap_gender">
+												<option value="" selected="">---------</option>
+												<option value="0">Male</option>
+												<option value="1">Female</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Date of Birth <strong
+													class="text-danger">*</strong></label>
+											<div class="input-group date" id="id_ap_date_of_birth"
+												data-target-input="nearest">
+												<input type="date" name="ap_date_of_birth"
+													class="form-control form-control-lg datetimepicker-input"
+													data-target="#id_ap_date_of_birth" required=""
+													placeholder="YYYY-MM-DD">
+												<!-- <input type="text" name="ap_date_of_birth" class="form-control form-control-lg datetimepicker-input" data-target="#id_ap_date_of_birth" required="" placeholder="YYYY-MM-DD"> -->
+												<!-- <div class="input-group-append" data-target="#id_ap_date_of_birth" data-toggle="datetimepicker">
+													<div class="input-group-text h-100">
+														<i class="ri-calendar-line ri-lg mb-0"></i>
+													</div>
+												</div> -->
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="mt-2">
+											<label for="" class="form-label">Address <strong
+													class="text-danger">*</strong></label>
+											<textarea name="home_address" required=""
+												class="form-control form-control-lg" id="id_home_address"></textarea>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Post Code</label>
+											<input type="text" name="post_code" class="form-control form-control-lg"
+												id="id_post_code">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Nationality <strong
+													class="text-danger">*</strong></label>
+											{{form.ref_ap_nationality}}
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Email <strong
+													class="text-danger">*</strong></label>
+											{% if request.user|has_group:"student" %}
+											<input type="email" name="ap_email" class="form-control form-control-lg"
+												value="{{user.email}}" id="id_ap_email" readonly="true">
+											{% else %}
+											<input type="email" name="ap_email" class="form-control form-control-lg"
+												value="" id="id_ap_email" required="">
+											{% endif %}
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Mobile (+ Country Code)</label>
+											<input type="text" name="ap_phone" class="form-control form-control-lg"
+												value="" id="id_ap_phone">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">First
+												Language</label>
+											<input type="text" name="first_language"
+												class="form-control form-control-lg" id="id_first_language">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mt-2">
+											<label for="" class="form-label">Religion</label>
+											<input type="text" name="ap_religion" class="form-control form-control-lg"
+												id="id_ap_religion">
+										</div>
+									</div>
+									<div class="col-sm-6 passport-fields">
+										<div class="mt-2">
+											<label for="" class="form-label">Passport
+												Number <strong class="text-danger">*</strong></label>
+											<!-- <input type="text" name="ap_passport_number" class="form-control form-control-lg" required="" id="id_ap_passport_number"> -->
+											{{ form.ap_passport_number }}
+										</div>
+									</div>
+									<div class="col-sm-6 passport-fields">
+										<div class="mt-2">
+											<label for="" class="form-label">Passport Expiry
+												Date <strong class="text-danger">*</strong></label>
+											<div class="input-group date" id="id_ap_passport_expiry_data"
+												data-target-input="nearest">
+												<!-- <input type="date" name="ap_passport_expiry_date"
+													class="form-control form-control-lg datetimepicker-input"
+													data-target="#id_ap_passport_expiry_data" required=""
+													placeholder="YYYY-MM-DD"> -->
+												{{ form.ap_passport_expiry_date }}
+												<!-- <input type="text" name="ap_passport_expiry_date" class="form-control form-control-lg datetimepicker-input" data-target="#id_ap_passport_expiry_data" required="" placeholder="YYYY-MM-DD"> -->
+												<!-- <div class="input-group-append" data-target="#id_ap_passport_expiry_data" data-toggle="datetimepicker">
+													<div class="input-group-text h-100">
+														<i class="ri-calendar-line ri-lg mb-0"></i>
+													</div>
+												</div> -->
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="mt-2">
+											<label for="" class="form-label">Notes</label>
+											<textarea name="notes" cols="10" rows="4"
+												class="form-control form-control-lg" id="id_notes"></textarea>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="mt-2">
+											<label for="" class="form-label">Document File (Only .pdf support) <strong
+													class="text-danger">*</strong></label>
+											<!-- <input type="file" class="form-control" name="document_file"
+												id="id_document_file" accept=".pdf" required> -->
+											{{ form.document_file }}
+										</div>
+									</div>
+									<!--  -->
+									<textarea name="html_invoice" id="id_html_invoice" class="form-control"
+										style="display: none;">
+										{{ ctx.html_invoice }}
+									</textarea>
+									<!--  -->
+									<div class="col-sm-12">
+										<div class="mt-2">
+											<label for="" class="form-label">Select Sponsor</label>
+											<select name="ref_sponsor" class="form-select form-select-lg" id="id_ref_sponsor">
+												<option value="" selected="">---------</option>
+												{% for sponsor in ctx.sponsors %}
+												<option value="{{ sponsor.pk }}">{{ sponsor.name }}</option>
+												{% endfor %}
+											  </select>
+										</div>
+									</div>
+									<div class="col-sm-12 d-none" id="sponsor_document">
+										<div class="mt-2">
+											<label for="" class="form-label">Sponsor Document File (Only .pdf support)</label>
+											{{ form.sponsor_document_file }}
+										</div>
+									</div>
+									<div class="d-flex justify-content-end mt-4">
+										<div class="me-3">
+											<a href="{% url 'web:course_calculate_cost'%}"
+												class="btn btn-danger py-3 px-5">CANCEL</a>
+										</div>
+										<div class="">
+											<input class="btn btn-success py-3 px-5" type="submit" value="SUBMIT">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-lg-6 col-12 mb-4">
+						<div class="card">
+							<h5 class="card-header">Invoice</h5>
+							<div class="table-responsive text-nowrap">
+								{{ ctx.html_invoice }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'admin/js/quo_deatils_add.js' %}"></script>
+
+<script type="text/javascript">
+	$(function () {
+		//Date range picker
+		$('#id_ap_date_of_birth').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+		$('#id_ap_passport_expiry_data').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+
+
+	})
+
+	$(document).ready(function () {
+		$('#id_ap_date_of_birth').children().attr('type', 'date').attr("max", "{{pdate}}")
+		$('#id_ap_passport_expiry_data').children().attr('type', 'date').attr("min", "{{cdate}}")
+
+		// If Both School and Student are from same country then passpost details not required
+		school_country = $('#id_ap_country').val();
+
+		let user_nationallity = 0;
+		$(document).on('change', '#id_ref_ap_nationality', function(e){
+			user_nationallity = $('#id_ref_ap_nationality option:selected').val();
+			user_nationallity_str = $('#id_ref_ap_nationality option:selected').text();
+			if (user_nationallity_str == school_country) {
+				// Hide passport-fields
+				$('.passport-fields').each(function(idx, elem){
+					$(elem).addClass('d-none');
+				});
+			} else {
+				// Show passport-fields
+				$('.passport-fields').each(function(idx, elem){
+					$(elem).removeClass('d-none');
+				});
+			}
+		});
+
+		$(document).on('change', '#id_ref_sponsor', function(e){
+			if ($(this).val()){ 
+				$('#sponsor_document').removeClass('d-none');
+				$('#id_sponsor_document_file').attr('required', 'required');
+			} else { 
+				$('#sponsor_document').addClass('d-none');
+				$('#id_sponsor_document_file').removeAttr('required', 'required');
+			}
+		});
+	})
+
+	gepicker()
+</script>
+{% endblock%}

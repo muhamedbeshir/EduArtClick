@@ -1,0 +1,303 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Exam{% endblock %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+{% block content %}
+
+<style>
+	.question .num {
+		display: inline-block;
+		height: 40px;
+		width: 40px;
+		border-radius: 5px;
+		line-height: 40px;
+		text-align: center;
+	}
+
+	.option {
+		position: relative;
+	}
+
+	.option input[type="radio"] {
+		position: absolute;
+		top: 17px;
+		left: 30px;
+	}
+
+	.option input[type="radio"]:checked+label {
+		border: 1px solid var(--primary-color) !important;
+		color: var(--primary-color) !important;
+		font-weight: 600;
+	}
+</style>
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>School Exam
+						</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a
+										href="{% url 'web:application_list' %}">Application</a></li>
+								<li class="breadcrumb-item active" aria-current="page">School Exam</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="details-section mt-5">
+			{% if is_exam_completed == False %}
+			<div class="d-flex justify-content-center">
+				<div class="alert alert-danger alert-dismissible fade show p-3 col-6" role="alert">
+					<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+						<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+							<path
+								d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+						</symbol>
+						<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+							<path
+								d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+						</symbol>
+						<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+							<path
+								d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+						</symbol>
+					</svg>
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+						<use xlink:href="#exclamation-triangle-fill" />
+					</svg>
+					<strong>Instructions:</strong> Please follow these instructions while exam.
+					<ul class="ps-5 pt-2">
+						<li>Don't refesh this page.</li>
+						<li>Don't press back or next button.</li>
+					</ul>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-12 mb-4">
+					<div class="card">
+						{% if records %}
+						<div class="card-header d-md-flex justify-content-sm-between align-items-md-center">
+							<h3 class=""><span>Questions</span></h3>
+
+							<button type="button" class="btn btn-primary px-4 d-flex align-items-center text-white"
+								id="start_exam">Start Exam <i class="ri-timer-flash-line ms-3 me-0"></i></button>
+
+							<div class="time alert alert-warning d-flex  align-items-center d-none" id="timer_block">
+								<i class="ri-timer-line me-3 pe-3"></i> <strong>Time : <span class="text-danger"
+										id="exam_timer"></span></strong>
+							</div>
+						</div>
+						<div class="card-body px-md-5">
+							<form action="" method="post" enctype="multipart/form-data" autocomplete="off"
+								class="d-none">
+								{% csrf_token %}
+								<div class="mb-3 question">
+									{% for record in records %}
+									<h5><span class="num border bg-light me-3">{{ forloop.counter }}</span>
+										{{record.question}}</h5>
+									<div class="options mt-5">
+										<div class="row">
+											<div class="col-sm-6 mb-4 option">
+												<input class="form-check-input" type="radio" name="{{record.id}}"
+													value="{{record.answer}}">
+												<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+													for="option1">
+													{{record.answer}}
+												</label>
+											</div>
+											<div class="col-sm-6 mb-4 option">
+												<input class="form-check-input" type="radio" name="{{record.id}}"
+													value="{{record.option1}}">
+												<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+													for="option2">
+													{{record.option1}}
+												</label>
+											</div>
+											<div class="col-sm-6 mb-4 option">
+												<input class="form-check-input" type="radio" name="{{record.id}}"
+													value="{{record.option2}}">
+												<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+													for="option3">
+													{{record.option2}}
+												</label>
+											</div>
+											<div class="col-sm-6 mb-4 option">
+												<input class="form-check-input" type="radio" name="{{record.id}}"
+													value="{{record.option3}}">
+												<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+													for="option4">
+													{{record.option3}}
+												</label>
+											</div>
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+
+								<div class="d-flex justify-content-end w-100 mb-4">
+									<button type="submit" class="btn btn-success px-4 d-flex align-items-center">Submit
+										<i class="ri-arrow-right-line ms-3 me-0"></i></button>
+							</form>
+						</div>
+						{% else %}
+						<div class="card-header d-md-flex justify-content-sm-between align-items-md-center">
+							<h3 class=""><span>No Questions Available</span></h3>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% elif is_exam_completed == True %}
+			<div class="row">
+				<div class="col-lg-12 col-12 mb-4">
+					<div class="alert alert-danger" role="alert">
+						<h4>Well Done!</h4> <span> you already have finished the exam </span>
+						<strong>Below is the exam summary</strong>
+					</div>
+					<div class="card">
+						<div class="card-header d-md-flex justify-content-sm-between align-items-md-center">
+							<h3 class=""><span>Exam Summary</span></h3>
+						</div>
+						<div class="card-body px-md-5">
+							{% for record in answers %}
+							<div class="mb-3 question">
+								<div class="d-flex align-items-center" style="justify-content: space-between;">
+									<h5><span class="num border bg-light me-3">{{ forloop.counter }}</span>
+										{{record.ref_question.question}}</h5>
+									<h5><span class="bg-light me-3">Score : </span> <span
+											class="num border bg-light">{{record.score}}</span></h5>
+								</div>
+								<div class="options mt-3">
+									<div class="row">
+										<div class="col-sm-6 mb-4 option">
+											<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+												for="option1">
+												<strong>Answer : </strong>{{record.answer}}
+											</label>
+										</div>
+										<div class="col-sm-6 mb-4 option">
+											<label class="form-check-label p-3 ps-5 rounded bg-light border w-100"
+												for="option2">
+												<strong>Correct : </strong>{{record.ref_question.answer}}
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+{% if is_exam_completed == False %}
+<script type="text/javascript">
+	var time = parseInt("{{duration}}");
+	$("#exam_timer").html(new Date(time * 1000).toISOString().substr(11, 8));
+
+	// Diable Hot-Key
+	function disableHotKey(e) {
+		// 27-ESC, 67-C, 86-V, 84-T, 91-WIN, 9-TAB
+
+		if (e.keyCode == 91 || e.keyCode == 27) {
+			e.preventDefault();
+		}
+		if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 122 || (e.which || e.keyCode) == 123) {
+			e.preventDefault();
+		}
+		if ((e.ctrlKey && e.keyCode) == 67 || (e.ctrlKey && e.keyCode) == 84 || (e.ctrlKey && e.keyCode) == 86 || (e.ctrlKey && e.keyCode) == 73 || (e.ctrlKey && e.keyCode) == 74) {
+			e.preventDefault();
+		}
+	}
+
+	$(document).ready(function () {
+		// Diable Hot-Key
+		$(document).keydown((e) => {
+			disableHotKey(e);
+		});
+		$(document).keyup((e) => {
+			disableHotKey(e);
+		});
+
+
+		// Full screen logic
+		let el = document.documentElement;
+		$('#start_exam').on('click', () => {
+			if (el.requestFullscreen) {
+				el.requestFullscreen();
+			}
+
+
+			// Disable this button
+			$('#start_exam').addClass('d-none');
+			$('#timer_block').removeClass('d-none');
+			$('form').removeClass('d-none');
+
+			let time_interval = setInterval(function () {
+				if (localStorage.getItem("duration")) {
+					console.log('GET');
+					localStorage.setItem("duration", localStorage.getItem("duration") - 1)
+				} else {
+					console.log('XXX');
+					localStorage.setItem("duration", time);
+				}
+				$("#exam_timer").html(new Date(localStorage.getItem("duration") * 1000).toISOString().substr(11, 8));
+				// time -= 1;
+
+				if (localStorage.getItem("duration") <= 0) {
+					localStorage.removeItem("duration");
+					clearInterval(time_interval);
+					$("form").submit();
+				}
+			}, 1000);
+		});
+	});
+</script>
+{% endif %}
+
+<script>
+	function rightClick(e) { e.preventDefault(); }
+
+	$(document).ready(function (e) {
+		document.oncontextmenu = rightClick;
+	})
+
+</script>
+
+{% endblock%}

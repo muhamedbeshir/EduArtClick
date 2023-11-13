@@ -1,0 +1,468 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Accommodation Detail{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+	  <!-- Main content -->
+	  <section class="content">
+		  <div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>
+			  <div class="error-content">
+				  <h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				  <p>We could not find the page you were looking for.</p>
+			  </div>
+		  </div>
+	  </section>
+	</div>
+  <!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Accommodation Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a href="{% url 'web:deatil_school' accommodationowner.ref_school_id  %}">School Details</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Accommodation Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-user-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">OWNER NAME</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{% if accommodationowner.first_name %}
+								{{accommodationowner.first_name}} {{accommodationowner.last_name}}
+							{% else %}
+								-
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ACCOMMODATION TYPE</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{% if accommodationowner.accommodation_type == 0 %}
+								Host family
+							{% elif accommodationowner.accommodation_type == 1 %}
+								Resident
+							{% elif accommodationowner.accommodation_type == 2 %}
+								Hotel/Hostel
+							{% else %}
+								-
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ADDRESS</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.address}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CITY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.city}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">COUNTRY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.country}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">POSTAL CODE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.postal_code}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EMAIL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.email}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-phone-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">PHONE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.phone}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CAPACITY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.capacity}}</span>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">NOTE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{accommodationowner.notes}}</span>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button" class="nav-link {% if 'school-detail' in request.META.HTTP_REFERER or 'detail-school-accommodation-owner' in request.META.HTTP_REFERER or 'add-school-accommodation-service' in request.META.HTTP_REFERER or 'edit-school-accommodation-service' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} active {% endif %}" role="tab" id="accommodation-tab" data-bs-toggle="tab"
+						data-bs-target="#accommodation_table"
+						aria-controls="accommodation_table" aria-selected="true">
+						Room Info
+						</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link {% if 'add-school-accommodation-acc-bank' in request.META.HTTP_REFERER or 'edit-school-accommodation-acc-bank' in request.META.HTTP_REFERER %} active {% endif %}" role="tab" id="bankInfo-tab" data-bs-toggle="tab"
+						data-bs-target="#bankInfo_table"
+						aria-controls="bankInfo_table" aria-selected="false">Bank Info</button>
+					</li>
+				</ul>
+			</div>
+	
+			<!-- <div class="dropdown">
+				<button class="btn p-0 d-flex align-items-center border px-2" type="button" id="cardOpt4"
+					data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="ri-add-line me-2"></i> Add Service
+				</button>
+				<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+					<a class="dropdown-item" href="{% url 'web:create_school_accommodation_service' accommodationowner.pk %}">New Room</a>
+					<a class="dropdown-item" href="{% url 'web:create_school_accommodation_acc_bank' accommodationowner.id %}">Bank Information</a>
+				</div>
+			</div> -->
+		</div>
+	
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- accommodation Table -->
+					<div role="tabpanel" aria-labelledby="accommodation-tab" class="tab-pane fade table-responsive text-nowrap {% if 'school-detail' in request.META.HTTP_REFERER or 'detail-school-accommodation-owner' in request.META.HTTP_REFERER or 'add-school-accommodation-service' in request.META.HTTP_REFERER or 'edit-school-accommodation-service' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} show active {% endif %}" id="accommodation_table">
+						
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_accommodation_service' accommodationowner.pk %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Room
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table" id="accommodation">
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Room Type</th>
+									<th>Notes</th>
+									<th>Price</th>
+									<th>Status</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for data in accommodation_service %}
+								<tr>
+									<td> {{data.accommodation_title}} </td>
+									<td>
+										{% if data.room_type == 0 %}
+											Single room
+										{% elif data.room_type == 1 %}
+											Double room
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									<td>
+										{% if data.notes %}
+										{{data.notes}}
+										{% else %}
+										-
+										{% endif %}
+									</td>
+									<td>{{data.ref_school.ref_currency.currency_short}} {{data.price}}</td>
+									<td>{{data.status}}</td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_accommodation_service' data.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{data.accommodation_title}}" data-title="Accommodation" href="{% url 'web:delete_school_accommodation_service' data.pk %}">
+											<i class="ri-delete-bin-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- bankInfo Table -->
+					<div role="tabpanel" aria-labelledby="bankInfo-tab" class="tab-pane fade table-responsive text-nowrap {% if 'add-school-accommodation-acc-bank' in request.META.HTTP_REFERER or 'edit-school-accommodation-acc-bank' in request.META.HTTP_REFERER %} show active {% endif %}" id="bankInfo_table">
+
+						{% if not request.user|has_group:"organization" %}
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:create_school_accommodation_acc_bank' accommodationowner.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Bank
+							</a>
+						</div>
+						{% endif %}
+
+						<table class="table" id="bankInfo">
+							<thead>
+								<tr>
+									<th>Account Bank</th>
+									<th>Account Holder</th>
+									<th>Account No</th>
+									<th>Bank Sort Code</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for data in bank_detail %}
+								<tr>
+									<td>{{data.acc_bank}}</td>
+									<td>{{data.acc_holder}}</td>
+									<td>{{data.acc_no}}</td>
+									<td> {{data.bank_sort_code}}</td>
+									<td>
+										{% if not request.user|has_group:"organization" %}
+										<a class="me-2" href="{% url 'web:edit_school_accommodation_acc_bank' data.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{data.acc_holder}}, {{data.acc_bank}}" data-title="Bank Details" href="{% url 'web:delete_school_accommodation_acc_bank' data.id %}">
+											<i class="ri-delete-bin-line ri-lg"></i>
+										</a>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="delete-model-body">
+		  <p>Do you want to delete the model <b>"model name"</b></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+</div>
+<!-- Delete Model -->
+{% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(document).ready( () => {
+		if ($('button.nav-link active').length  == 0) {
+			// $.each($('button.nav-link'), (i, element) => {
+				// if ($(element).text() == 'Student') {
+					// $('#accomandation-tab').addClass('active')
+					// $('#accommodation_table').addClass('show active')
+				// }
+			// });
+		}
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function() {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)	
+		})
+		$('#delete-model-yes').on('click', function() {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url : del_link,
+				type: "POST",
+				headers:{"X-CSRFToken": $crf_token},
+				success: function(data, textStatus, jqXHR)
+				{
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					console.log('error while ajax calling')
+				}
+			});
+		})
+	})
+	
+	$(function () {
+		$('#accommodation').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#bankInfo').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+</script>
+{% endblock%}

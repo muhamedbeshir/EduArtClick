@@ -1,0 +1,269 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{ title|title }}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{ title|title }}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:list_group' %}">Group List</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{ title|title }}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Group Details</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="mt-5 px-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											{% if not object %}
+											<div class="mb-4">
+												<label class="form-label" for="">Name <strong class="text-danger">*</strong></label>
+												{{ form.name }}
+											</div>
+											{% endif %}
+											{% if object %}
+											<label for="" class="fs-4">Group Name: {{ form.name.value }}</label>
+											<input type="hidden" name="name" maxlength="150" class="form-control text-lowercase" placeholder="Group Name" required="" id="id_name" value="{{ form.name.value }}">
+											{% endif %}
+											<div class="mb-3">
+
+												<table id="example" class="display table table-striped" style="width:100%">
+													<!-- style="background: #9fa4aa;" -->
+													<thead class="text-dark">
+														<tr>
+															<th colspan="3"></th>
+															<th colspan="4" class="text-center">Access Permissions</th>
+														</tr>
+														<tr>
+															<th><input class="form-check-input" type="checkbox" name="" id="select_all_perms"></th>
+															<th>Name</th>
+															<th>Model</th>
+															<th>Create</th>
+															<th>Write</th>
+															<th>Delete</th>
+															<th>Read</th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for content_type in content_types %}
+														<tr>
+															<td>
+																<input class="form-check-input input_perms_grp" type="checkbox" name="{{ content_type.pk }}" id="id_{{ content_type.pk }}">
+															</td>
+															<td>
+																<label for="id_{{ content_type.pk }}">
+																	{{ content_type|cut:"db | "|title }}
+																</label>
+															</td>
+															<td>{{ content_type.model|title }}</td>
+															{% for permission in content_type.permission_set.all %}
+															<td>
+																<input class="form-check-input" type="checkbox" name="permissions" value="{{ permission.pk }}" id="id_perms_{{ permission.pk }}">
+															</td>
+															{% endfor %}
+														</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+
+												<!-- <div class="mb-2 d-flex justify-content-between">
+													<label class="form-label">Assign Permissions :</label>
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" value="" id="select_perms">
+														<label class="form-check-label ms-1" for="select_perms">
+															Select All
+														</label>
+													</div>
+												</div> -->
+												<!-- <div style="height: 200px; overflow-y: scroll;" id="permission_group">
+													{% for permission in current_permissions %}
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" value="{{ permission.pk }}" id="per_{{ permission.pk }}" name="permissions" checked>
+														<label class="form-check-label ms-1" for="per_{{ permission.pk }}">
+															{{ permission.name }}
+														</label>
+													</div>
+													{% endfor %}
+													{% for permission in permissions %}
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" value="{{ permission.pk }}" id="per_{{ permission.pk }}" name="permissions">
+														<label class="form-check-label ms-1" for="per_{{ permission.pk }}">
+															{{ permission.name }}
+														</label>
+													</div>
+													{% endfor %}
+												</div> -->
+												<!-- <select class="form-select" name="permissions_old" id="id_permissions_old" multiple>
+													{% for permission in permissions %}
+													<option value="{{ permission.pk }}" title="{{ permission.name }} ">
+														{{ permission.name }}</option>
+													{% endfor %}
+												</select> -->
+											</div>
+											<!-- <div class="btn-group mb-3 d-flex">
+												<button class="btn btn-outline-primary" name="choose-all" type="button"
+													style="padding: 0px !important;">
+													Choose All
+												</button>
+												<button class="btn btn-outline-primary p-0" name="add-permission" type="button"
+													style="padding: 0px !important;">
+													<i class="ri-arrow-down-line"></i>
+												</button>
+												<button class="btn btn-outline-primary p-0" name="remove-permission" type="button"
+													style="padding: 0px !important;">
+													<i class="ri-arrow-up-line"></i>
+												</button>
+												<button class="btn btn-outline-primary" name="remove-all" type="button"
+													style="padding: 0px !important;">
+													Remove All
+												</button>
+											</div> -->
+											<!-- <div class="mb-3">
+												<label class="form-label">Assign Permissions :</label>
+												<select class="form-select" name="permissions_new" id="id_permissions_new" multiple>
+													{% for permission in current_permissions %}
+													<option value="{{ permission.pk }}" title="{{ permission.name }}">
+														{{ permission.name }}</option>
+													{% endfor %}
+												</select>
+											</div> -->
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		// Select All Input
+		$( "#select_all_perms" ).click(function() {
+			let select_all = true;
+			// let label_text = 'Select All';
+
+			if(this.checked){
+				select_all = true;
+				// label_text = 'Remove All'
+			}
+			if(!this.checked){
+				select_all = false;
+				// label_text = 'Select All';
+			}
+			$('#example').children().find('input').prop('checked', select_all);
+			// $('label[for=select_perms]').text(label_text);
+		});
+
+		$(document).on("click", ".input_perms_grp", function() {
+			let select_all = true;
+
+			if(this.checked){
+				select_all = true;
+			}
+			if(!this.checked){
+				select_all = false;
+			}
+
+			$(this).parent('').parent().find('input').prop('checked', select_all);
+		});
+
+		$(document).on("click", ".paginate_button ", function() {
+			// Checking Current Group Permissions
+			"{% for user_perms in current_permissions %}"
+				$("#id_perms_{{ user_perms.pk }}").prop('checked', true);
+			"{% endfor %}"
+		});
+
+		new DataTable('#example', {
+			columnDefs: [
+				{
+					orderable: false,
+					// className: 'select-checkbox',
+					targets: 0
+				}
+			],
+			// select: {
+			// 	style: 'os',
+			// 	selector: 'td:first-child'
+			// },
+			"ordering": false,
+			"bPaginate": false,
+			"searching": false,
+			info: false,
+		});
+
+		// Checking Current Group Permissions
+		"{% for user_perms in current_permissions %}"
+			$("#id_perms_{{ user_perms.pk }}").prop('checked', true);
+		"{% endfor %}"
+	});
+</script>
+{% endblock%}

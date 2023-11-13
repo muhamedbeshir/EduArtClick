@@ -1,0 +1,935 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}User Create Page{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Users Dashboard</h4>
+		<nav aria-label="breadcrumb mb-4">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item active"><a href="#">Users</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Dasboard</li>
+			</ol>
+		</nav>
+		<div class="row">
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if student_total %}
+										{{student_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-user-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">Student User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_student_total %}
+											{{active_student_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> 
+									<span>
+										{% if deactive_student_total %}
+											{{deactive_student_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_student_user' %}"
+							class="py-2 rounded text-center mt-3 border border-success d-flex justify-content-center">
+							<small class="text-success fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> Student User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if aggent_total %}
+										{{aggent_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-user-shared-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">Agent User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_aggent_total %}
+											{{active_aggent_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> 
+									<span>
+										{% if deactive_aggent_total %}
+											{{deactive_aggent_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_agent_user' %}"
+							class="py-2 rounded text-center mt-3 border border-primary d-flex justify-content-center">
+							<small class="text-primary fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> Agent User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if organization_total %}
+										{{organization_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-user-settings-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">Organisation User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_organization %}
+											{{active_organization}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> 
+									<span>
+										{% if deactive_organization %}
+											{{deactive_organization}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_organization_user' %}"
+							class="py-2 rounded text-center mt-3 border border-secondary d-flex justify-content-center">
+							<small class="text-secondary fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> Organization User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if school_total %}
+										{{school_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-user-heart-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">School User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_school %}
+											{{active_school}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> <span>
+										{% if deactive_school %}
+											{{deactive_school}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_school_user'%}"
+							class="py-2 rounded text-center mt-3 border border-danger d-flex justify-content-center">
+							<small class="text-danger fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> School User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if staff_total %}
+										{{staff_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-user-2-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">Staff User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_staff_total %}
+											{{active_staff_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> 
+									<span>
+										{% if deactive_staff_total %}
+											{{deactive_staff_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_staff_user' %}"
+							class="py-2 rounded text-center mt-3 border border-info d-flex justify-content-center">
+							<small class="text-info fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> Staff User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-4 col-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-between">
+							<div>
+								<h3 class="card-title mb-2">
+									{% if admin_total %}
+										{{admin_total}}
+									{% else %}
+										0
+									{% endif %}
+								</h3>
+							</div>
+							<div class="avatar flex-shrink-0">
+								<span class="text-center btn bg-light">
+									<i class="ri-shield-user-line"></i>
+								</span>
+							</div>
+						</div>
+						<span class="fw-semibold d-block mb-1">Admin User</span>
+						<div class="row">
+							<div class="col-6 pe-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-follow-fill"></i> 
+									<span>
+										{% if active_admin_total %}
+											{{active_admin_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+							<div class="col-6 ps-1">
+								<div class="d-flex align-items-center px-2 py-1 border rounded">
+									<i class="ri-user-unfollow-fill"></i> 
+									<span>
+										{% if deactive_admin_total %}
+											{{deactive_admin_total}}
+										{% else %}
+											0
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+						<a href="{% url 'web:create_admin_user' %}"
+							class="py-2 rounded text-center mt-3 border border-warning d-flex justify-content-center">
+							<small class="text-warning fw-semibold d-flex align-items-center"><i
+									class="ri-add-line me-2"></i> Admin User</small> </a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title d-flex align-items-start justify-content-between mb-0 rounded bg-light p-3">
+							<div class="">
+								<ul class="nav nav-pills" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link 
+										{% if 'student-user' in request.META.HTTP_REFERER or 'create-user-page' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} active 
+										{% elif 'agent-user' in request.META.HTTP_REFERER %}
+										{% elif 'organization-user' in request.META.HTTP_REFERER %}
+										{% elif 'school-user' in request.META.HTTP_REFERER %}
+										{% elif 'staff-user' in request.META.HTTP_REFERER %}
+										{% elif 'admin-user' in request.META.HTTP_REFERER %}
+										{% elif '/dashboard/create-user-page' in request.path %} active {% endif %}" id="student-tab" role="tab" data-bs-toggle="tab"
+											data-bs-target="#student_table"
+											aria-controls="student_table" aria-selected="true">
+											Student
+										</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link {% if 'agent-user' in request.META.HTTP_REFERER %} active {% endif %}" id="agent-tab" role="tab" data-bs-toggle="tab"
+										data-bs-target="#agent_table"
+										aria-controls="agent_table" aria-selected="false">Agent</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link {% if 'organization-user' in request.META.HTTP_REFERER %} active {% endif %}" id="organization-tab" role="tab" data-bs-toggle="tab"
+										data-bs-target="#organization_table"
+										aria-controls="organization_table" aria-selected="false">Organization</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link {% if 'school-user' in request.META.HTTP_REFERER %} active {% endif %}" id="school-tab" role="tab" data-bs-toggle="tab"
+										data-bs-target="#school_table"
+										aria-controls="school_table" aria-selected="false">School User</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link {% if 'staff-user' in request.META.HTTP_REFERER %} active {% endif %}" id="staff-tab" role="tab" data-bs-toggle="tab"
+										data-bs-target="#staff_table"
+										aria-controls="staff_table" aria-selected="false">Staff User</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button type="button" class="nav-link {% if 'admin-user' in request.META.HTTP_REFERER %} active {% endif %}" id="admin-tab" role="tab" data-bs-toggle="tab"
+										data-bs-target="#admin_table"
+										aria-controls="admin_table" aria-selected="false">Admin User</button>
+									</li>
+								</ul>
+							</div>
+							<div class="dropdown">
+								<button class="btn p-0 d-flex align-items-center border px-2" type="button"
+									id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="ri-add-line me-2"></i> Add User
+								</button>
+								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+									<a class="dropdown-item" href="{% url 'web:create_student_user' %}">Student</a>
+									<a class="dropdown-item" href="{% url 'web:create_agent_user' %}">Agent</a>
+									<a class="dropdown-item" href="{% url 'web:create_organization_user' %}">Organization</a>
+									<a class="dropdown-item" href="{% url 'web:create_school_user' %}">School User</a>
+									<a class="dropdown-item" href="{% url 'web:create_staff_user' %}">Staff User</a>
+									<a class="dropdown-item" href="{% url 'web:create_admin_user' %}">Admin User</a>
+								</div>
+							</div>
+						</div>
+						<div class="tab-content">
+							<!-- Student Table -->
+							<div role="tabpanel" aria-labelledby="student-tab" class="tab-pane fade table-responsive text-nowrap {% if 'student-user' in request.META.HTTP_REFERER or 'create-user-page' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} show active 
+							{% elif 'agent-user' in request.META.HTTP_REFERER %}
+							{% elif 'organization-user' in request.META.HTTP_REFERER %}
+							{% elif 'school-user' in request.META.HTTP_REFERER %}
+							{% elif 'staff-user' in request.META.HTTP_REFERER %}
+							{% elif 'admin-user' in request.META.HTTP_REFERER %}
+							{% elif '/dashboard/create-user-page' in request.path %} show active {% endif %}" id="student_table">
+								<table class="table" id="example2">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for student in student %}
+										<tr>
+											<td>{{student.first_name}}</td>
+											<td>{{student.last_name}}</td>
+											<td>{{student.email}}</td>
+											{% if student.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{student.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{student.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{student.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{student.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if student.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' student.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' student.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_student_user' student.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{student.first_name}} {{student.last_name}}" data-title="Student User" href="{% url 'web:delete_user' student.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Agent Table -->
+							<div role="tabpanel" aria-labelledby="agent-tab" class="tab-pane fade table-responsive text-nowrap {% if 'agent-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="agent_table">
+								<table class="table" id="aggent">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Company Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for aggent in aggent %}
+										<tr>
+											<td>{{aggent.first_name}}</td>
+											<td>{{aggent.last_name}}</td>
+											<td>{{aggent.company_name}}</td>
+											<td>{{aggent.email}}</td>
+											{% if aggent.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{aggent.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{aggent.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{aggent.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{aggent.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if aggent.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' aggent.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' aggent.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_agent_user' aggent.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{aggent.first_name}} {{aggent.last_name}}" data-title="Agent User" href="{% url 'web:delete_user' aggent.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Organization Table -->
+							<div role="tabpanel" aria-labelledby="organization-tab" class="tab-pane fade table-responsive text-nowrap {% if 'organization-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="organization_table">
+								<table class="table" id="organization">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Organization Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for organization in organization %}
+										<tr>
+											<td>{{organization.first_name}}</td>
+											<td>{{organization.last_name}}</td>
+											<td>{{organization.ref_organization}}</td>
+											<td>{{organization.email}}</td>
+											{% if organization.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{organization.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{organization.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{organization.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{organization.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if organization.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' organization.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' organization.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_organization_user' organization.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{organization.first_name}} {{organization.last_name}}" data-title="Organisation User" href="{% url 'web:delete_user' organization.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+
+							<!-- School Table -->
+							<div role="tabpanel" aria-labelledby="school-tab" class="tab-pane fade table-responsive text-nowrap {% if 'school-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="school_table">
+								<table class="table" id="school">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>School</th>
+											<th>Organization Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for school in school %}
+										<tr>
+											<td>{{school.first_name}}</td>
+											<td>{{school.last_name}}</td>
+											<td>{{school.ref_school}}</td>
+											<td>{{school.ref_organization}}</td>
+											<td>{{school.email}}</td>
+											{% if school.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{school.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{school.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{school.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{school.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if school.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' school.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' school.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_school_user' school.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{school.first_name}} {{school.last_name}}" data-title="School User" href="{% url 'web:delete_user' school.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Staff Table -->
+							<div role="tabpanel" aria-labelledby="staff-tab" class="tab-pane fade table-responsive text-nowrap {% if 'staff-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="staff_table">
+								<table class="table" id="staff">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for staff in staff %}
+										<tr>
+											<td>{{staff.first_name}}</td>
+											<td>{{staff.last_name}}</td>
+											<td>{{staff.email}}</td>
+											{% if staff.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{staff.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{staff.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{staff.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{staff.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if staff.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' staff.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' staff.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_staff_user' staff.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{staff.first_name}} {{staff.last_name}}" data-title="Staff User" href="{% url 'web:delete_user' staff.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Admin Table -->
+							<div role="tabpanel" aria-labelledby="admin-tab" class="tab-pane fade table-responsive text-nowrap {% if 'admin-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="admin_table">
+								<table class="table" id="admin">
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Active Status</th>
+											<th>Created at</th>
+											<th>Last Login</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										{% for admin in admin %}
+										<tr>
+											<td>{{admin.first_name}}</td>
+											<td>{{admin.last_name}}</td>
+											<td>{{admin.email}}</td>
+											{% if admin.ref_user.is_active %}
+											<td><span class="badge bg-label-success me-1">{{admin.ref_user.is_active}}</span></td>
+											{% else %}
+											<td><span class="badge bg-label-danger me-1">{{admin.ref_user.is_active}}</span></td>
+											{% endif %}
+											<td>{{admin.created_at|date:"Y-m-d h:i:s A"}}</td>
+											<td>{{admin.ref_user.last_login}}</td>
+											<td>
+												{% if user.is_superuser or request.user|has_group:"admin" %}
+
+													{% if admin.ref_user.is_active %}
+														<a class="me-2" href="{% url 'web:user_permission_change' admin.ref_user.id %}?status=deactivate">
+															<i class="ri-checkbox-blank-circle-fill bg-label-success ri-lg"></i>
+														</a>
+													{% else %}
+														<a class="me-2" href="{% url 'web:user_permission_change' admin.ref_user.id %}?status=active">
+															<i class="ri-checkbox-blank-circle-fill bg-label-danger ri-lg"></i>
+														</a>	
+													{% endif %}
+
+													<a class="me-2" href="{% url 'web:edit_admin_user' admin.ref_user.id %}"><i
+															class="ri-edit-box-line ri-lg"></i></a>
+															
+													<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{admin.first_name}} {{admin.last_name}}" data-title="Admin User"  href="{% url 'web:delete_user' admin.ref_user.id %}"><i
+															class="ri-delete-bin-5-line ri-lg"></i></a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="delete-model-body">
+		  <p>Do you want to delete the model <b>"model name"</b></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+</div>
+<!-- Delete Model -->
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(function () {
+		$("#example1").DataTable({
+			"responsive": true, "lengthChange": true, "autoWidth": false,
+			"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+		$('#example2').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[4, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#student').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+
+		$('#aggent').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[5, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#staff').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[4, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#admin').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[4, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#organization').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[5, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#school').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[6, 'desc']],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+
+	$(document).ready( () => {
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function() {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)	
+		});
+		$('#delete-model-yes').on('click', function() {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url : del_link,
+				type: "POST",
+				headers:{"X-CSRFToken": $crf_token},
+				success: function(data, textStatus, jqXHR)
+				{
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					console.log('error while ajax calling')
+				}
+			});
+		});
+	});
+	
+</script>
+
+{% endblock%}

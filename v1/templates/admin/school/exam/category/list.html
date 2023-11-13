@@ -1,0 +1,135 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Exam Type List{% endblock %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">List of School Exam Type</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+		        <div class="card-header">
+		          	<h3 class="card-title">School Exam Types</h3>
+
+		          	<div class="card-tools">
+		            	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+		              	<i class="fas fa-minus"></i>
+		            	</button>
+		            	<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+		              	<i class="fas fa-times"></i>
+		            	</button>
+		          </div>
+		        </div>
+        		<div class="card-body">
+			        <table id="example1" class="table table-bordered table-hover dataTable dtr-inline">
+			            <thead>
+			                <tr>
+			                    <th class="text-left">
+			                      Name
+			                    </th>
+			                    
+			                    <th class="text-center">
+			                    	created_at
+			                    </th>
+			                    
+			                    <th class="text-right">
+			                    	Action
+			                    </th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			            	{% for record in records %}
+			                <tr>
+			                    
+			                    <td class="text-left">
+			                    	<a>{{record.name}}</a>
+			                    </td>
+			                    <td class="text-center">
+			                    	{{record.created_at}}
+			                    </td>
+			                    <td class="project-actions text-right">
+			   
+			                        {% if user.is_authenticated %}
+										{% if user.is_superuser%}
+			                        <a class="btn btn-info btn-sm" href="{% url 'web:school_exam_type_edit' record.id %}">
+			                            <i class="fas fa-pencil-alt">
+			                            </i>
+			                            Edit
+			                          </a>
+			                          <a class="btn btn-danger btn-sm" href="{% url 'web:school_exam_type_delete' record.id %}">
+			                            <i class="fas fa-trash">
+			                            </i>
+			                            Delete
+			                          </a>
+			                          	{% endif %}
+			                        {% endif %}
+			                    </td>
+			                </tr>
+			                {% endfor %}
+			            </tbody>
+			        </table>
+        		</div>
+        		<!-- /.card-body -->
+        		
+      		</div>
+      		<!-- /.card -->
+
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+{% endblock%}

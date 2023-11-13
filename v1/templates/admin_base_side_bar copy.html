@@ -1,0 +1,356 @@
+{% load static %}
+<style>
+	.nav-sidebar>.nav-item {
+		transition: 0.5s;
+	}
+	.nav-sidebar>.nav-item:hover {
+		transition: 0.5s;
+		transform: translateX(5px);
+	}
+	.sidebar-mini.sidebar-collapse .main-sidebar:hover .nav-sidebar .nav-link p{
+		visibility:hidden;
+	}
+	.sidebar-mini.sidebar-collapse .main-sidebar:hover {
+		width: 4.6rem;
+	} 
+	.sidebar-mini.sidebar-collapse .main-sidebar:hover .nav-sidebar .nav-link p,
+	.sidebar-mini.sidebar-collapse .main-sidebar:hover .brand-text, .sidebar-mini.sidebar-collapse .nav-sidebar .nav-link p,
+	.sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused .nav-sidebar .nav-link p,
+	.sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused .brand-text,
+	.sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused .nav-sidebar .nav-link
+	 {
+		visibility:hidden;
+		opacity:0
+	}
+	.sidebar-collapse.sidebar-mini .main-sidebar:hover .nav-link{
+		width:3.5rem
+	}
+	.os-host-overflow,.sidebar-mini.sidebar-collapse .main-sidebar,.os-viewport.os-viewport-native-scrollbars-invisible, .os-host-overflow>.os-padding {
+		overflow: visible !important; 
+	}
+	ul.nav-treeview .nav-sidebar li a p, .sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar li.nav-item.has-child ul li .nav-link p {
+		visibility: visible;
+		opacity: 1;
+	}
+	.sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar li.nav-item.has-child ul li .nav-link i{
+		display:none
+	}
+	li.nav-item.has-child {
+		position: relative;
+	}
+
+	a.nav-link {
+		color: gray;
+	}
+	a.nav-link.active {
+		color: #8bc34a;
+	}
+	a.nav-link.w-100.active {
+		color: #8bc34a;
+		background-color: #e0f7e0;
+		border-left-style: solid;
+  		border-left-color: #8bc34a;
+		border-left-width: thick;
+	}
+	p.h5 {
+    	padding-left: 8px;
+	}
+
+	aside {
+		background: #fff;
+	}
+</style>
+{% load auth_extras %}
+<!-- Main Sidebar Container -->
+  	<aside class="main-sidebar sidebar-light"> <!--elevation-4-->
+	    <!-- Brand Logo -->
+	    {% if user.is_authenticated %}
+			{% if user.is_superuser or request.user|has_group:"admin" %}
+			<div class="d-flex align-items-center m-0 my-2 px-4">
+				<div class="text-left pr-3">
+					<a href="{% url 'web:dashboard' %}" class="">
+						<img src="{% static 'admin/dist/img/AdminLTELogo.png' %}" alt="Admin Logo" class="brand-image elevation-3" style="opacity: .8; border-radius: 0.5rem !important;" width="50">
+					</a>
+				</div>
+				<div class="">
+					<strong class="text-dark font-weight-bold" style="font-size: 1.6rem !important;">{{ user.username|title }}</strong><br>
+					<strong class="text-muted mb-0">Admin</strong>
+				</div>
+			</div>
+			<hr class="mt-4">
+		    
+	    	{% elif request.user|has_group:"school_student" %}
+	    	<a href="{% url 'web:school_student_dashboard' %}" class="">
+		      <img src="{% static 'admin/dist/img/AdminLTELogo.png' %}" alt="Admin Logo" class="brand-image img-circle elevation-3 w-50" style="opacity: .8">
+		      <span class="h4">Courseprice</span>
+		    </a>
+	    	{% else %}
+		    <a href="{% url 'web:dashboard' %}" class="brand-link">
+		      <img src="{% static 'admin/dist/img/AdminLTELogo.png' %}" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		      <span class="h4">Courseprice</span>
+		    </a>
+	    	{% endif %}
+	    {% endif %}
+
+	    <!-- Sidebar -->
+	    <div class="sidebar p-0 m-0">
+	      	<!-- Sidebar Menu -->
+	      	<nav class="mt-2">
+		        <ul class="nav nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+			      	<!-- Add icons to the links using the .nav-icon class
+			           with font-awesome or any other icon font library -->
+				{% if user.is_authenticated %}
+					{% if user.is_superuser %}
+					{% url 'web:dashboard' as dashboard %}
+	      			<li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M13 21V11h8v10h-8zM3 13V3h8v10H3zm6-2V5H5v6h4zM3 21v-6h8v6H3zm2-2h4v-2H5v2zm10 0h4v-6h-4v6zM13 3h8v6h-8V3zm2 2v2h4V5h-4z" fill="rgba(153,153,153,1)"/></svg>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li> 
+				    {% elif request.user|has_group:"admin" %}
+				    {% url 'web:dashboard' as dashboard %}
+			       	<li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>	
+				    {% elif request.user|has_group:"aggent" %}
+				    {% url 'web:dashboard' as dashboard %}
+			       	<li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>	
+				    {% elif request.user|has_group:"student" %}
+				    {% url 'web:dashboard' as dashboard %}
+			       	<li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>	
+				    {% elif request.user|has_group:"organization" %}
+				    {% url 'web:dashboard' as dashboard %}
+			       	<li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>	
+				    {% elif request.user|has_group:"school" %}
+				    {% url 'web:dashboard' as dashboard %}
+				    <li class="nav-item menu-open">
+				        <a href="{{dashboard}}" {% if request.path == dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>
+	      			{% elif request.user|has_group:"teacher" %}
+				    {% url 'web:school_teacher_dashboard' as school_teacher_dashboard %}
+				    <li class="nav-item menu-open">
+				        <a href="{{school_teacher_dashboard}}" {% if request.path == school_teacher_dashboards  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>		
+				    {% elif request.user|has_group:"school_student" %}
+				    {% url 'web:school_student_dashboard' as school_student_dashboard %}
+				    {% url 'web:calender' as calender %}
+				    <li class="nav-item menu-open">
+				        <a href="{{school_student_dashboard}}" {% if request.path == school_student_dashboard  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="fa-solid fa-chart-pie fa-lg mr-2"></i>
+				        	<p class="h5">Dashboard</p>
+				        </a>
+	      			</li>	
+
+	      			<li class="nav-item menu-open">
+				        <a href="{{calender}}" {% if request.path == calender  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+				        	<i class="nav-icon fas fa-tachometer-alt"></i>
+				        	<p>Calender</p>
+				        </a>
+	      			</li>	
+				    {% endif %}
+				{% endif %}
+
+		          			
+
+
+
+			      	{% if user.is_authenticated %}
+			      		{% if user.is_superuser or request.user|has_group:"admin" %}
+
+						{% url 'web:add_organization' as add_organization %}
+						{% url 'web:list_organization' as list_organization %}
+						{% url 'web:create_user_page' as create_user_page%}
+						{% url 'web:create_user' as create_user %}
+						{% url 'web:add_country' as add_country %}
+						{% url 'web:country_list' as country_list %}
+						{% url 'web:add_city' as add_city %}
+						{% url 'web:city_list' as city_list %}
+						{% url 'web:add_school' as add_school %}
+						{% url 'web:school_list' as school_list %}
+						{% url 'web:school_exam_type_add' as school_exam_type_add %}
+						{% url 'web:school_exam_type_list' as school_exam_type_list %}
+		          	<li {% if request.path == add_organization or request.path == list_organization  %}class="nav-item menu-open" {% else %} class="nav-item has-child"  {% endif %}>
+			            <a href="{{list_organization}}" {% if request.path == add_organization or request.path == list_organization  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<!-- <i class="fa-solid fa-sitemap fa-lg mr-2"></i> -->
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0H24V24H0z"/><path d="M15 3c.552 0 1 .448 1 1v4c0 .552-.448 1-1 1h-2v2h4c.552 0 1 .448 1 1v3h2c.552 0 1 .448 1 1v4c0 .552-.448 1-1 1h-6c-.552 0-1-.448-1-1v-4c0-.552.448-1 1-1h2v-2H8v2h2c.552 0 1 .448 1 1v4c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-4c0-.552.448-1 1-1h2v-3c0-.552.448-1 1-1h4V9H9c-.552 0-1-.448-1-1V4c0-.552.448-1 1-1h6zM9 17H5v2h4v-2zm10 0h-4v2h4v-2zM14 5h-4v2h4V5z" fill="rgba(153,153,153,1)"/></svg>
+							<p class="h5">Organization</p>
+			            </a>
+			        </li>
+
+		          	<li {% if request.path == create_user_page  %}class="nav-item menu-open" {% else %} class="nav-item" {% endif %}>
+			            <a href="{{create_user_page}}" {% if request.path == create_user_page or request.path == user_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<!-- <i class="fa-solid fa-user fa-lg mr-2"></i> -->
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 22a8 8 0 1 1 16 0h-2a6 6 0 1 0-12 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" fill="rgba(153,153,153,1)"/></svg>
+			              	<p class="h5">User</p>
+			            </a>
+			        </li>
+
+			        <li {% if request.path == add_country or request.path == country_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child" {% endif %}>
+			            <a href="{{country_list}}" {% if request.path == add_country or request.path == country_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-2.29-2.333A17.9 17.9 0 0 1 8.027 13H4.062a8.008 8.008 0 0 0 5.648 6.667zM10.03 13c.151 2.439.848 4.73 1.97 6.752A15.905 15.905 0 0 0 13.97 13h-3.94zm9.908 0h-3.965a17.9 17.9 0 0 1-1.683 6.667A8.008 8.008 0 0 0 19.938 13zM4.062 11h3.965A17.9 17.9 0 0 1 9.71 4.333 8.008 8.008 0 0 0 4.062 11zm5.969 0h3.938A15.905 15.905 0 0 0 12 4.248 15.905 15.905 0 0 0 10.03 11zm4.259-6.667A17.9 17.9 0 0 1 15.973 11h3.965a8.008 8.008 0 0 0-5.648-6.667z" fill="rgba(153,153,153,1)"/></svg>
+			              <p class="h5">Country</p>
+			            </a>
+			        </li>
+
+			        <li {% if request.path == add_city or request.path == city_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child" {% endif %}>
+			            <a href="{{city_list}}" {% if request.path == add_city or request.path == city_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 19V5.7a1 1 0 0 1 .658-.94l9.671-3.516a.5.5 0 0 1 .671.47v4.953l6.316 2.105a1 1 0 0 1 .684.949V19h2v2H1v-2h2zm2 0h7V3.855L5 6.401V19zm14 0v-8.558l-5-1.667V19h5z" fill="rgba(153,153,153,1)"/></svg>
+			              	<p class="h5">City</p>
+			            </a>
+			        </li>
+			        <li {% if request.path == add_school or request.path == school_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child" {% endif %}>
+			            <a href="{{school_list}}" {% if request.path == add_school or request.path == school_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M21 19h2v2H1v-2h2V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v15h4v-8h-2V9h3a1 1 0 0 1 1 1v9zM5 5v14h8V5H5zm2 6h4v2H7v-2zm0-4h4v2H7V7z" fill="rgba(153,153,153,1)"/></svg>
+			              	<p class="h5">School</p>
+			            </a>
+			        </li>
+
+					<li {% if request.path == school_exam_type_add or request.path == school_exam_type_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child" {% endif %}>
+			            <a href="{{school_exam_type_list}}" {% if request.path == school_exam_type_add or request.path == school_exam_type_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M21 8v12.993A1 1 0 0 1 20.007 22H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8zm-2 1h-5V4H5v16h14V9zM8 7h3v2H8V7zm0 4h8v2H8v-2zm0 4h8v2H8v-2z" fill="rgba(153,153,153,1)"/></svg>
+			              <p class="h5">School Exam Type</p>
+			            </a>
+			        </li>
+			        	{% endif %}
+			        {% endif %}
+			        {% url 'web:add_course' as add_course %}
+		          	{% url 'web:list_course' as list_course %}
+			        {% url 'web:client_create' as client_create %}
+		          	{% url 'web:application_list' as application_list %}
+
+		          	{% if user.is_authenticated %}
+		          		{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"aggent" or request.user|has_group:"student" %}
+		          	{% url 'web:course_calculate_cost' as course_calculate_cost %}
+			        <li {% if request.path == course_calculate_cost or request.path == application_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child" {% endif %}>
+			            <a href="{{application_list}}" {% if request.path == course_calculate_cost or request.path == application_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM8 19h12v-8H8v8zm-2 0v-9a1 1 0 0 1 1-1h13V7h-8.414l-2-2H4v14h2z" fill="rgba(153,153,153,1)"/></svg>
+			              	<p class="h5">Application</p>
+			            </a>
+			        </li>
+			        	{% endif %}
+			        {% endif %}
+
+			        {% url 'web:create_currency' as create_currency %}
+			        {% url 'web:currency_list' as currency_list %}
+			        {% if user.is_authenticated %}
+						{% if user.is_superuser or request.user|has_group:"admin" %}
+					<li {% if request.path == create_currency or request.path == currency_list  %}class="nav-item menu-open" {% else %} class="nav-item has-child"  {% endif %}>
+			            <a href="{{currency_list}}" {% if request.path == create_currency or request.path == currency_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M8.686 4l2.607-2.607a1 1 0 0 1 1.414 0L15.314 4H19a1 1 0 0 1 1 1v3.686l2.607 2.607a1 1 0 0 1 0 1.414L20 15.314V19a1 1 0 0 1-1 1h-3.686l-2.607 2.607a1 1 0 0 1-1.414 0L8.686 20H5a1 1 0 0 1-1-1v-3.686l-2.607-2.607a1 1 0 0 1 0-1.414L4 8.686V5a1 1 0 0 1 1-1h3.686zM6 6v3.515L3.515 12 6 14.485V18h3.515L12 20.485 14.485 18H18v-3.515L20.485 12 18 9.515V6h-3.515L12 3.515 9.515 6H6zm6 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="rgba(153,153,153,1)"/></svg>
+			              	<p class="h5">Settings</p>
+			            </a>
+			        </li>
+						{% endif %}
+			        {% endif %}
+			        {% if user.is_authenticated %}
+						{% if request.user|has_group:"organization" %}
+							{% url 'web:create_school_user_by_organization' user.organizationuserprofile.id as create_school_user_by_organization %}
+
+							{% url 'web:organization_school_user_list' user.organizationuserprofile.id as organization_school_user_list %}
+
+							{% url 'web:organization_school_create_view' user.organizationuserprofile.id as organization_school_create_view %}
+
+		          			{% url 'web:school_list' as school_list %}
+
+		          			{% url 'web:organization_application_list' user.organizationuserprofile.id as organization_application_list %}
+		          			
+		          	<li {% if request.path == create_school_user_by_organization or request.path == organization_school_user_list  %}class="nav-item menu-open" {% else %} class="nav-item" {% endif %}>
+			            <a href="{{organization_school_user_list}}" {% if request.path == create_school_user_by_organization or request.path == organization_school_user_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<i class="fa-solid fa-user fa-lg mr-2"></i>
+							<p class="h5">User</p>
+			            </a>
+			        </li>		
+					<li {% if request.path == organization_school_create_view or request.path == school_list  %}class="nav-item menu-open" {% else %} class="nav-item" {% endif %}>
+			            <a href="{{school_list}}" {% if request.path == organization_school_create_view or request.path == school_list  %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<i class="fa-solid fa-graduation-cap fa-lg mr-2"></i>
+							<p class="h5">School</p>
+			            </a>
+			        </li>
+			        <li class="nav-item">
+			            <a href="{{organization_application_list}}"  {% if request.path == organization_application_list %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<i class="fa-solid fa-book-open-reader fa-lg mr-2"></i>
+							<p class="h5">Application</p>
+			            </a>
+			        </li>
+
+
+						{% endif %}
+			        {% endif %}
+			        {% if user.is_authenticated %}
+						{% if request.user|has_group:"school" %}
+							{% url 'web:school_application_list' user.organizationuserprofile.id as  school_application_list %}
+							{% url 'web:deatil_school' user.organizationuserprofile.ref_school.id as deatil_school %}
+					<li class="nav-item">
+			            <a href="{{school_application_list}}"  {% if request.path == school_application_list %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<i class="fa-solid fa-book-open-reader fa-lg mr-2"></i>
+							<p class="h5">Application</p>
+			            </a>
+			        </li>
+			        <li class="nav-item">
+			            <a href="{{deatil_school}}" {% if request.path == deatil_school %} class="nav-link w-100 active" {% else %} class="nav-link w-100" {% endif %}>
+							<i class="fa-solid fa-graduation-cap fa-lg mr-2"></i>
+							<p class="h5">School Details</p>
+			            </a>
+			        </li>
+					{% endif %}
+			        {% endif %}
+		        </ul>
+	      	</nav>
+	      	<!-- /.sidebar-menu -->
+	    </div>
+	    <!-- /.sidebar -->
+  	</aside>
+	<script type="text/javascript">		
+				$('.has-child a.nav-link').hover(function(e) {
+					if($('body').hasClass('sidebar-collapse')){ 
+						$(this).click( () => {
+							$(this).parents('ul').find('li.nav-item.has-child').each(function(){
+							$(this).find('ul').css({
+								'display':'none',
+								'position':'absolute',
+								'right':'-255px',
+								'width': '240px',
+								'background': '#fff',
+								'border-radius': '5px',
+								'box-shadow': '0 10px 20px rgb(0 0 0 / 10%)',
+								'right': '-225px',
+								'top':'0'
+							});
+						})
+						$(this).siblings('ul').css({
+							'display' : 'block'
+						})
+						});
+						
+					}
+				})
+				$("aside.main-sidebar").mouseleave(function(){
+					$(".nav-treeview").css("display", "none");
+				  });
+			
+	</script>

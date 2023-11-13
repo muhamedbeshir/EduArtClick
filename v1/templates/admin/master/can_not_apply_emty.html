@@ -1,0 +1,41 @@
+<label>Class Details <strong class="text-danger">*</strong></label>
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Title</th>
+            <!-- <th>Days</th> -->
+            <th>Start</th>
+            <th>End</th>
+            <th>Study Period</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="4">
+                <h2 class="fs-6 text-danger text-center">Sorry, You can't apply until course completion</h2>
+            </td>
+        </tr>
+        {% for course in active_courses %}
+        <tr>
+            <td>
+                {{course.ap_course_name|truncatechars:10}}
+            </td>
+            <!-- <td class="course_days">
+                {{course.ref_day_list}}
+            </td> -->
+            <td class="course_start_timeline">
+                {{course.ap_start_date}}
+            </td>
+            <td class="course_end-timeline">
+                {{course.ap_end_date}}
+            </td>
+            <td>
+                {{course.ap_study_period}} Weeks
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>

@@ -1,0 +1,70 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Payment Not Successful{% endblock head_title %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_head %}
+<style>
+	.success-bg {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		/* opacity: .1; */
+	}
+	img.success-bg {
+		opacity: .1;
+	}
+	.success-content {
+		position: relative;
+	}
+	.success-page .success-icon {
+		font-size: 5rem;
+	}
+	.success-img {
+		position: absolute;
+		left: 0;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<img class="success-bg" src="{% static 'img/success-bg.png' %}">
+	<div class="container-xxl container-p-y text-center">
+		<div class="misc-wrapper">
+			<div class="col-md-6 mx-auto my-auto">
+				<div class="card shadow">
+					<div class="card-body success-page mb-3">
+						<img src="{% static 'img/success-png.png' %}" class="w-100 success-img">
+						<div class="success-content">
+							<div class="mt-5">
+								<i class="ri-close-circle-line success-icon text-danger"></i>
+							</div>
+							<h2 class="mb-2 mx-2">Payment Unsuccessful</h2>
+							<p class="mx-2">Your payment is Unsuccessfull </p>
+							<!-- <p class="p-3 rounded bg-light"><strong>Transaction ID:</strong> <span>{{ transaction_id }}</span></p> -->
+							<table class="table table-bordered my-3">
+								<tr>
+									<th>Application</th>
+									<th>School</th>
+									<th>Course Name</th>
+									<th>Total Price</th>
+								</tr>
+								<tr>
+									<td class="d-flex align-items-center"><strong>{{ application_code }}</strong></td>
+									<td>{{ school }}</td>
+									<td>{{ course }}</td>
+									<td>{{ currency }} {{ amount|intcomma }} /-</td>
+								</tr>
+							</table>
+							<a href="{% url 'web:application_detail' application_id %}" class="btn btn-primary px-5">Back</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Content wrapper -->
+{% endblock content %}

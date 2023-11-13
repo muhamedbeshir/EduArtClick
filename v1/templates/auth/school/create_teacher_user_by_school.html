@@ -1,0 +1,288 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add School Teacher{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+	  <!-- Main content -->
+	  <section class="content">
+		  <div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>
+			  <div class="error-content">
+				  <h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				  <p>We could not find the page you were looking for.</p>
+			  </div>
+		  </div>
+	  </section>
+	</div>
+  <!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add School Teacher</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' school.id %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add School Teacher</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="rounded shadow bg-white px-5 py-3 d-flex align-items-center">
+			<i class="fa-solid fa-triangle-exclamation fa-2x pr-4 text-danger"></i>
+			{{ form.errors }}
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off" id="schoolUserForm" data-school-user-url="{% url 'web:get_school_for_org' %}">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Teacher Name</a>
+								</li>
+								<li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill"
+										data-bs-target="#tab-2" type="button" role="tab"
+										aria-controls="v-pills-profile" aria-selected="false">Teacher Profile</a>
+								</li>
+								<li>
+									<span>3</span>
+									<a class="nav-link" id="tab-3-link" data-bs-toggle="pill"
+										data-bs-target="#tab-3" type="button" role="tab"
+										aria-controls="v-pills-messages" aria-selected="false">Language Known</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">First Name <strong class="text-danger">*</strong></label>
+												<input type="text" class="form-control form-control-lg text-capitalize" placeholder="First name" name="first_name" autocomplete="off" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Last Name <strong class="text-danger">*</strong></label>
+												<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Last name" name="last_name" autocomplete="off" required>
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<a  id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="true" class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next <i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"	aria-labelledby="v-pills-profile-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Email <strong class="text-danger">*</strong></label>
+												<input type="email" class="form-control form-control-lg" placeholder="Enter Email" id="exampleInputEmail1" name="email" autocomplete="off" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Gender <strong class="text-danger">*</strong></label>
+												<select class="form-select form-select-lg" name="gender" required="" id="id_ap_gender">
+													<option value="" selected="">---------</option>
+													<option value="0">Male</option>
+													<option value="1">Female</option>
+												</select>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Date of Birth <strong class="text-danger">*</strong></label>
+												<div class="input-group date" id="id_date_of_birth" data-target-input="nearest">
+													<input type="date" name="date_of_birth" class="form-control form-control-lg  datetimepicker-input" data-target="#id_date_of_birth" required="" placeholder="YYYY-MM-DD" max="{{pdate}}">
+													<!-- <div class="input-group-append" data-target="#id_date_of_birth" data-toggle="datetimepicker">
+														<div class="input-group-text h-100">
+															<i class="ri-calendar-line ri-lg"></i>
+														</div>
+													</div> -->
+												</div>
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a  id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="false"  class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+											   <a  id="btn-tab-3" data-bs-toggle="pill" data-bs-target="#tab-3" type="button" role="tab" aria-controls="tab-3" aria-selected="false" class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next <i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											 </div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-3" id="tab-3" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Language 1 <strong class="text-danger">*</strong></label>
+												<input type="text" name="lang_one" class="form-control form-control-lg text-capitalize" placeholder="Language 1" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Language 2</label>
+												<input type="text" name="lang_two" class="form-control form-control-lg text-capitalize" placeholder="Language 2">
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Language 3</label>
+												<input type="text" name="lang_three" class="form-control form-control-lg text-capitalize" placeholder="Language 3">
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-4" data-bs-toggle="pill" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false" class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit" class="btn btn-success px-4 d-flex align-items-center">Submit <i class="ri-arrow-right-line ms-3 me-0"></i></button>
+											 </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'js/button_navigation.js' %}"></script>
+
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'admin/js/quo_deatils_add.js' %}"></script>
+
+<script type="text/javascript">
+	$(function () {
+    //Date range picker
+    $('#id_date_of_birth').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
+  })
+</script>
+<script>
+	function ValidateEmail(emailAddress) 
+	{
+		let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (emailAddress.match(mailformat)) {
+			return true
+		} else {
+			return false
+		}
+	}
+	$(document).ready(()=>{
+		$('#btn-tab-1').addClass('disabled');
+		$('#btn-tab-3').addClass('disabled');
+
+		// Step-1
+		$(document).on('keyup', 'input[name="first_name"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				$('input[name="last_name"]').val() ? validate = true : ''
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="last_name"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				$('input[name="first_name"]').val() ? validate = true : ''
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		
+
+		// Step-2
+		$(document).on('keyup', 'input[name="email"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				if (ValidateEmail($(this).val()) && $('select[name="gender"]').val() && $('input[name="date_of_birth"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('change', 'select[name="gender"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				if ($('input[name="email"]').val() && $('input[name="date_of_birth"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="date_of_birth"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				if ($('input[name="email"]').val() && $('select[name="gender"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('change', 'input[name="date_of_birth"]', function(e){
+			let validate = false;
+			if ($(this).val()) {
+				if ($('input[name="email"]').val() && $('select[name="gender"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+	});
+</script>
+{% endblock%}

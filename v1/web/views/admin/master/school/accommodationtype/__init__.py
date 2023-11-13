@@ -1,0 +1,1 @@
+from .views import create_school_accommodation_type, edit_school_accommodation_type, delete_school_accommodation_type

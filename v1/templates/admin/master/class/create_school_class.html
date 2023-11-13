@@ -1,0 +1,834 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add School Class{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="{% static 'admin/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="{% static 'admin/plugins/inputmask/jquery.inputmask.min.js'%}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js'%}"></script>
+<style>
+	input[type="date"]::-webkit-inner-spin-button,
+	input[type="date"]::-webkit-calendar-picker-indicator {
+		display: none;
+		-webkit-appearance: none;
+	}
+</style>
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<!-- <h1>403 Error Page</h1> -->
+					</div>
+				</div>
+			</div><!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>
+						We could not find the page you were looking for.
+					</p>
+				</div>
+				<!-- /.error-content -->
+			</div>
+			<!-- /.error-page -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add School Class</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:details_school_course' course.pk %}">Course Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add School Class</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" id="schoolForm"
+			data-schools-url="{% url 'web:get_city' %}" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Course Details</a>
+								</li>
+								<li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill" data-bs-target="#tab-2"
+										type="button" role="tab" aria-controls="v-pills-profile"
+										aria-selected="false">Teacher Details</a>
+								</li>
+								<li>
+									<span>3</span>
+									<a class="nav-link" id="tab-3-link" data-bs-toggle="pill" data-bs-target="#tab-3"
+										type="button" role="tab" aria-controls="v-pills-messages"
+										aria-selected="false">Course Timeline</a>
+								</li>
+								<li>
+									<span>4</span>
+									<a class="nav-link" id="tab-4-link" data-bs-toggle="pill" data-bs-target="#tab-4"
+										type="button" role="tab" aria-controls="v-pills-settings"
+										aria-selected="false">Course Structure</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel"
+								aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Choose of Level <strong
+															class="text-danger">*</strong></label>
+													{{form.ref_level}}
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Class Title <strong
+														class="text-danger">*</strong></label>
+												{{form.title}}
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Minimum Student<strong
+															class="text-danger">*</strong></label>
+													{{form.minimum}}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Maximum Student<strong
+															class="text-danger">*</strong></label>
+													{{form.maximum}}
+												</div>
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<a id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="true"
+													class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"
+								aria-labelledby="v-pills-profile-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Day <strong
+														class="text-danger">*</strong></label>
+												<br>
+												{% for day in days %}
+												<input type="checkbox" name="{{day.name}}" value="{{day.id}}"
+													id="id_ref_day" class="ref_day"> {{day.name}}&nbsp;&nbsp;
+												{% endfor %}
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Select Schedule <strong
+															class="text-danger">*</strong></label>
+													{{form.ref_schedule}}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Select Teacher <strong
+															class="text-danger">*</strong></label>
+													{{form.ref_teacher_name}}
+												</div>
+											</div>
+
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1"
+													type="button" role="tab" aria-controls="tab-1" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-3" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-3" id="tab-3" role="tabpanel"
+								aria-labelledby="v-pills-messages-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Select Room <strong
+															class="text-danger">*</strong></label>
+													{{ form.ref_room }}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Course Type<strong
+															class="text-danger">*</strong></label>
+													<!-- <select name="type_of_course" class="form-select form-select-lg"
+														required="" id="id_type_of_course"
+														onchange="typeofCourse(this);">
+														<option value="" selected="">.......</option>
+														<option value="0">Continue </option>
+														<option value="1">Start</option>
+													</select> -->
+													{{form.ref_type_of_course}}
+												</div>
+											</div>
+											<div class="row mb-3">
+												<!-- <div class="row" id="hiddenFormFiled">
+												</div> -->
+												<div class="col">
+													<label class="form-label" for="">Start Date<strong
+															class="text-danger">*</strong></label>
+
+													<div class="input-group date">
+														<!-- <input type="text"
+															class="form-control form-control-lg datetimepicker-input"
+															name="summar_start" placeholder="yyyy-mm-dd" required /> -->
+														{{form.summar_start}}
+														<div class="input-group-append" data-target="#reservationdate"
+															data-toggle="datetimepicker">
+															<div class="input-group-text h-100">
+																<i class="ri-calendar-line ri-lg"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col">
+													<label class="form-label" for="">End Date<strong
+															class="text-danger">*</strong></label>
+													<!-- {{form.summar_end}} -->
+													<div class="input-group date">
+														<!-- <input type="text"
+															class="form-control form-control-lg datetimepicker-input"
+															name="summar_end" placeholder="yyyy-mm-dd" required /> -->
+														{{form.summar_end}}
+														<div class="input-group-append" data-target="#reservationdate"
+															data-toggle="datetimepicker">
+															<div class="input-group-text h-100">
+																<i class="ri-calendar-line ri-lg"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Study Period</label>
+													<input type="text" class="form-control form-control-lg"
+														placeholder="0 Weeks" value="" id="course_study_period"
+														disabled />
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Start Day</label>
+													{{form.start_day}}
+												</div>
+											</div>
+											<div class="mb-3">
+												<table class="table form-table table-borderless table-sm" id="example1">
+													<thead class="text-center">
+														<tr>
+															<th style="text-align: left;">Min week <strong
+																	class="text-danger">*</strong></th>
+															<th style="text-align: left;">Max week <strong
+																	class="text-danger">*</strong></th>
+															<th style="text-align: left;">Price (Per week)
+																<strong class="text-danger">*</strong>
+															</th>
+															<th style="text-align: left;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for form_data in formset %}
+														<tr class="item">
+															<td>
+																{{ form_data.min_weak }}
+															</td>
+															<td>
+																{{ form_data.max_weak }}
+															</td>
+															<td>
+																<div class="input-group">
+																	<div class="input-group-prepend">
+																		<span
+																			class="input-group-text h-100">{{school.ref_currency.currency_short|upper}}</span>
+																	</div>
+																	{{ form_data.price }}
+																</div>
+															</td>
+															<td>
+																<button type="button"
+																	class="btn btn-danger btn-sm remove-form-row"
+																	id="{{ formset.prefix }}">
+																	Delete
+																</button>
+															</td>
+														</tr>
+														{% endfor %}
+
+														<tr>
+															<td colspan="9"
+																style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+																<button type="button"
+																	class="btn btn-sm btn-success add-form-row"
+																	id="{{ formset.prefix }}">
+																	Add
+																</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												{{ formset.management_form }}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-4" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-5" data-bs-toggle="pill" data-bs-target="#tab-4"
+													type="button" role="tab" aria-controls="tab-4" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-4" id="tab-4" role="tabpanel"
+								aria-labelledby="v-pills-settings-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Note</label>
+												{{form.note}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Document File (Only .pdf
+													supported)</label>
+												{{form.document}}
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100 nav">
+												<a id="btn-tab-6" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit"
+													class="btn btn-success px-4 d-flex align-items-center">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'js/button_navigation.js' %}"></script>
+
+<!-- Select2 -->
+<script src="{% static 'admin/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- BS-Stepper -->
+<script src="{% static 'admin/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+
+<script type="text/javascript">
+
+	// start and continew option 
+	function typeofCourse(sel) {
+		var id_type_of_course = document.getElementById('id_type_of_course');
+		var hiddenFormFiledData = document.getElementById('hiddenFormFiled');
+		if (sel.options[sel.selectedIndex].value == "0") {
+			hiddenFormFiledData.innerHTML = '';
+		}
+
+		else if (sel.options[sel.selectedIndex].value == "1") {
+			hiddenFormFiledData.innerHTML = '<div class="col"><label class="form-label" for="">Summar Start <strong class="text-danger">*</strong></label><input type="date" name="summar_start" class="form-control form-control-lg" id="id_summar_start" placeholder="YYYY-MM-DD" min="{{cdate}}" required></div><div class="col"><label class="form-label" for="">Summar End <strong class="text-danger">*</strong></label><input type="date" name="summar_end" placeholder="YYYY-MM-DD" class="form-control form-control-lg" id="id_summar_end" min="{{cdate}}" required></div>';
+		} else if (sel.options[sel.selectedIndex].value == "") {
+			hiddenFormFiledData.innerHTML = '';
+		}
+
+
+	}
+
+	$(function () {
+		//Date range picker
+		// $('#id_summar_start').datetimepicker({
+		// 	format: 'YYYY-MM-DD'
+		// });
+		// $('#id_summar_end').datetimepicker({
+		// 	format: 'YYYY-MM-DD'
+		// });
+	})
+
+	$(function () {
+		//Initialize Select2 Elements
+		$('.select2').select2()
+
+		//Initialize Select2 Elements
+		$('.select2bs4').select2({
+			theme: 'bootstrap4'
+		})
+	})
+</script>
+<script>
+	function validateFileds(...args) {
+		let validate = false;
+		$.each(args, function (idx, field) {
+			if ($(field).val()) {
+				validate = true;
+			} else {
+				validate = false;
+				return false;
+			}
+		});
+		return validate;
+	}
+
+	$(document).ready(() => {
+		const week_days_list = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		let study_period = 0;
+		let week_days = [0, 1, 2, 3, 4, 5, 6];
+		let current_year = "{% now 'Y' %}";
+		let next_year = parseInt(current_year) + 1;
+
+		const blank_option = '<option value="" selected="">---------</option>'
+		"{% if '/dashboard/add-school-class/' in request.path %}"
+		$("#id_ref_teacher_name").html(blank_option);
+		$("#id_ref_room").html(blank_option);
+		$("#id_start_day").html(blank_option);
+		"{% endif %}"
+
+
+		$('#btn-tab-1').addClass('disabled');
+		$('#btn-tab-3').addClass('disabled');
+		$('#btn-tab-5').addClass('disabled');
+		$('#btn-tab-7').addClass('disabled');
+
+		// Step-1
+		$(document).on('keyup', 'input[name="title"]', function (e) {
+			let validate = false;
+
+			if ($(this).val()) {
+				validateFileds('input[name="maximum"]', 'input[name="maximum"]', 'select[name="ref_level"]') ? validate = true : '';
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		
+		$(document).on('keyup, change', 'input[name="minimum"]', function (e) {
+
+			let validate = false;
+			if ($(this).val() < 1) {
+				$(this).val('')
+			}
+
+			if ($(this).val()) {
+				$("#id_maximum").attr('min', parseInt($(this).val()) + 1);
+
+				validateFileds('input[name="title"]', 'input[name="maximum"]', 'select[name="ref_level"]') ? validate = true : '';
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		// $(document).on('change', 'input[name="minimum"]', function (e) {
+		// 	let validate = false;
+
+		// 	if ($(this).val()) {
+		// 		validateFileds('input[name="title"]', 'input[name="maximum"]', 'select[name="ref_level"]') ? validate = true : '';
+		// 	}
+
+		// 	(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		// });
+
+		$(document).on('keyup, change', 'input[name="maximum"]', function (e) {
+
+			let validate = false;
+			if ($(this).val() < parseInt($("#id_minimum").val())) {
+				$(this).val(parseInt($("#id_minimum").val()) + 1);
+			}
+
+			if ($(this).val()) {
+				validateFileds('input[name="title"]', 'input[name="minimum"]', 'select[name="ref_level"]') ? validate = true : '';
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		// $(document).on('change', 'input[name="maximum"]', function (e) {
+		// 	let validate = false;
+
+		// 	if ($(this).val()) {
+		// 		validateFileds('input[name="title"]', 'input[name="minimum"]', 'select[name="ref_level"]') ? validate = true : '';
+		// 	}
+
+		// 	(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		// });
+
+		$(document).on('change', 'select[name="ref_level"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				validateFileds('input[name="title"]', 'input[name="maximum"]', 'input[name="minimum"]') ? validate = true : '';
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+
+		// Step-2
+		$(document).on('change', 'select[name="ref_teacher_name"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				$('input:checkbox').each(function (idx, field) {
+					if ($(field).is(':checked')) {
+						validateFileds('select[name="ref_schedule"]') ? validate = true : '';
+					}
+				});
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		
+		$(document).on('change', 'select[name="ref_schedule"]', function (e) {
+			let validate = false;
+			let days_list = [];
+			let class_days = [];
+
+			if ($(this).val()) {
+				$('input:checkbox').each(function (idx, field) {
+					if ($(field).is(':checked')) {
+						validateFileds('select[name="ref_teacher_name"]') ? validate = true : '';
+					}
+				});
+			}
+
+			$('#id_start_day').empty().append(blank_option)
+			$('input:checkbox').each(function (idx, field) {
+				if ($(field).is(':checked')) {
+					// Add the value of the checked checkbox to the selected array
+					let selected_day = $(field).val()
+					days_list.push(selected_day);
+					class_days.push(selected_day - 1);
+					$('#id_start_day').append(new Option(week_days_list[selected_day - 1], week_days_list[selected_day - 1]))
+				}
+			});
+			// Display selected days in calendar
+			$('.datetimepicker-input').datepicker("destroy");
+			$('.datetimepicker-input').datepicker({
+				beforeShowDay: function (date) {
+					var dayOfWeek = date.getDay();
+					// 0 : Sunday, 1 : Monday, ...
+					if (class_days.includes(dayOfWeek)) return [true];
+					else return [false];
+				},
+				dateFormat: 'yy-mm-dd',
+				yearRange: `${current_year}:${next_year}`,
+				minDate: "{{cdate}}",
+			});
+			// End Display selected days in calendar
+
+			console.log(days_list);
+			// Making Ajax Call
+			e.preventDefault();
+
+			$.ajax({
+				type: "GET",
+				url: "/dashboard/get_available_teachers_and_rooms/",
+				data: {
+					school: "{{course.ref_school.id}}",
+					schedule: $(this).val(),
+					minimum: $("#id_minimum").val(),
+					maximum: $("#id_maximum").val(),
+					days: days_list,
+				},
+				success: function (result) {
+					available_teachers = JSON.stringify(result['available_teachers']);
+					available_teachers_obj = JSON.parse(available_teachers);
+
+					available_rooms = JSON.stringify(result['available_rooms']);
+					available_rooms_obj = JSON.parse(available_rooms);
+
+					let teacher_options = ["<option value selected>---------</option>"]
+					$.each(available_teachers_obj, function (idx, element) {
+						let teacher_id = element.ref_user_id;
+						let teacher_name = `${element.first_name} ${element.last_name}`;
+						teacher_options.push(`<option value="${teacher_id}">${teacher_name}</option>`)
+					});
+
+					let room_options = ["<option value selected>---------</option>"]
+					$.each(available_rooms_obj, function (idx, element) {
+						let room_id = element.id;
+						let room_name = element.name;
+						room_options.push(`<option value="${room_id}">${room_name}</option>`)
+					});
+
+					$("#id_ref_room").html(room_options);
+					$("#id_ref_teacher_name").html(teacher_options);
+				},
+				error: function (result) {
+					console.log('error');
+				}
+			});
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('change', 'input:checkbox', function (e) {
+			$("#id_ref_schedule").val($("#id_ref_schedule option:first").val()).trigger('change');
+		});
+
+		// Step-3
+		$(document).on('change', 'select[name="ref_type_of_course"]', function (e) {
+			let validate = false;
+
+			validateFileds('select[name="ref_room"]', 'input[name="summar_start"]', 'input[name="summar_end"]') ? validate = true : '';
+
+			if (validate) {
+				$('input.formset-field').each(function (idx, field) {
+					if ($.isNumeric($(this).val())) {
+						validate = true;
+					} else {
+						validate = false;
+						return false;
+					}
+				});
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+		$(document).on('change', 'select[name="ref_room"]', function (e) {
+			let validate = false;
+
+			if ($(this).val()) {
+				validateFileds('select[name="ref_type_of_course"]', 'input[name="summar_start"]', 'input[name="summar_end"]') ? validate = true : '';
+			}
+
+			if (validate) {
+				$('input.formset-field').each(function (idx, field) {
+					if ($.isNumeric($(this).val())) {
+						validate = true;
+					} else {
+						validate = false;
+						return false;
+					}
+				});
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		$(document).on('keyup', 'input[name="summar_start"], input[name="summar_end"]', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
+		$(document).on('change', 'input[name="summar_start"]', function (e) {
+			let validate = false;
+
+			if ($(this).val()) {
+				$('input[name="summar_end"]').val('');
+				$('input[name="summar_end"]').attr('min', $(this).val());
+
+				validateFileds('select[name="ref_type_of_course"]', 'select[name="ref_room"]', 'input[name="summar_end"]') ? validate = true : '';
+			}
+
+			if (validate) {
+				$('input.formset-field').each(function (idx, field) {
+					if ($.isNumeric($(this).val())) {
+						validate = true;
+					} else {
+						validate = false;
+						return false;
+					}
+				});
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		$(document).on('change', 'input[name="summar_end"]', function (e) {
+			let validate = false;
+
+			if ($(this).val()) {
+				validateFileds('select[name="ref_type_of_course"]', 'select[name="ref_room"]', 'input[name="summar_start"]') ? validate = true : '';
+			}
+
+			if (validate) {
+				$('input.formset-field').each(function (idx, field) {
+					if ($.isNumeric($(this).val())) {
+						validate = true;
+					} else {
+						validate = false;
+						return false;
+					}
+				});
+			}
+
+			if ($(this).val() < $("#id_summar_start").val()) {
+				alert("Course end date should be geater than course start date");
+				$(this).val('');
+			}
+
+			let course_start = $("#id_summar_start").val();
+			let course_end = $(this).val();
+			let day = 24 * 60 * 60 * 1000;
+			let d1 = new Date(course_start);
+			let d2 = new Date(course_end);
+
+			if (course_start && course_end) {
+				study_period = Math.ceil(Math.round(d2 - d1) / day);
+				study_period = Math.round(study_period / 7);
+				$("#course_study_period").val(`${study_period} Weeks`);
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		// $(document).on('keydown', '.min-weak, .max-weak', function (e) {
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// });
+
+
+		$(document).on('change', 'input.formset-field', function (e) {
+			let validate = false;
+			let min_max_validate = true;
+
+			// Checking Min and Max Week Should not be greater than course study period
+			if ($(this).val() > study_period && $(this).attr('name').endsWith('max_weak') || $(this).val() > study_period && $(this).attr('name').endsWith('min_weak')) {
+				alert('Min or Max Week should not greater than Course Study Period');
+				$(this).val('');
+				validate = false;
+				return false;
+			}
+
+			// console.log($('input.formset-field').length);
+			$('input.formset-field').each(function (idx, field) {
+				if ($.isNumeric($(this).val())) {
+					validate = true;
+					// Checking Min and Max Week
+					if ($(this).attr('name').endsWith('max_weak')) {
+						let str_max_week = $(this).attr('name').replace('-max_weak', '');
+						row_number = parseInt(str_max_week.replace('price-', ''));
+					} else if ($(this).attr('name').endsWith('min_weak')) {
+						let str_min_week = $(this).attr('name').replace('-min_weak', '');
+						row_number = parseInt(str_min_week.replace('price-', ''));
+					}
+					if (row_number >= 0) {
+						console.log(row_number);
+
+						let max_weak = $(`#id_price-${row_number}-max_weak`).val();
+						let min_weak = $(`#id_price-${row_number}-min_weak`).val(); // id_price-0-max_weak
+						console.log(max_weak, min_weak);
+
+						if (min_max_validate) {
+							if (max_weak && min_weak) {
+								if (parseInt(min_weak) > parseInt(max_weak)) {
+									min_max_validate = false;
+									alert(`Please enter a valid minimum, maximum week value. Minimum Week : ${min_weak}, Maximum Week : ${max_weak}`);
+									$(`#id_price-${row_number}-max_weak`).val('');
+									$(`#id_price-${row_number}-min_weak`).val('');
+								} else {
+									min_max_validate = true;
+								}
+							}
+						}
+
+						// Checking Previous Max Week with Current Min Week
+						// If current is less that previous than throw an error
+						if (parseInt(min_weak) <= parseInt($(`#id_price-${row_number - 1}-max_weak`).val())) {
+							alert("Current Min Week should be grater than Previous Max Week");
+							$(`#id_price-${row_number}-min_weak`).val('')
+							validate = false;
+						}
+					}
+
+				} else {
+					$(this).val('')
+					validate = false;
+					return false;
+				}
+			});
+
+			if (validate) {
+				validateFileds('select[name="ref_type_of_course"]', 'select[name="ref_room"]', 'input[name="summar_start"]', 'input[name="summar_end"]') ? validate = true : validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+	});
+</script>
+{% endblock%}

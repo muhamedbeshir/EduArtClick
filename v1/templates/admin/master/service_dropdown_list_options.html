@@ -1,0 +1,40 @@
+<label>Select Service</label>
+<table class="table">
+
+	<thead>
+		<tr>
+			<th></th>
+			<th>Service Name</th>
+			<th>Service Type</th>
+			<th>Service price</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if services %}
+		{% for service in services %}
+		<tr>
+			<td>
+				<input type="checkbox" class="form-check-input" name="s_service" value="{{service.id}}" id="">
+			</td>
+			<td>
+				{{service.service_name}}
+			</td>
+			<td>
+
+				{{service.service_type_title}}
+			</td>
+			<td>
+				{{service.ref_school.ref_currency.currency_short}} {{service.price}}
+			</td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<tr>
+			<td colspan="4" style="color:red;">This school has no available services
+			</td>
+		</tr>
+		{% endif %}
+
+	</tbody>
+
+</table>

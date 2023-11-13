@@ -1,0 +1,339 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{ title|title }}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{ title|title }}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:school_list' %}">Schools</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{ title|title }}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" id="schoolForm"
+			data-schools-url="{% url 'web:get_city' %}" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Organization Details</a>
+								</li>
+								<li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill" data-bs-target="#tab-2"
+										type="button" role="tab" aria-controls="v-pills-profile"
+										aria-selected="false">School Details</a>
+								</li>
+								<li>
+									<span>3</span>
+									<a class="nav-link" id="tab-3-link" data-bs-toggle="pill" data-bs-target="#tab-3"
+										type="button" role="tab" aria-controls="v-pills-messages"
+										aria-selected="false">School Location</a>
+								</li>
+								<li>
+									<span>4</span>
+									<a class="nav-link" id="tab-4-link" data-bs-toggle="pill" data-bs-target="#tab-4"
+										type="button" role="tab" aria-controls="v-pills-settings"
+										aria-selected="false">Currency</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel"
+								aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_ref_organization">Organization
+													Details <strong class="text-danger">*</strong></label>
+												{{ form.ref_organization }}
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<a id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="true"
+													class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"
+								aria-labelledby="v-pills-profile-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_school_name">School Name <strong
+														class="text-danger">*</strong></label>
+												{{ form.school_name }}
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label" for="id_email">Email <strong
+														class="text-danger">*</strong></label>
+												{{ form.email }}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1"
+													type="button" role="tab" aria-controls="tab-1" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-3" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-3" id="tab-3" role="tabpanel"
+								aria-labelledby="v-pills-messages-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="id_ref_country">Select
+														Country <strong class="text-danger">*</strong></label>
+													{{ form.ref_country }}
+												</div>
+
+												<div class="col">
+													<label class="form-label" for="id_ref_city">Ref City <strong
+															class="text-danger">*</strong></label>
+													{{ form.ref_city }}
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Postal Code <strong
+														class="text-danger">*</strong></label>
+												{{ form.postal_code }}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Address <strong
+														class="text-danger">*</strong></label>
+												{{ form.address }}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-4" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-5" data-bs-toggle="pill" data-bs-target="#tab-4"
+													type="button" role="tab" aria-controls="tab-4" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-4" id="tab-4" role="tabpanel"
+								aria-labelledby="v-pills-settings-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_ref_currency">Ref Currency <strong
+														class="text-danger">*</strong></label>
+												{{ form.ref_currency }}
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100 nav">
+												<a id="btn-tab-6" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit"
+													class="btn btn-success px-4 d-flex align-items-center">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+
+	$("#id_ref_country").change(function () {
+		let url = $("#schoolForm").attr("data-schools-url");  // get the url of the `load_schools` view
+		let countryId = $(this).val();  // get the selected country ID from the HTML
+
+		$.ajax({                       // initialize an AJAX request
+			url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+			data: {
+				'country': countryId       // add the country id to the GET parameters
+			},
+			success: function (data) {   // `data` is the return of the `load_cities` view function
+				$("#id_ref_city").html(data);  // replace the contents of the city input with the data that came from the server
+			}
+		});
+
+	});
+
+</script>
+<script type="text/javascript" src="{% static 'admin/js/service_add.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/course_add.js' %}"></script>
+<script src="{% static 'js/button_navigation.js' %}"></script>
+<script>
+	$(document).ready(() => {
+		$('#btn-tab-1').addClass('disabled');
+		$('#btn-tab-3').addClass('disabled');
+		$('#btn-tab-5').addClass('disabled');
+
+		// Step-1
+		$('select[name="ref_organization"]').change(function (e) {
+			if ($(this).val()) {
+				$('#btn-tab-1').removeClass('disabled');
+			} else {
+				$('#btn-tab-1').addClass('disabled');
+			}
+		});
+
+		// Step-2
+		$('input[name="school_name"]').keyup(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				if ($('input[name="email"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$('input[name="email"]').keyup(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				if ($('input[name="school_name"]').val()) {
+					validate = true;
+				} else {
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+
+		// Step-3
+		$('select[name="ref_country"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('select[name="ref_city"]').val() && $('#id_postal_code').val() && $('#id_address').val()) ? validate = true : validate = false;
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+		$('select[name="ref_city"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('select[name="ref_country"]').val() && $('#id_postal_code').val() && $('#id_address').val()) ? validate = true : validate = false;
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		function isNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				return false;
+			}
+			return true;
+		}
+
+		$(document).on('keypress', '#id_postal_code', function (e) {
+			let validate = false;
+
+			if (isNumber(e)) {
+				($('select[name="ref_country"]').val() && $('select[name="ref_city"]').val() && $('#id_address').val()) ? validate = true : validate = false;
+			} else {
+				validate = false;
+				e.preventDefault();
+				e.stopPropagation();
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+
+		$(document).on('keyup', '#id_address', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('select[name="ref_country"]').val() && $('select[name="ref_city"]').val() && $('#id_postal_code').val()) ? validate = true : validate = false;
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-5').removeClass('disabled') : $('#btn-tab-5').addClass('disabled')
+		});
+	});
+</script>
+{% endblock%}

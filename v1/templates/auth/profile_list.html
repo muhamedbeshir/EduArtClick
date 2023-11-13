@@ -1,0 +1,120 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}User List{% endblock %}
+{% load static %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">List User Profile</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+		        <div class="card-header">
+		          	<h3 class="card-title">Users</h3>
+
+		          	<div class="card-tools">
+		            	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+		              	<i class="fas fa-minus"></i>
+		            	</button>
+		            	<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+		              	<i class="fas fa-times"></i>
+		            	</button>
+		          </div>
+		        </div>
+        		<div class="card-body p-0">
+			        <table class="table table-striped projects">
+			            <thead>
+			                <tr>
+			                    <th class="text-left">
+			                        Image                      
+			                    </th>
+			                    <th class="text-center">
+			                        Name
+			                    </th>
+			                    <th class="text-center">
+			                        Email
+			                    </th>
+			                    <th class="text-center">
+			                        Type
+			                    </th>
+			                    <th class="text-center">
+			                    	created_at
+			                    </th>
+			                    
+			                    <th class="text-center">
+			                        Active Status
+			                    </th>
+			                    <th class="text-right" style="width: 20%">
+			                    	Action
+			                    </th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			            	{% for profile in profiles%}
+			                <tr>
+			                    <td>
+			                    	{% if profile.avtar %}
+			                    	<img alt="Avatar" class="table-avatar" src="{{profile.avtar.url}}">
+			                    	{% else %}
+			                        <img alt="Avatar" class="table-avatar" src="{% static '/admin/dist/img/avatar.png' %}">
+			                    	{% endif %}
+			                    </td>
+			                    <td class="text-center">
+			                    	<a>{{profile.first_name}} {{profile.last_name}}</a>
+			                    </td>
+			                    <td class="text-center">
+			                    	{{profile.email}}
+			                    </td>
+			                    <td class="text-center">
+			                        {{profile.type}} 
+			                    </td>
+			                    <td class="text-center">
+			                    	{{profile.created_at}}
+			                	</td>
+			                    <td class="project-state text-center">
+			                        <span class="badge badge-success">{{profile.ref_user.is_active}}</span>
+			                    </td>
+			                    <td class="project-actions text-right">
+			                        <a class="btn btn-primary btn-sm" href="#">
+			                            <i class="fas fa-folder">
+			                            </i>
+			                            View
+			                        </a>
+			                        <a class="btn btn-info btn-sm" href="#">
+			                            <i class="fas fa-pencil-alt">
+			                            </i>
+			                            Edit
+			                          </a>
+			                          <a class="btn btn-danger btn-sm" href="#">
+			                            <i class="fas fa-trash">
+			                            </i>
+			                            Delete
+			                          </a>
+			                    </td>
+			                </tr>
+			                {% endfor %}
+			            </tbody>
+			        </table>
+        		</div>
+        		<!-- /.card-body -->
+      		</div>
+      		<!-- /.card -->
+
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Student User Create{% endblock %}
+{% load static %}
+{% load auth_extras %}
+{% block content %}
+
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+	  <!-- Main content -->
+	  <section class="content">
+		  <div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>
+			  <div class="error-content">
+				  <h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+				  <p>We could not find the page you were looking for.</p>
+			  </div>
+		  </div>
+	  </section>
+	</div>
+  <!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> Add School Student User</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' data.ref_school.id %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add School Student User</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Application No ({{data.ap_code}})</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab" style="overflow: auto; max-height: 400px;">
+								<div class="row h-100h">
+									<div class="col-md-9 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">First Name*</label>
+													<input type="text" class="form-control form-control-lg text-capitalize" placeholder="First name" name="first_name" autocomplete="off" required="" value="{{data.ap_first_name}}" readonly="true">
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Last Name*</label>
+													<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Last name" name="last_name" autocomplete="off" required="" value="{{data.ap_last_name}}" readonly="true">
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Gender*</label>
+													<select class="form-select form-select-lg" name="gender" required="" id="id_ap_gender" readonly="true">
+														<option value="{{data.ap_gender}}" readonly="true" selected="">{{data.ap_gender_title}}</option>
+													</select>
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Date of Birth*</label>
+													<input type="date" name="date_of_birth" class="form-control form-control-lg datetimepicker-input" data-target="" required=""  value="{{data.ap_date_of_birth|date:'Y-m-d'}}" readonly="true">
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Email*</label>
+												<input type="email" class="form-control form-control-lg text-lowercase" id="exampleInputEmail1" placeholder="Enter email" name="email" autocomplete="false" required="" value="{{data.ap_email}}">
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Home Address*</label>
+												<textarea name="home_address" required="" class="form-control form-control-lg text-capitalize" id="id_home_address" readonly="true">{{data.home_address}}
+												</textarea>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Post Code*</label>
+													<input type="text" name="post_code" class="form-control form-control-lg" id="id_post_code" value="{{data.post_code}}" readonly="true">
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Nationality*</label>
+													<input type="text" name="nationality" class="form-control form-control-lg text-capitalize" id="id_nationality" required="" value="{{data.ap_nationality}}" readonly="true">
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Mobile Number (+ Country Code)</label>
+													<input type="text" name="ap_phone" class="form-control form-control-lg" value="{{data.ap_phone}}" id="id_ap_phone" readonly="true">
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Religion</label>
+													<input type="text" name="religion" class="form-control form-control-lg text-capitalize" id="id_religion" value="{{data.ap_religion}}" readonly="">
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Passport Number*</label>
+													<input type="text" name="passport_number" class="form-control form-control-lg" required="" id="id_ap_passport_number" value="{{data.ap_passport_number}}" readonly="true">
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Passport Expiry Date*</label>
+													<input type="date" name="passport_expiry_date" class="form-control form-control-lg" data-target="" required="true" value="{{data.ap_passport_expiry_date|date:'Y-m-d'}}" readonly="true">
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Picture</label>
+												{{form.avtar}}
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+
+
+<script type="text/javascript">
+	$(function () {
+	    //Date range picker
+	    $('#id_date_of_birth').datetimepicker({
+	        format: 'YYYY-MM-DD'
+	    });
+	    $('#id_passport_expiry_data').datetimepicker({
+	        format: 'YYYY-MM-DD'
+	    });
+
+	  })
+	gepicker()
+</script>
+{% endblock%}

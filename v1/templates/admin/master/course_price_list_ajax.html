@@ -1,0 +1,25 @@
+<label>Course Price List <span style="color:red;">*</span></label>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Week Length</th>
+			<th>Price (per week)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for price in price_list %}
+		<tr>
+			<td>
+				{{price.min_weak}} - {{price.max_weak}} Weeks
+			</td>
+			<td>
+				{{price.ref_school_course.ref_school.ref_currency.currency_short}} {{price.price}}
+			</td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td colspan="2" class="text-danger">Sorry no data available</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

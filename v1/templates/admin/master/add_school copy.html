@@ -1,0 +1,224 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/add_page.css' %}">
+<style>
+	.form-stepper-list .org-details{
+		border-top-right-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
+	}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<!-- <span class="h4 font-weight-bold" style="font-size: 16px !important;">{{ title }}</span>
+						<div class="d-flex">
+							<a href="#" class="nav-link text-primary bg-transparent pl-0">School &nbsp; ></a>
+							<span class="nav-link pl-0 text-muted">{{ title }}</span>
+						</div> -->
+		          	</div>
+		        </div>
+	      	</div>
+    	</div>
+    	<!-- /.content-header -->
+		
+    	<!-- Main content -->
+    	<section class="content">
+	      	<div class="container-fluid">
+		        <div class="row">
+		          	<!-- left column -->
+		          	<div class="col-md-12">
+		            	<!-- general form elements -->
+		            	<div class="card"> 
+							<div class="card-header border-0 text-center d-flex justify-content-center">
+								{% if form.errors %}
+								<div class="rounded shadow bg-white px-5 py-3 d-flex align-items-center">
+									<i class="fa-solid fa-triangle-exclamation fa-2x pr-4 text-danger"></i>
+									{{form.non_field_errors}}
+								</div>
+								{% endif %}
+		              		</div>
+		              		<!-- form start -->
+			              	<form action="" method="post" enctype="multipart/form-data" id="schoolForm" data-schools-url="{% url 'web:get_city' %}"  autocomplete="off" style="background: #f9f5f5;">
+			              		{% csrf_token %}
+				                <div class="card-body p-0 shadow-lg bg-secoundary rounded shadow">
+									<div class="row">
+										<div class="col-xl-3 col-lg-5 col-md-5 col-sm-12 col-12 py-5 pl-5  h-50 mb-4 pr-0">
+											<ul class="form-stepper form-stepper-horizontal text-center mx-auto p-0">
+												<!-- Step 1 -->
+												<li class="form-stepper-active text-center form-stepper-list" step="1">
+													<a class="d-flex w-100">
+														<div class="d-flex w-0 align-items-center">
+															<span class="form-stepper-circle mr-2">
+																<span>1</span>
+															</span>
+														</div>
+														<div class="label py-2 pl-3 my-0 text-muted">Organization Details</div>
+													</a>
+												</li>
+												<!-- Step 2 -->
+												<li class="form-stepper-unfinished text-center form-stepper-list" step="2">
+													<a class="d-flex w-100">
+														<div class="d-flex w-0 align-items-center">
+															<span class="form-stepper-circle text-muted mr-2">
+																<span>2</span>
+															</span>
+														</div>
+														<div class="label py-2 pl-3 my-0 text-muted">School Details</div>
+													</a>
+												</li>
+												<!-- Step 3 -->
+												<li class="form-stepper-unfinished text-center form-stepper-list" step="3">
+													<a class="d-flex w-100">
+														<div class="d-flex w-0 align-items-center">
+															<span class="form-stepper-circle text-muted mr-2">
+																<span>3</span>
+															</span>
+														</div>
+														<div class="label py-2 pl-3 my-0 text-muted">Country Details</div>
+													</a>
+												</li>
+												<!-- Step 4 -->
+												<li class="form-stepper-unfinished text-center form-stepper-list" step="4">
+													<a class="d-flex w-100">
+														<div class="d-flex w-0 align-items-center">
+															<span class="form-stepper-circle text-muted mr-2">
+																<span>4</span>
+															</span>
+														</div>
+														<div class="label py-2 pl-3 my-0 text-muted">Currency</div>
+													</a>
+												</li>
+											</ul>											
+										</div>
+										<div class="col-xl-9 col-lg-7 col-md-7 col-sm-12 col-12 pl-0">
+											<div id="multi-step-form-container" class="bg-white h-100 rounded">
+												<!-- Step Wise Form Content -->
+												<!-- Step 1 Content -->
+												<section id="step-1" class="form-step">
+													
+													<!-- Step 1 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_ref_organization">Organization</label>
+															{{form.ref_organization}}
+														</div>
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step d-flex justify-content-between" type="button" step_number="2">
+															Next 
+															<div class="ml-4">
+																<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="none" d="M0 0h24v24H0z"/><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="rgba(255,255,255,1)"/></svg>
+															</div>
+														</button>
+													</div>
+												</section>
+												<!-- Step 2 Content, default hidden on page load. -->
+												<section id="step-2" class="form-step d-none">
+													<!-- Step 2 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_school_name">School Name</label>
+															{{form.school_name}}
+														</div>
+														<div class="form-group text-muted">
+															<label for="id_email">Email</label>
+															{{form.email}}
+														</div>	
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="1">Prev</button>
+														<button class="button btn-navigate-form-step btn-primary" type="button" step_number="3">Next</button>
+													</div>
+												</section>
+												<!-- Step 3 Content, default hidden on page load. -->
+												<section id="step-3" class="form-step d-none">
+													<!-- Step 3 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_ref_country">Country</label>
+															{{form.ref_country}}
+														</div>
+														<div class="form-group text-muted">
+															<label for="id_ref_city">Ref City</label>
+															{{form.ref_city}}
+														</div>		
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="2">Prev</button>
+														<button class="button btn-navigate-form-step btn-primary" type="button" step_number="4">Next</button>
+													</div>
+												</section>
+												<!-- Step 4 Content, default hidden on page load. -->
+												<section id="step-4" class="form-step d-none">
+													<!-- Step 4 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_ref_currency">Ref Currency</label>
+															{{form.ref_currency}}
+														</div>
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="3">Prev</button>
+														<button class="button submit-btn btn-success" type="submit">Save</button>
+													</div>
+												</section>
+											</div>
+										</div>
+									</div>
+				                </div>
+
+				                <!-- /.card-body -->
+			              	</form>
+		            	</div>
+		            	<!-- /.card -->
+
+		          	</div>
+		          	<!--/.col (left) -->
+		        
+		        </div>
+		        <!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+{% block extra_script %}
+<script src="{% static 'js/add_page.js' %}"></script>
+
+<script>
+  
+  $("#id_ref_country").change(function () {
+    let url = $("#schoolForm").attr("data-schools-url");  // get the url of the `load_schools` view
+    let countryId = $(this).val();  // get the selected country ID from the HTML
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'country': countryId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_ref_city").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+
+
+</script>
+<script type="text/javascript" src="{% static 'admin/js/service_add.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/course_add.js' %}"></script>
+{% endblock%}

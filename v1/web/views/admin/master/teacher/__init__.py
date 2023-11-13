@@ -1,0 +1,1 @@
+from .views import DetailTeacher, update_teacher

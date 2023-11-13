@@ -1,0 +1,1 @@
+from .views import SchoolStudentDetails, update_school_student, delete_school_student, create_student_course, update_student_course, delete_student_course, create_student_accommodation, update_student_accommodation, delete_student_accommodation

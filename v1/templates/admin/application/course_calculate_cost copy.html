@@ -1,0 +1,337 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Admision form{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/add_page.css' %}">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https:/resources/demos/style.css">
+{% endblock %}
+
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper d-block d-block px-5 py-3">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h4 class="m-0">Course cost calculate</h4>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                  <!-- general form elements -->
+                  <div class="card ">
+                      <div class="card-header border-0">
+                      <!-- <h2 class="card-title"><strong>Admision</strong></h2> -->
+                      </div>
+                      {% if form.errors %}
+						<p class="login-box-msg">
+							{{form.non_field_errors}}
+						</p>
+						{% endif %}
+                      <!-- form start -->
+                      <form action="" method="post" enctype="multipart/form-data" id="clientForm" data-city-url="{% url 'web:get_city' %}" data-schools-url="{% url 'web:get_schools' %}" data-course-url="{% url 'web:get_course_ajax' %}" data-level-url="{% url 'web:get_level_ajax' %}" data-service-url="{% url 'web:get_service_ajax' %}" data-course-price-url="{% url 'web:get_course_price_ajax' %}" data-accommodation-url="{% url 'web:get_accommodation_ajax' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="card-body">
+                          <div class="row d-flex justify-content-center">
+                            <div class="col-xl-3 col-lg-5 col-md-5 col-sm-12 col-12 shadow p-5 mr-4 bg-white h-50 mb-4 rounded">
+                              <ul class="form-stepper form-stepper-horizontal text-center mx-auto p-0">
+                                <!-- Step 1 -->
+                                <li class="text-center form-stepper-list form-stepper-active" step="1">
+                                  <a class="d-flex">
+                                    <span class="form-stepper-circle mr-4">
+                                      <span>1</span>
+                                    </span>
+                                    <div class="label">Country Details</div>
+                                  </a>
+                                </li>
+                                <!-- Step 2 -->
+                                <li class="text-center form-stepper-list form-stepper-unfinished" step="2">
+                                  <a class="d-flex">
+                                    <span class="form-stepper-circle mr-4">
+                                      <span>2</span>
+                                    </span>
+                                    <div class="label">School Details</div>
+                                  </a>
+                                </li>
+                                <!-- Step 3 -->
+                                <li class="text-center form-stepper-list form-stepper-unfinished" step="3">
+                                  <a class="d-flex">
+                                    <span class="form-stepper-circle mr-4">
+                                      <span>3</span>
+                                    </span>
+                                    <div class="label">Course Details</div>
+                                  </a>
+                                </li>
+                              </ul>											
+                            </div>
+                            <div class="col-xl-7 col-lg-6 col-md-6 col-sm-12 col-12 p-0">
+                              <div id="multi-step-form-container" class="bg-white shadow rounded">
+                                <!-- Step Wise Form Content -->
+                                <!-- Step 1 Content -->
+                                <section id="step-1" class="form-step">
+									<!-- Step 1 input fields -->
+									<div class="mt-2">
+										<div class="form-group text-muted">
+											<label for="id_s_country">Select Country <span style="color:red;">*</span></label>
+											{{form.s_country}}
+										</div>
+										<div class="form-group text-muted">
+											<label for="id_s_city">Select City <span style="color:red;">*</span></label>
+											{{form.s_city}}
+										</div>
+									</div>
+									<div class="mt-2">
+										<button class="button btn-navigate-form-step btn-primary" type="button" step_number="2">Next</button>
+									</div>
+                                </section>
+                                <!-- Step 2 Content -->
+                                <section id="step-2" class="form-step d-none">
+									<!-- Step 1 input fields -->
+									<div class="mt-2">
+										<div class="form-group text-muted">
+											<label for="id_s_country">Select School <span style="color:red;">*</span></label>
+                                      		{{form.s_school}}
+										</div>
+										<div class="form-group text-muted">
+											<div id="accommodation_data"></div>
+											<div id="service_data"></div>  
+											<div id="price_data"></div>  
+										</div>
+									</div>
+									<div class="mt-2">
+										<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="1">Prev</button>
+										<button class="button btn-navigate-form-step btn-primary" type="button" step_number="3">Next</button>
+									</div>
+                                </section>
+                                <!-- Step 3 Content -->
+                                <section id="step-3" class="form-step d-none">
+									<!-- Step 3 input fields -->
+									<div class="mt-2">
+										<div class="form-group text-muted">
+											<label for="id_s_course">Select Course <span style="color:red;">*</span></label>
+                                      		{{form.s_course}}
+										</div>
+										<div class="form-group text-muted">
+											<div class="row text-muted mb-2" id="hidediv" style="display: none;">
+												<div class="col">
+												  <label for="id_study_period">Select Study Period <span style="color:red;">*</span></label>
+												  {{form.study_period}}
+			
+												</div>
+												<div class="col">
+												  <label>Start Date</label>
+												  <div class="input-group date" id="reservationdate" data-target-input="nearest">
+													  <input type="text" class="form-control datetimepicker-input" name="s_start_date" id="datepicker" required />
+													  <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+														  <div class="input-group-text">
+															<i class="fa fa-calendar"></i>
+														  </div>
+													  </div>
+													</div>
+												</div>
+												  
+												<!--
+												<div class="col-4">
+												  <label>End Date</label>
+												  <div class="input-group">
+													
+													<input type="text" value="" class="form-control float-right" readonly>
+												  </div>
+												</div>-->
+                      </div>
+										</div>
+										<div class="form-group text-muted">
+											<label for="id_s_level">Select Level <span style="color:red;">*</span></label>
+                                      		{{form.s_level}}
+										</div>
+									</div>
+									<div class="mt-2">
+										<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="2">Prev</button>
+										<button class="button submit-btn btn-success" type="submit">Save</button>
+									</div>
+                                </section>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </form>
+                  </div>
+                  <!-- /.card -->
+
+                </div>
+                <!--/.col (left) -->
+            
+            </div>
+            <!-- /.row -->
+          </div><!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+    </div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'js/add_page.js' %}"></script>
+
+<script src="{% static 'admin/plugins/moment/moment.min.js'%}"></script>
+<script src="{% static 'admin/plugins/inputmask/jquery.inputmask.min.js'%}"></script>
+
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js'%}"></script>
+
+
+
+<script>
+  
+  $("#id_s_country").change(function () {
+    var url = $("#clientForm").attr("data-city-url");  // get the url of the `load_schools` view
+    var countryId = $(this).val();  // get the selected country ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'country': countryId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_s_city").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+  $("#id_s_city").change(function () {
+    var url = $("#clientForm").attr("data-schools-url");  // get the url of the `load_schools` view
+    var cityId = $(this).val();  // get the selected country ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'city': cityId       // add the country id to the GET parameters
+      },
+      success: function (data) {   
+        $("#id_s_school").html(data);  
+      }
+    });
+
+  });
+
+  $("#id_s_school").change(function () {
+    var url = $("#clientForm").attr("data-course-url");  
+    var schoolId = $(this).val();  
+
+    $.ajax({
+      url: url,
+      data: {
+        'school': schoolId       // add the country id to the GET parameters
+      },
+      success: function (data) {   
+        $("#id_s_course").html(data);
+      }
+    });
+
+  });
+
+  $("#id_s_school").change(function () {
+    var url = $("#clientForm").attr("data-level-url");  
+    var schoolId = $(this).val();  
+
+    $.ajax({
+      url: url,
+      data: {
+        'school': schoolId       // add the country id to the GET parameters
+      },
+      success: function (data) {   
+        $("#id_s_level").html(data);
+      }
+    });
+
+  });
+  
+  $("#id_s_school").change(function () {
+    var url = $("#clientForm").attr("data-service-url");  
+    schoolId = $(this).val();  
+
+    $.ajax({
+      url: url,
+      data: {
+        'school': schoolId       // add the country id to the GET parameters
+      },
+      success: function (data) {   
+        $("#service_data").html(data);
+      }
+    });
+  });
+
+  $("#id_s_school").change(function () {
+    var url = $("#clientForm").attr("data-accommodation-url");  
+    schoolId = $(this).val();  
+
+    $.ajax({
+      url: url,
+      data: {
+        'school': schoolId       // add the country id to the GET parameters
+      },
+      success: function (data) {   
+        $("#accommodation_data").html(data);
+      }
+    });
+  });
+
+  $("#id_s_course, #id_study_period").change(function () {
+    var url = $("#clientForm").attr("data-course-price-url");  
+    courseId = $("#id_s_course").val();
+    periodId = $("#id_study_period").val();
+        
+
+    $.ajax({
+      url: url,
+      data: {
+        'course': courseId,
+        'period': periodId
+      },
+      success: function (data) {   
+        $("#price_data").html(data);
+      }
+    });
+  });
+
+  $(function() {
+    $('.ajx_call').change(function() {
+      var _this = $(this);
+      if ( _this.val() == '' )
+        $('#hidediv').hide();
+      else {
+        $('#hidediv').show();
+      }
+    });
+  });
+
+  $(function () {
+
+    //Date range picker
+    //$('#reservation').daterangepicker()
+    var test = moment().day("Monday").week(1);
+    exports.getDateFromWeek = function(week, year) {
+      return moment().day("Sunday").year(year).week(week).toDate();
+  };
+
+  })
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="{% static 'admin/js/datepicker.js'%}"></script>
+
+{% endblock%}

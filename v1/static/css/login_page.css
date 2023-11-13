@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* body {
+    background: linear-gradient(-135deg,#c850c0,#4158d0);
+} */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Poppins', sans-serif; */
+}
+body{
+    font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+.limiter {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px;
+}
+.container-login100 {
+    width: 100%;
+    /* min-height: 100%; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.wrap-login100 {
+    width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 60px 40px 60px;
+}
+.login100-form-title {
+    /* font-family: Poppins-Bold; */
+    font-weight: bolder;
+    font-size: 24px;
+    color: #333;
+    line-height: 1.2;
+    text-align: center;
+    width: 100%;
+    display: block;
+    padding-bottom: 54px;
+}
+.validate-input {
+    position: relative;
+}
+.wrap-input100 {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    margin-bottom: 10px;
+}
+.input100 {
+    /* font-family: Poppins-Medium; */
+    font-size: 15px;
+    line-height: 1.5;
+    /* color: #666; */
+    display: block;
+    width: 100%;
+    background: #e6e6e6;
+    height: 50px;
+    border-radius: 10px;
+    padding: 0 30px 0 68px;
+}
+input {
+    outline: none;
+    border: none;
+}
+button, input {
+    overflow: visible;
+}
+textarea:focus, input:focus {
+    border-color: transparent!important;
+}
+.focus-input100 {
+    display: block;
+    position: absolute;
+    border-radius: 25px;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0;
+    color: rgba(87,184,70,.8);
+}
+.symbol-input100 {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    border-radius: 25px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-left: 35px;
+    pointer-events: none;
+    color: #666;
+    transition: all .4s;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+.container-login100-form-btn {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* padding-top: 20px; */
+}
+.login100-form-btn {
+    font-family: Poppins;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #fff;
+    text-transform: uppercase;
+    width: 100%;
+    height: 50px;
+    border-radius: 15px;
+    background: #57b846;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 25px;
+    transition: all .4s;
+}
+button {
+    outline: none!important;
+    border: none;
+}
+.login100-form-btn:hover {
+    background: #333;
+}
+button:hover {
+    cursor: pointer;
+}
+.txt1 {
+    font-family: Poppins-Regular;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #999;
+}
+.txt2 {
+    /* font-family: Poppins-Regular; */
+    font-size: 15px;
+    line-height: 1.5;
+    color: #666;
+}
+.p-t-12 {
+    padding-top: 12px;
+}
+.p-t-136 {
+    padding-top: 136px;
+}
+a:hover {
+    text-decoration: none;
+    color: #57b846;
+}
+.rounded {
+    border-radius: 1.25rem !important;
+}
+.mt-3.icheck-primary {
+    font-size: smaller;
+}
+.w-50 {
+    width: 30%!important;
+}

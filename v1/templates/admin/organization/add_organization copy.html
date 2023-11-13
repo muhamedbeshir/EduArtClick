@@ -1,0 +1,126 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/add_page.css' %}">
+{% endblock%}
+
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h4 class="m-0">{{ title }}</h4>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+	      	<div class="container-fluid">
+		        <div class="row">
+		          	<!-- column -->
+		          	<div class="col">
+		            	<!-- general form elements -->
+		            	<div class="card">
+							<div class="card-header border-0 text-center d-flex justify-content-center">
+								<!-- {% if form.errors %} -->
+								<div class="rounded shadow bg-white px-5 py-3 d-flex align-items-center">
+									<i class="fa-solid fa-triangle-exclamation fa-2x pr-4 text-danger"></i>
+									{{form.non_field_errors}}
+								</div>
+								<!-- {% endif %} -->
+		              		</div>
+		              		<!-- form start -->
+			              	<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			              		{% csrf_token %}
+				                <div class="card-body">
+									<div class="row d-flex justify-content-left">
+										<div class="col-xl-3 col-lg-5 col-md-5 col-sm-12 col-12 shadow p-5 mr-4 bg-white h-50 mb-4 rounded">
+											<ul class="form-stepper form-stepper-horizontal text-center mx-auto p-0">
+												<!-- Step 1 -->
+												<li class="form-stepper-active text-center form-stepper-list" step="1">
+													<a class="d-flex">
+														<span class="form-stepper-circle mr-4">
+															<span>1</span>
+														</span>
+														<div class="label">Organization Form</div>
+													</a>
+												</li>
+												<!-- Step 2 -->
+												<li class="form-stepper-unfinished text-center form-stepper-list" step="2">
+													<a class="d-flex">
+														<span class="form-stepper-circle text-muted mr-4">
+															<span>2</span>
+														</span>
+														<div class="label text-muted">Organization Logo</div>
+													</a>
+												</li>
+											</ul>											
+										</div>
+										<div class="col-xl-7 col-lg-6 col-md-6 col-sm-12 col-12 p-0">
+											<div id="multi-step-form-container" class="bg-white shadow rounded">
+												<!-- Step Wise Form Content -->
+												<!-- Step 1 Content -->
+												<section id="step-1" class="form-step">
+													
+													<!-- Step 1 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_organization_name">Organization Name</label>
+															{{form.organization_name}}
+														</div>
+														<div class="form-group text-muted">
+															<label for="id_web_url">Web Url</label>
+															{{form.web_url}}
+														</div>
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step btn-primary" type="button" step_number="2">Next</button>
+													</div>
+												</section>
+												<!-- Step 2 Content, default hidden on page load. -->
+												<section id="step-2" class="form-step d-none">
+													<!-- Step 2 input fields -->
+													<div class="mt-2">
+														<div class="form-group text-muted">
+															<label for="id_organization_logo">Logo</label>
+															{{form.organization_logo}}
+														</div>
+													</div>
+													<div class="mt-2">
+														<button class="button btn-navigate-form-step btn-primary mr-2" type="button" step_number="1">Prev</button>
+														<button class="button submit-btn btn-success" type="submit">Save</button>
+													</div>
+												</section>
+											</div>
+										</div>
+									</div>
+				                </div>
+				                <!-- /.card-body -->
+			              	</form>
+
+		            	</div>
+		            	<!-- /.card -->
+
+		          	</div>
+		        
+		        </div>
+		        <!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'js/add_page.js' %}"></script>
+{% endblock %}

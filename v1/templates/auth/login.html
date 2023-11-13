@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Teachia</title>
+	<link rel="icon" type="image/x-icon" href="{% static 'teachia.png' %}">
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- icheck bootstrap -->
+	<link rel="stylesheet" href="{% static 'admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+	<!-- Font Awesome -->
+	<!-- <link rel="stylesheet" href="{% static 'admin/plugins/fontawesome-free/css/all.min.css' %}"> -->
+	<!-- Theme style -->
+	<link rel="stylesheet" href="{% static 'admin/dist/css/adminlte.min.css' %}">
+
+	<!-- JQuery -->
+	<script src="{% static 'vendor/libs/jquery/jquery.js' %}"></script>
+
+	<!-- LOGIN PAGE STYLE -->
+	<link rel="stylesheet" href="{% static 'css/login_page.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+	<style>
+		/* Modify error list style  */
+		.errorlist.nonfield {
+			display: contents !important;
+			list-style: none !important;
+		}
+
+		body {
+			background: url("{% static 'img/lines-bg.png' %}"),
+			url("{% static 'img/lines-bg1.png' %}") left bottom no-repeat;
+		}
+
+		.fa-eye:hover,
+		.fa-eye-slash:hover {
+			cursor: pointer;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="limiter">
+		<div class="card-header border-0 text-center d-flex justify-content-center">
+			{% if form.errors %}
+			<div class="rounded shadow bg-white px-5 py-3 d-flex align-items-center">
+				<i class="fa-solid fa-triangle-exclamation fa-2x pr-4 text-danger"></i>
+				{{form.non_field_errors}}
+			</div>
+			{% endif %}
+		</div>
+		<div class="container-login100">
+			<div class="wrap-login100 shadow rounded">
+
+				<form class="login100-form validate-form" action="" method="post">
+					{% csrf_token %}
+					<div class="d-flex justify-content-between">
+						<a href="{{ request.META.HTTP_REFERER }}">
+							<i class="fa-solid fa-circle-left fa-lg"></i>
+						</a>
+						<a href="{% url 'web:login_page' %}">
+							<i class="fa-solid fa-house fa-lg"></i>
+						</a>
+					</div>
+					<div class="text-center mb-4" data-tilt="">
+						<img src="{% static 'teachia.png' %}" alt="Teachia" class="w-50">
+					</div>
+					<span class="login100-form-title">Login</span>
+					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+						<input class="input100" type="text" name="username" placeholder="Email" required>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+					<div class="wrap-input100 validate-input my-3" data-validate="Password is required">
+						<input class="input100" type="password" name="password" id="password" placeholder="Password"
+							required>
+						<span class="position-absolute d-flex align-items-center h-100" style="top:0; right:1.5rem;">
+							<i class="fa fa-eye text-muted"></i>
+						</span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					<div class="container-login100-form-btn mb-3">
+						<button class="login100-form-btn">Login</button>
+					</div>
+					<div class="text-center">
+						<span class="txt2">Forget</span>
+						<a class="txt2 text-decoration-none" href="{% url 'web:forget_password' %}">Username /
+							Password?</a>
+					</div>
+					<div class="d-flex justify-content-end mt-5">
+						<a class="txt2 text-decoration-none" href="{% url 'web:registration_page' %}">Create your
+							Account
+							<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(() => {
+			$('.fa-eye, .fa-eye-slash').on('click', function () {
+				$(this).toggleClass("active");
+				if ($(this).hasClass("active")) {
+					$(this).attr('class', 'fa fa-eye-slash text-muted active')
+					$('#password').attr("type", "text");
+				} else {
+					$(this).attr('class', 'fa fa-eye text-muted')
+					$('#password').attr("type", "password");
+				}
+			})
+		})
+	</script>
+</body>
+
+</html>

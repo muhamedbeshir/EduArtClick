@@ -1,0 +1,273 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{title}}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' school %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">School Expenses</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Expenses Type <strong class="text-danger">*</strong></label>
+													{{ form.expense_type }}
+												</div>
+												<div class="col" id="div_internal_expenses_type">
+													<label class="form-label" for="">Internal Expenses Type <strong class="text-danger">*</strong></label>
+													{{ form.internal_expense_type }}
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col" id="div_ref_school_course">
+													<label class="form-label" for="">School Course <strong class="text-danger">*</strong></label>
+													{{ form.ref_school_course }}
+												</div>
+												<div class="col" id="div_ref_school_service">
+													<label class="form-label" for="">School Service <strong class="text-danger">*</strong></label>
+													{{ form.ref_school_service }}
+												</div>
+												<!-- <div class="col" id="div_ref_school_teacher">
+													<label class="form-label" for="">School Teacher <strong class="text-danger">*</strong></label>
+													{{ form.ref_school_teacher }}
+												</div> -->
+												<div class="col" id="div_expenses_name">
+													<label class="form-label" for="">Expense Name <strong class="text-danger">*</strong></label>
+													{{ form.name }}
+												</div>
+												<div class="col" id="div_expenses_amount">
+													<label class="form-label" for="">Amount <strong class="text-danger">*</strong></label>
+													{{ form.amount }}
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Expense Date <strong class="text-danger">*</strong></label>
+												{{ form.expense_date }}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Receipt</label>
+												{{ form.receipt }}
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit" id="btn_submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+	function show_fields(field){
+		fields = ['div_ref_school_course', 'div_ref_school_service', 'div_ref_school_teacher']
+		fields.forEach(element => {
+			(element==field) ? $(`#${element}`).show() : $(`#${element}`).hide();
+		});
+	}
+
+	$(document).ready( ()=> {
+		show_fields('');
+		$('#div_expenses_name').hide();
+		$('#div_expenses_amount').hide();
+
+
+		// For Edit Page Link
+		if ($('#id_expense_type').val() == 'External'){
+			$('#div_internal_expenses_type').hide();
+			$('#div_expenses_name').show();
+			$('#div_expenses_amount').show();
+			
+			$('#btn_submit').removeClass('disabled');
+		}
+		if ($('#id_internal_expense_type').val() == 'Select'){
+			$('#btn_submit').addClass('disabled');
+		} else if ($('#id_internal_expense_type').val() == 'Course'){ 
+			show_fields('div_ref_school_course');
+			$('#div_expenses_name').hide();
+			$('#div_expenses_amount').show();
+		} else if ($('#id_internal_expense_type').val() == 'Service'){ 
+			show_fields('div_ref_school_service');
+			$('#div_expenses_name').hide();
+			$('#div_expenses_amount').show();
+		} else if ($('#id_internal_expense_type').val() == 'Teacher'){ 
+			show_fields('div_ref_school_teacher');
+			$('#div_expenses_name').hide();
+			$('#div_expenses_amount').show();
+		} else if ($('#id_internal_expense_type').val() == 'Other'){ 
+			$('#div_expenses_name').show();
+			$('#div_expenses_amount').show();
+		}
+		// End For Edit Page Link
+
+
+		$(document).on('keyup', '#id_discount', function(e){
+			let validate = true;
+			if ($.isNumeric($(this).val())) {
+				if (parseFloat($(this).val()) > 100) {
+					alert('Discount should not be greater than 100.00');
+					validate = false;
+				}
+			} else {
+				validate = false;
+			}
+
+			(validate) ? '' : $(this).val('');
+		});
+
+		$(document).on('change', '#id_expense_type', function(e){
+			if ($(this).val() == 'Internal'){
+				$('#div_internal_expenses_type').show();
+				$('#div_expenses_name').hide();
+				$('#div_expenses_amount').hide();
+				$('#btn_submit').addClass('disabled');
+			} else {
+				$('#div_internal_expenses_type').hide();
+				$('#div_expenses_name').show();
+				$('#div_expenses_amount').show();
+				show_fields('');
+				$('#btn_submit').removeClass('disabled');
+			}
+		});
+
+		$(document).on('change', '#id_ref_school_course', function(e){
+			if ($('#id_ref_school_course :selected').val()) {
+				$('#id_name').val($('#id_ref_school_course :selected').text());
+			} else {
+				$('#id_name').val('');
+			}
+		});
+
+		$(document).on('change', '#id_ref_school_service', function(e){
+			if ($('#id_ref_school_service :selected').val()) {
+				$('#id_name').val($('#id_ref_school_service :selected').text());
+			} else {
+				$('#id_name').val('');
+			}
+		});
+
+		$(document).on('change', '#id_ref_school_teacher', function(e){
+			if ($('#id_ref_school_teacher :selected').val()) {
+				$('#id_name').val($('#id_ref_school_teacher :selected').text());
+			} else {
+				$('#id_name').val('');
+			}
+		});
+
+		$(document).on('change', '#id_internal_expense_type', function(e){
+			switch ($(this).val()) {
+				case 'Other': show_fields('');
+					$('#div_expenses_name').show();
+					$('#div_expenses_amount').show();
+					$('#btn_submit').removeClass('disabled');
+					break;
+
+				case 'Course': 
+					show_fields('div_ref_school_course');
+					$('#div_expenses_name').hide();
+					$('#div_expenses_amount').show();
+					$('#btn_submit').removeClass('disabled');
+					break;
+
+				case 'Service': 
+					show_fields('div_ref_school_service');
+					$('#div_expenses_name').hide();
+					$('#div_expenses_amount').show();
+					$('#btn_submit').removeClass('disabled');
+					break;
+
+				case 'Teacher': 
+					show_fields('div_ref_school_teacher');
+					$('#div_expenses_name').hide();
+					$('#div_expenses_amount').show();
+					$('#btn_submit').removeClass('disabled');
+					break;
+				
+				case 'Select': 
+					show_fields('');
+					$('#div_expenses_name').hide();
+					$('#div_expenses_amount').hide();
+					$('#btn_submit').addClass('disabled');
+					break;
+			
+				default:
+					break;
+			}
+		});
+
+		$(document).on('keyup', '#id_amount', function(e) {
+			if($(this).val() < 0){
+				alert('Please enter positive numbers only.');
+				$(this).val('0.0');
+			}
+		});
+	});
+</script>
+{% endblock%}

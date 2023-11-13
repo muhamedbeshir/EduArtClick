@@ -1,0 +1,9 @@
+from .profile import UserProfile, StudentUserProfile, AggentUserProfile, OrganizationUserProfile, TeacherUserProfile, SchoolStudentUserProfile
+from .forget_password import AuthForgetPasswordToken
+
+from .address import UserAddress
+from .contact import UserContact
+from .certificate_teacher import CertificateTeacher
+from .teacher_profile_has_course import TeacherProfileHasCourse
+from .student_profile_has_course import StudentProfileHasCourse
+from .student_profile_has_accommodation import StudentProfileHasAccommodation

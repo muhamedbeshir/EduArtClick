@@ -1,0 +1,79 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Delete{% endblock %}
+{% load static %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">Accommodation Service {{title}}</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+		        <div class="card-header">
+		          	<h3 class="card-title">Accommodation service name : {{schoolaccommodationservice.accommodation_title}} </h3>
+
+		          	<div class="card-tools">
+		            	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+		              	<i class="fas fa-minus"></i>
+		            	</button>
+		            	<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+		              	<i class="fas fa-times"></i>
+		            	</button>
+		          </div>
+		        </div>
+        		<div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+            
+               
+                
+              
+              <div class="row">
+                <div class="col-12">
+                  <h4>{{ content }}</h4>
+			        <form method="POST" class="" action="">
+						{% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Delete</button> or
+                    <a class="btn btn-primary" href="{% url 'web:deatil_school' schoolaccommodationservice.id %}">Cancel</a>
+                    </form>	
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        		<!-- /.card-body -->
+      		</div>
+      		<!-- /.card -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}

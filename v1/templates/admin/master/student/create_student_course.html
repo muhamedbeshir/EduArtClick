@@ -1,0 +1,160 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add Student Course{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https:/resources/demos/style.css">
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		  <!-- Main content -->
+		  <section class="content">
+			<div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>	  
+			  <div class="error-content">
+				<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>	  
+				<p>
+				  We could not find the page you were looking for.
+				</p>
+			  </div>
+			  <!-- /.error-content -->
+			</div>
+			<!-- /.error-page -->
+		  </section>
+		  <!-- /.content -->
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add Student Course</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:detail_school_student_user' student %}">Student Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add Student Course</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Course Form</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Select Course <strong class="text-danger">*</strong></label>
+												{{form.ref_course}}
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Study Period <strong class="text-danger">*</strong></label>
+													{{form.study_period}}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Start Date <strong class="text-danger">*</strong></label>
+													<div class="input-group date" id="reservationdate" data-target-input="nearest">
+														<input type="date" class="form-control form-control-lg datetimepicker-input" name="start_date" id="" required min="{{cdate}}" />
+														<!-- datepicker <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+															<div class="input-group-text h-100">
+																<i class="ri-calendar-2-line ri-lg"></i>
+															</div>
+														</div> -->
+													</div>
+												</div>
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/moment/moment.min.js'%}"></script>
+<script src="{% static 'admin/plugins/inputmask/jquery.inputmask.min.js'%}"></script>
+
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js'%}"></script>
+
+<script>
+  
+
+  $(function () {
+
+    //Date range picker
+    //$('#reservation').daterangepicker()
+//     var test = moment().day("Monday").week(1);
+//     exports.getDateFromWeek = function(week, year) {
+//       return moment().day("Sunday").year(year).week(week).toDate();
+//   };
+
+  })
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="{% static 'admin/js/datepicker.js'%}"></script>
+{% endblock%}

@@ -1,0 +1,584 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Teacher Dashboard{% endblock %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https:/resources/demos/style.css">
+<link rel="stylesheet" href="{% static 'admin/plugins/fullcalendar/main.css' %}">
+{% endblock %}
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-building-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCHOOL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ school.school_name }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ORGANIZATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_organization}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">LOCATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_city}}, {{school.ref_country}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EMAIL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.email}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CURRENCY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_currency.currency_short}}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button" class="nav-link active" role="tab" id="about-tab" data-bs-toggle="tab"
+							data-bs-target="#about_table" aria-controls="about_table" aria-selected="true">
+							About
+						</button>
+					</li>					
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="certificate-tab" data-bs-toggle="tab"
+							data-bs-target="#certificate_table" aria-controls="certificate_table"
+							aria-selected="false">Certificate</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="address-tab" data-bs-toggle="tab"
+							data-bs-target="#address_table" aria-controls="address_table"
+							aria-selected="false">Address</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="contact-tab" data-bs-toggle="tab"
+							data-bs-target="#contact_table" aria-controls="contact_table"
+							aria-selected="false">Contact</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="timeline-tab" data-bs-toggle="tab"
+							data-bs-target="#timeline_table" aria-controls="timeline_table"
+							aria-selected="false">Courses</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="schedule-tab" data-bs-toggle="tab"
+							data-bs-target="#schedule_table" aria-controls="schedule_table"
+							aria-selected="false">Schedule</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="student-tab" data-bs-toggle="tab"
+							data-bs-target="#student_table" aria-controls="student_table"
+							aria-selected="false">Student</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="exam-tab" data-bs-toggle="tab"
+							data-bs-target="#exam_table" aria-controls="exam_table"
+							aria-selected="false">Exam</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- About Table -->
+					<div role="tabpanel" aria-labelledby="about-tab"
+						class="tab-pane fade table-responsive text-nowrap show active" id="about_table">
+						<table class="table table-striped my-4" id="about">
+							<tr>
+								<th>Teacher Name:</th>
+								<td>
+									{{teacher.first_name}} {{teacher.last_name}}
+								</td>
+							</tr>
+							<tr>
+								<th>Gender:</th>
+								<td>
+									{% if teacher.gender == 0 %}
+									Male
+									{% elif teacher.gender == 1 %}
+									Female
+									{% else %}
+									-
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Date of Birth:</th>
+								<td>
+									{% if teacher.date_of_birth %}
+									{{teacher.date_of_birth}}
+									{% else %}
+									-
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<td>
+									{% if teacher.email %}
+									{{teacher.email}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Languages:</th>
+								<td>
+									{{teacher.lang_one}}
+									{% if teacher.lang_two %}
+									, {{teacher.lang_two}}
+									{% endif %}
+									{% if teacher.lang_three %}
+									, {{teacher.lang_three}}
+									{% endif %}
+								</td>
+							</tr>
+							
+						</table>
+					</div>
+					<!-- Certificate Table -->
+					<div role="tabpanel" aria-labelledby="certificate-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="certificate_table">
+						<table class="table table-striped my-4" id="certificate">
+							<thead>
+								<tr>
+									<th>Certificate course</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for certificate in certificate %}
+								<tr>
+									<td>{{certificate.ref_cert.ref_course}}</td>
+									<td>
+										<a class=""
+											href="{% url 'web:certificate_download' certificate.id %}">
+											Download</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Address Table -->
+					<div role="tabpanel" aria-labelledby="address-tab"
+						class="tab-pane fade table-responsive text-nowrap" id="address_table">
+						<table class="table table-striped my-4" id="addressList">
+							<thead>
+								<tr>
+									<th>Street 1</th>
+									<th>Street 2</th>
+									<th>City</th>
+									<th>State</th>
+									<th>Code</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for address in address %}
+								<tr>
+									<td> {{address.street_1}} </td>
+									<td>
+									{% if address.street_2 %}
+									 {{address.street_2}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+									{{address.city}}</td>
+									<td>
+										{{address.state}}
+									</td>
+									<td>
+									{% if address.code %}
+										 {{address.code}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									
+								</tr>
+								{% endfor %}
+							</tbody>
+					  </table>
+					</div>
+					<!-- Contact Table -->
+					<div role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade table-responsive text-nowrap" id="contact_table">
+						<table class="table table-striped my-4" id="contactList">
+							<thead>
+								<tr>
+									<th>Home Phone</th>
+									<th>Office Phone</th>
+									<th>Personal email</th>
+									<th>Work Email</th>
+									<th>Emergency Name</th>
+									<th>Emergency Phone</th>
+									
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for contact in contact %}
+								<tr>
+									<td> {{contact.home_phone}} </td>
+									<td>
+									{% if contact.office_phone %}
+									 {{contact.office_phone}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+									{% if contact.personal_email %}
+										{{contact.personal_email}}
+									{% else %}
+									-
+									{% endif %}
+									</td>
+									<td>
+									{% if contact.work_email %}
+										{{contact.work_email}}
+									{% else %}
+									-
+									{% endif %}
+									</td>
+									<td>
+									{% if contact.emergency_name %}
+										 {{contact.emergency_name}}
+									{% else %}
+										- 
+									{% endif %}</td>
+									<td>
+									{% if contact.emergency_phone %}
+										 {{contact.emergency_phone}}
+									{% else %}
+										- 
+									{% endif %}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+					  </table>
+					</div>
+					<!-- Courses Table -->
+					<div role="tabpanel" aria-labelledby="timeline-tab"
+						class="tab-pane fade table-responsive text-nowrap" id="timeline_table">
+						{% for course in course %}
+						<table class="table table-striped my-4">
+							<thead>
+								<tr>
+									<th>Course name</th>
+									<th>Course Teacher</th>
+									<th>Course level</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								<tr>
+									<td> {{course.title}} </td>
+									<td> {{course.teacher_fullname}} </td>
+									<td> {{course.ref_level.name}} </td>
+									<td>
+										<a class="me-3" href="{% url 'web:detail_school_course' course.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										<!-- <a class="me-3" href="{% url 'web:edit_school_class' course.pk %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a> -->
+										<!-- <a class="" href="{% url 'web:delete_school_class' course.pk %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a> -->
+									</td>
+								</tr>
+			
+								{% if course.rel_ref_school_course_school_course_price.all %}
+								<tr>
+									<table class="table table-striped my-4">
+										<thead>
+											<tr>
+												<th>Min week</th>
+												<th>Max week</th>
+												<th>Price(Per week)</th>
+											</tr>
+										</thead>
+										<tbody class="table-border-bottom-0">
+											{% for price in course.rel_ref_school_course_school_course_price.all %}
+											<tr>
+												<td>{{price.min_weak}}</td>
+												<td>{{price.max_weak}}</td>
+												<td>{{schools.ref_currency.currency_short}} {{price.price}}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</tr>
+								{% endif %}
+							</tbody>
+						</table>
+						{% endfor %}
+					</div>
+					<!-- Schedule Table -->
+					<div role="tabpanel" aria-labelledby="schedule-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="schedule_table">
+						<table class="table table-striped my-4" id="schedule">
+							<thead>
+								<tr>
+								<th>Start Time</th>
+								<th>End Time</th>
+								<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for schedule in schedule %}
+								<tr>
+									<td> {{schedule.start_time|date:"g:i a"}} </td>
+									<td> {{schedule.end_time|date:"g:i a"}} </td>
+									<td>
+										<a class="me-3" href="{% url 'web:edit_school_schedule' schedule.id %}">
+											<i class="ri-edit-box-line ri-lg"></i>
+										</a>
+										<a class="" href="{% url 'web:delete_school_schedule' schedule.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Student Table -->
+					<div role="tabpanel" aria-labelledby="student-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="student_table">
+						<table class="table table-striped my-4" id="student">
+							<thead>
+							  <tr>
+								<th>Picture</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th class="text-right">Action</th>
+							  </tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for student in students %}
+								<tr>
+									<td>
+										{% if student.avtar %}
+										<img src="{{student.avtar.url}}" width="30" height="30">
+										{% else %}
+			
+										{% endif %}
+									</td>
+									<td> {{student.first_name}} </td>
+									<td> {{student.last_name}} </td>
+									<td> {{student.email}} </td>
+									<td>
+										<a class=""
+										href="{% url 'web:detail_school_student_user' student.id %}">
+										<i class="ri-eye-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Exam Table -->
+					<div role="tabpanel" aria-labelledby="exam-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="exam_table">
+						<table class="table table-striped my-4" id="exam">
+							<thead>
+							  <tr>
+								<th>Exam Title</th>
+								<th>Exam Code</th>
+								<th>Exam Duration</th>
+								<th>Action</th>
+							  </tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for exam in exams %}
+								<tr>
+									<td> {{exam.title}} </td>
+									<td> {{exam.code}} </td>
+									<td> {{exam.duration}} minutes </td>
+									<td>
+										<a class="" href="{% url 'web:school_exam_details' exam.pk %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						  </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+  $(function () {
+    $("#certificate").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#addressList').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+    });
+    $('#contactList').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+    });
+	$('#exam').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+    });
+	$('#schedule').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+    });
+	$('#student').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+    });
+    
+  });
+</script>
+
+{% endblock %}

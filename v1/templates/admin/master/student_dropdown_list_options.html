@@ -1,0 +1,3 @@
+{% for student in students %}
+<option value="{{ student.ref_student.pk }}">{{ student.ref_student.ref_user.username }} - {{ student }}</option>
+{% endfor %}

@@ -1,0 +1,4 @@
+server access:
+
+IP: nqraa@nqraa.net -p667
+password: nqraa@122 

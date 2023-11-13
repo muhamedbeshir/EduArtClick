@@ -1,0 +1,657 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Student Dashboard{% endblock %}
+{% load static %}
+{% load humanize %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https:/resources/demos/style.css">
+<link rel="stylesheet" href="{% static 'admin/plugins/fullcalendar/main.css' %}">
+<!-- Stripe -->
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<!-- End Stripe -->
+{% endblock %}
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-building-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCHOOL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{ school.school_name }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">ORGANIZATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_organization}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">LOCATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_city}}, {{school.ref_country}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EMAIL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.email}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">CURRENCY</span>
+						</div>
+						<span class="d-block border-top pt-3">{{school.ref_currency.currency_short}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">Course Level</span>
+						</div>
+						<span class="d-block border-top pt-3">{{student.ref_course_level}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button" class="nav-link active" role="tab" id="about-tab" data-bs-toggle="tab"
+							data-bs-target="#about_table" aria-controls="about_table" aria-selected="true">
+							About
+						</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="course-tab" data-bs-toggle="tab"
+							data-bs-target="#course_table" aria-controls="course_table"
+							aria-selected="false">Course</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="accommodation-tab" data-bs-toggle="tab"
+							data-bs-target="#accommodation_table" aria-controls="accommodation_table"
+							aria-selected="false">Accommodation</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="services-tab" data-bs-toggle="tab"
+							data-bs-target="#services_table" aria-controls="services_table"
+							aria-selected="false">Service</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="certificate-tab" data-bs-toggle="tab"
+							data-bs-target="#certificate_table" aria-controls="certificate_table"
+							aria-selected="false">Certificate</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="letter-tab" data-bs-toggle="tab"
+							data-bs-target="#letter_table" aria-controls="letter_table"
+							aria-selected="false">Letter</button>
+					</li>
+					<li class="nav-item">
+						<button type="button" class="nav-link" role="tab" id="installment-tab" data-bs-toggle="tab"
+							data-bs-target="#installment_table" aria-controls="installment_table"
+							aria-selected="false">Installment</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- About Table -->
+					<div role="tabpanel" aria-labelledby="about-tab"
+						class="tab-pane fade table-responsive text-nowrap show active" id="about_table">
+						<table class="table table-striped my-4" id="about">
+							<tr>
+								<th>Student Name:</th>
+								<td>
+									{{student.first_name}} {{student.last_name}}
+								</td>
+							</tr>
+							<tr>
+								<th>Gender:</th>
+								<td>
+									{% if student.gender == 0 %}
+									Male
+									{% elif student.gender == 1 %}
+									Female
+									{% else %}
+									-
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Date of Birth:</th>
+								<td>
+									{% if student.date_of_birth %}
+									{{student.date_of_birth}}
+									{% else %}
+									-
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Home address:</th>
+								<td>
+									{{student.home_address}}
+								</td>
+							</tr>
+							<tr>
+								<th>Post code:</th>
+								<td>{{student.post_code}}</td>
+							</tr>
+							<tr>
+								<th>Nationality:</th>
+								<td>
+									{% if student.nationality %}
+									{{student.nationality}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<td>
+									{% if student.email %}
+									{{student.email}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Phone:</th>
+								<td>
+									{% if student.phone %}
+									{{student.phone}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Religion:</th>
+								<td>
+									{% if student.religion %}
+									{{student.religion}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Passport number:</th>
+								<td>
+									{% if student.passport_number %}
+									{{student.passport_number}}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>Passport expiry date:</th>
+								<td>
+									{% if student.passport_expiry_date %}
+									{{student.passport_expiry_date}}
+									{% endif %}
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!-- Course Table -->
+					<div role="tabpanel" aria-labelledby="course-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="course_table">
+						<table class="table my-4" id="course">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Course Name</th>
+									<th>Study Period</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for course in student_course%}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{course.ref_course}}</td>
+									<td>{{course.study_period}} Week</td>
+									<td>{{course.start_date}}</td>
+									<td>{{course.end_date}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Accommodation Table -->
+					<div role="tabpanel" aria-labelledby="accommodation-tab"
+						class="tab-pane fade table-responsive text-nowrap" id="accommodation_table">
+						<table class="table my-4" id="accommodation">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Room title</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Amount</th>
+									<th>Payment</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for accommodation in student_accommodation%}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{accommodation.ref_accommodation_room}}</td>
+									<td>{{accommodation.start_date}}</td>
+									<td>{{accommodation.end_date}}</td>
+									<td>{{ accommodation.calculate_amount }} ({{accommodation.ref_accommodation_room.ref_school.ref_currency.currency_short}})</td>
+									<td>
+										{% if accommodation.payment %}
+											Done
+										{% else %}
+										<button class="btn btn-primary create-accommodation-payment" type="button" accommodation_id="{{ accommodation.pk }}">Make Payment</button>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Services Table -->
+					<div role="tabpanel" aria-labelledby="services-tab" class="tab-pane fade table-responsive text-nowrap" id="services_table">
+						<table class="table" id="services">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Service Name</th>
+									<th>Service Type</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Amount</th>
+									<th>Payment</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for services in student_services%}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{services.ref_service.service_name}}</td>
+									<td>{{services.ref_service.service_type_title}}</td>
+									<td>{{services.start_date}}</td>
+									<td>{{services.end_date}}</td>
+									<td>{{ services.calculate_amount }} ({{services.ref_service.ref_school.ref_currency.currency_short}})</td>
+									<td>
+										{% if services.payment %}
+											Done
+										{% else %}
+											<button class="btn btn-primary create-services-payment" type="button" service_id="{{ services.pk }}">Make Payment</button>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Certificate Table -->
+					<div role="tabpanel" aria-labelledby="certificate-tab"
+						class="tab-pane fade table-responsive text-nowrap" id="certificate_table">
+						<table class="table my-4" id="certificate">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Certificate course</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for certificate in certificate %}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{certificate.ref_cert.ref_course}}</td>
+									<td>
+										<a class="btn btn-primary btn-sm"
+											href="{% url 'web:certificate_download' certificate.id %}">
+											Download</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Letter Table -->
+					<div role="tabpanel" aria-labelledby="letter-tab" class="tab-pane fade table-responsive text-nowrap"
+						id="letter_table">
+						<table class="table my-4" id="letter">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Letter Type</th>
+									<th>Letter Content</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for letter in letters %}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{letter.ref_letter.ref_type.name}}</td>
+									<td>{{letter.content}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- Installment Table -->
+					<div role="tabpanel" aria-labelledby="installment-tab" class="tab-pane fade table-responsive text-nowrap" id="installment_table">
+						<table class="table" id="installment">
+							<thead>
+								<tr>
+									<th>Sl</th>
+									<th>Installment</th>
+									<th>Type</th>
+									<th>Class</th>
+									<th>Amount</th>
+									<th>Payment Date</th>
+									<th>Status</th>
+									<th>Payment Done</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for status, installment, course in installments %}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{installment.id|ordinal}}</td>
+									<td>{{installment.type}}</td>
+									<td>{{course.ref_course.title}}</td>
+									<td>{{installment.currency|upper}} {{installment.amount|intcomma}}</td>
+									<td>{{installment.date}}</td>
+									<td>
+										{% if installment.status == 'Done' %}
+										<!-- <span class="badge bg-success me-2">Done</span> -->
+										
+										<a href="{% url 'web:invoice_download_pdf' course=course.pk ins=installment.id %}" class="btn btn-primary" target="_blank">Invoice</a>
+										{% else %}
+										<span class="badge bg-info">Pending</span>
+										{% endif %}
+									</td>
+									<td>
+										{% if installment.status == 'Done' %}
+											{{installment.paid}}
+
+										{% elif installment.status == 'Pending' and status == 'Pay Now'  %}
+											<button class="btn btn-outline-primary create-installment-payment me-2" type="button" installment_id="{{ installment.id }}" installment_type="installment_payment" class_id="{{ course.pk }}">Pay Now</button>
+											{% if not forloop.last %}
+											<button class="btn btn-outline-primary create-installment-payment" type="button" installment_id="{{ installment.id }}" installment_type="full_payment" class_id="{{ course.pk }}">Full Payment</button>
+											{% endif %}
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									
+									{% comment %}
+									<td>{% now "Y-m-d" as current_date %}
+										{% if installment.status == 'Done' %}
+											{{installment.paid}}
+										{% else %}
+											{% if installment.status == 'Pending' and current_date >= installment.date %}
+											<button class="btn btn-primary create-installment-payment" type="button" installment_id="{{ installment.id }}" class_id="{{ course.pk }}">Pay Now</button>
+											{% else %}
+												{{installment.paid}}
+											{% endif %}
+										{% endif %}
+									</td>
+									{% endcomment %}
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
+{% block extra_script %}
+<script src="{% static 'admin/plugins/fullcalendar/main.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var calendarEl = document.getElementById('calendar');
+
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			timeZone: 'UTC',
+			themeSystem: 'bootstrap5',
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+			},
+			//weekNumbers: true,
+			dayMaxEvents: true, // allow "more" link when too many events
+			// events: 'https://fullcalendar.io/api/demo-feeds/events.json'
+    		events: "{{ events| safe }}",
+  });
+
+	calendar.render();
+});
+</script>
+
+<script type="text/javascript">
+	// Create an instance of the Stripe object with your publishable API key
+	
+	$(document).on("click", ".create-services-payment", function () {
+		const service_id = $(this).attr("service_id");
+
+		fetch('dashboard/student/service/payment/', {
+			method: 'POST', // or 'PUT'
+			body: JSON.stringify({ 'service_id': service_id }),
+		})
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (session) {
+			// console.log('Session: ',session);
+			if (session.error) {
+				alert(session.error)
+			}
+			let stripe = Stripe(String(session.stripe_public_key));
+			return stripe.redirectToCheckout({
+				sessionId: session.session_id
+			});
+		})
+		.then(function (result) {
+			// If `redirectToCheckout` fails due to a browser or network
+			// error, you should display the localized error message to your
+			// customer using `error.message`.
+			if (result.error) {
+				alert(result.error.message);
+			}
+		})
+		.catch(function (error) {
+			console.error('Error:', error);
+		});
+	});
+
+	$(document).on("click", ".create-accommodation-payment", function () {
+		const accommodation_id = $(this).attr("accommodation_id");
+
+		fetch('dashboard/student/accommodation/payment/', {
+			method: 'POST', // or 'PUT'
+			body: JSON.stringify({ 'accommodation_id': accommodation_id }),
+		})
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (session) {
+			// console.log('Session: ',session);
+			if (session.error) {
+				alert(session.error)
+			}
+			let stripe = Stripe(String(session.stripe_public_key));
+			return stripe.redirectToCheckout({
+				sessionId: session.session_id
+			});
+		})
+		.then(function (result) {
+			// If `redirectToCheckout` fails due to a browser or network
+			// error, you should display the localized error message to your
+			// customer using `error.message`.
+			if (result.error) {
+				alert(result.error.message);
+			}
+		})
+		.catch(function (error) {
+			console.error('Error:', error);
+		});
+	});
+	
+	$(document).on("click", ".create-installment-payment", function () {
+		const installment_type = $(this).attr("installment_type");
+		const installment_id = $(this).attr("installment_id");
+		const class_id = $(this).attr("class_id");
+
+		fetch('dashboard/student/installment/payment/', {
+			method: 'POST', // or 'PUT'
+			body: JSON.stringify({ 'installment_type': installment_type,'installment_id': installment_id, 'class_id': class_id, }),
+		})
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (session) {
+			// console.log('Session: ',session);
+			if (session.error) {
+				alert(session.error)
+			}
+			let stripe = Stripe(String(session.stripe_public_key));
+			return stripe.redirectToCheckout({
+				sessionId: session.session_id
+			});
+		})
+		.then(function (result) {
+			// If `redirectToCheckout` fails due to a browser or network
+			// error, you should display the localized error message to your
+			// customer using `error.message`.
+			if (result.error) {
+				alert(result.error.message);
+			}
+		})
+		.catch(function (error) {
+			console.error('Error:', error);
+		});
+	});
+</script>
+
+<script>
+	$(document).ready( () => {
+		$('#accommodation, #services, #course, #certificate, #letter, #installment').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+
+
+		// 
+		function showAlert() {
+			alert("REMINDER FOR THE PAYMENT OF INSTALLMENT\n\nKindly pay the entire pending fee to avoid inconvenience. Please ignore if already paid.");
+		}
+
+		let show_alert = false;
+		"{% for installment in pending_installments %}"
+		show_alert = true;
+		"{% endfor %}"
+
+		if (show_alert  == true) {
+			showAlert();
+		}
+
+	});
+</script>
+{% endblock%}

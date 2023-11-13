@@ -1,0 +1,231 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School List{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl">
+		{% if user.is_authenticated %}
+			{% if user.is_superuser or request.user|has_group:"admin" or request.user|has_group:"staff" or request.user|has_group:"student" or request.user|has_group:"aggent" %}
+				<!-- <div class="col-sm-6">
+					<h4 class="mb-2">List of Users</h4>
+				</div> -->
+			{% elif request.user|has_group:"organization" %}
+				{% if user.organizationuserprofile %}
+				<div class="col-sm-6">
+					<h4 class="mb-2">Organization: {{ user.organizationuserprofile.ref_organization}}</h4>
+				</div>
+				{% endif %}
+			{% else %}
+			{% endif %}
+		{% endif %}
+	</div>
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- No School Container -->
+		{% if schools|length == 0 %}
+		<h4 class="fw-bold pt-3 mb-0"><span class="text-muted fw-light"></span> No Schools Added</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:dashboard' %}">Dashboard</a></li>
+				<li class="breadcrumb-item active" aria-current="page">No Schools Added</li>
+			</ol>
+		</nav>
+		<!-- Bootstrap modals -->
+		<div class="cmb-4 d-flex justify-content-center align-items-center w-100 empty-div-height">
+            <div class="text-center col-md-3 mx-auto">
+                <img src="{% static 'img/no-school.png' %}" class="mb-2" style="width: 250px;">
+                <p class="text-dark h5">No Schools added yet!</p>
+                <a href="{% url 'web:add_school' %}" class="btn btn-i btn-primary w-100"><i class="ri-add-line"></i> ADD SCHOOL</a>
+			</div>
+		</div>
+		<!--/ Bootstrap modals -->
+		{% else %}
+		<!-- School Found -->
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="border-end pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>School List</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'web:dashboard' %}">Dashboard</a></li>
+							<li class="breadcrumb-item active" aria-current="page">School List</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="bread-number ps-3">
+						<span>{{ schools|length }} Schools</span>
+				</div>
+		  	</div>
+			<div class="ms-md-3 d-flex align-items-center my-3 my-md-0">
+				<div class="input-group new-group">
+					<span class="input-group-text border-0" id="basic-addon1"><i class="ri-search-line"></i></span>
+					<input type="text" class="form-control border-0" type="search" placeholder="Search by Name" aria-label="Search" id="search">
+				</div>
+			</div>
+			</div>
+			<div class="">
+			  <a href="{% url 'web:add_school' %}" class="btn btn-i btn-primary w-100"><i class="ri-add-line"></i> ADD SCHOOL</a>
+			</div>
+		</div>
+		
+		<div class="card">
+			<div class="card-body">
+				<table id="example1" class="table table-borderless table-hover dataTable dtr-inline">
+					<thead>
+						<tr>			                    
+							<th>SL No.</th>
+							<th>School Name</th>
+							<th>Email</th>
+							<th>Currency</th>
+							<th>Organization</th>
+							<th>Country</th>
+							<th>created_at</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody class="table-border-bottom-0">
+						{% for school in schools %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{school.school_name}}</td>
+							<td>{{school.email}}</td>
+							<td>{{school.ref_currency}} ( {{school.ref_currency.currency_short}} )</td>
+							<td>{{school.ref_organization}}</td>
+							<td>{{school.ref_country}}</td>
+							<td>{{school.created_at}}</td>
+							<td>
+								{% if user.is_authenticated %}
+								<a class="me-2" href="{% url 'web:deatil_school' school.pk %}">
+									<i class="ri-eye-line ri-lg"></i>
+								</a>
+								{% endif %}
+
+								{% if user.is_superuser%}
+								<a class="me-2" href="{% url 'web:edit_school' school.id %}">
+									<i class="ri-edit-box-line ri-lg"></i>
+								</a>
+
+								<a class="delete-btn" href="{% url 'web:delete_school' school.id %}" data-bs-toggle="modal" data-bs-target="#delete-model" data-name="{{school.school_name}}">
+									<i class="ri-delete-bin-line ri-lg"></i>
+								</a> 
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="delete-model-title">Delete School</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="delete-model-body">
+		  <p>Do you want to delete the model <b>"model name"</b></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+</div>
+<!-- Delete Model -->
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+  $(function () {
+		oTable = $('#example1').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [[6, 'desc']],
+			lengthMenu: [
+				[25, 50,100, -1],
+				[25, 50,100, 'All'],
+        	],
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#search').keyup(function(){
+			oTable.search($(this).val()).draw() ;
+		});
+
+		// Hide In-build Searchbar
+		$('#example1_filter').addClass('d-none')
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function() {
+			let name = $(this).attr('data-name')
+			let del_link = $(this).attr('href')
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the school <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)	
+		})
+		$('#delete-model-yes').on('click', function() {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url : del_link,
+				type: "POST",
+				headers:{"X-CSRFToken": $crf_token},
+				success: function(data, textStatus, jqXHR)
+				{
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					console.log('error while ajax calling')
+				}
+			});
+		})
+  });
+</script>
+
+{% endblock%}

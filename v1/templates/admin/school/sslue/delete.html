@@ -1,0 +1,52 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %} {{ page }} {% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/add_page.css' %}" />
+{% endblock %} 
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper d-block d-block px-5 py-3">
+	<!-- Content Header (Page header) -->
+	<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{ page }}</h4>
+	<nav aria-label="breadcrumb mb-4  ">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'web:details_school_course' object.ref_course.ref_course.pk %}">Course Details</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{ page }}</li>
+		</ol>
+	</nav>
+	<!-- /.content-header -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<!-- Default box -->
+		<div class="card">
+			<div class="card-body">
+				<div class="row d-flex justify-content-center">
+					<div class="col-6 rounded shadow p-5 bg-white">
+						<div class="text-center">
+							<h5 class="mb-2">Selective Exam : {{ object }}</h5>
+							<!-- <h4>{{ content }}</h4> -->
+							<form method="POST" class="" action="">
+								{% csrf_token %}
+								<h4 class="mb-4">Are you sure you want to delete ?</h4>
+								<button class="btn btn-danger me-3" type="submit">Yes</button>
+								<a href="{% url 'web:details_school_course' object.ref_course.ref_course.pk %}" class="btn btn-primary">No</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+
+	</section>
+	<!-- /.content -->
+</div>
+
+{% endblock %}

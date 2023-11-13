@@ -1,0 +1,261 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{title}}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>{{title}}</h4>
+		<nav aria-label="breadcrumb mb-4">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:details_school_course' course.id %}">Course Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab"
+										aria-controls="v-pills-home" aria-selected="true">School Exam Form</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Exam Name (Course Name) <strong
+														class="text-danger">*</strong></label>
+												{{form.title}}
+											</div>
+											<div class="row">
+												<div class="col mb-3">
+													<label class="form-label" for="">Exam Code <strong
+															class="text-danger">*</strong></label>
+													{{form.code}}
+												</div>
+												<div class="col mb-3">
+													<label class="form-label" for="">Exam Type <strong
+															class="text-danger">*</strong></label>
+													{{form.ref_exam_type}}
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Exam Class <strong
+															class="text-danger">*</strong></label>
+													{{form.ref_course}}
+												</div>
+												<div class="col d-none" id="exam_date_div">
+													<label class="form-label" for="">Exam Date <strong
+															class="text-danger">*</strong></label>
+													{{form.exam_date}}
+												</div>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Exam Duration (Min.) <strong
+															class="text-danger">*</strong></label>
+													{{form.duration}}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Exam Total Question <strong
+															class="text-danger">*</strong></label>
+													{{form.total_questions}}
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Exam Score <strong
+															class="text-danger">*</strong></label>
+													{{form.score}}
+												</div>
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center"
+													type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<!-- BS-Stepper -->
+<script src="{% static 'admin/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+
+<script type="text/javascript">
+
+	// start and continew option 
+	function typeofCourse(sel) {
+		var id_type_of_course = document.getElementById('id_type_of_course');
+		var hiddenFormFiledData = document.getElementById('hiddenFormFiled');
+		if (sel.options[sel.selectedIndex].value == "0") {
+			hiddenFormFiledData.innerHTML = '';
+		}
+
+		else if (sel.options[sel.selectedIndex].value == "1") {
+			hiddenFormFiledData.innerHTML = '<div class="col-3"><label for="">Summar start<span>*</span></label><input type="text" name="summar_start" class="form-control" id="id_summar_start" placeholder="YYYY-MM-DD" required></div><div class="col-3"><label for="">Summar End<span>*</span></label><input type="text" name="summar_end" placeholder="YYYY-MM-DD" class="form-control" id="id_summar_end" required></div>';
+		} else if (sel.options[sel.selectedIndex].value == "") {
+			hiddenFormFiledData.innerHTML = '';
+		}
+
+
+	}
+
+	$(function () {
+		//Date range picker
+		$('#id_summar_start').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+		$('#id_summar_end').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+
+	});
+
+	$(document).ready(function () {
+		function addFormCategory(btn, prefix, cls) {
+			var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+			if (formCount < 1000) {
+				// Clone a form (without event handlers) from the first form
+				var cls_selector = "." + cls;
+				var row = $(cls_selector + ":last").clone(false).get(0);
+
+				// Insert it after the last form
+				$(row).removeAttr('id').hide().insertAfter(cls_selector + ":last").slideDown(300);
+
+				// Remove the bits we don't want in the new row/form
+				// e.g. error messages
+				$(".errorlist", row).remove();
+				$(row).children().removeClass("error");
+
+				// Relabel or rename all the relevant bits
+				$(row).find('.formset-field').each(function () {
+					updateElementIndex(this, prefix, formCount);
+					$(this).val('');
+					$(this).removeAttr('value');
+					$(this).prop('checked', false);
+				});
+
+				// Add an event handler for the delete item/form link
+				$(row).find(".delete").click(function () {
+					return deleteForm(this, prefix);
+				});
+				// Update the total form count
+				$("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+
+			} // End if
+
+			return false;
+		}
+
+		$("body").on('click', '.category-add-btn', function () {
+			return addFormCategory($(this), String($(this).attr('id')), 'item-category');
+		});
+	})
+
+</script>
+<script>
+	var invalidChars = ["-", "+", "e",];
+
+	$(document).ready(function () {
+		$(document).on('keydown', '#id_duration, #id_total_questions, #id_score', function (e) {
+			if (invalidChars.includes(e.key)) {
+				e.preventDefault();
+			}
+		});
+
+		$(document).on('change', '#id_duration, #id_total_questions, #id_score', function (e) {
+			if ($(this).val() < 0) {
+				alert("Please enter only positive number");
+				$(this).val('0');
+			}
+
+		});
+
+		$(document).on('change', '#id_ref_exam_type', function (e) {
+			if ($(this).find(":selected").text() == 'Intermediate' || $(this).find(":selected").text() == 'Final' || $(this).find(":selected").text() == 'Level Up') {
+				$('#exam_date_div').removeClass('d-none');
+				$('#id_exam_date').attr('required', true);
+			} else {
+				$('#exam_date_div').addClass('d-none');
+				$('#id_exam_date').attr('required', false);
+			}
+			$('#id_exam_date').val(new Date());
+		});
+	});
+</script>
+{% endblock%}

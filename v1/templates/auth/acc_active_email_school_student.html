@@ -1,0 +1,14 @@
+{% autoescape off %}
+Hello,
+We received a request to reset the password for your account for this email address. To initiate the password reset
+process for your account, click the link below.
+
+User Id: {{user_name}}
+
+{{ protocol }}://{{ domain }}{% url 'web:pwd_reset' token=token %}
+
+This link can only be used once. If you need to reset your password again, please request another reset. If you did not
+make this request, you can ignore this email.
+
+Sincerely,
+The Teachia Team {% endautoescape %}

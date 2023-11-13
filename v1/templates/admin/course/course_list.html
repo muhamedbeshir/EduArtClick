@@ -1,0 +1,146 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Course List{% endblock %}
+{% load static %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">List of course</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+		        <div class="card-header">
+		          	<h3 class="card-title">Courses</h3>
+
+		          	<div class="card-tools">
+		            	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+		              	<i class="fas fa-minus"></i>
+		            	</button>
+		            	<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+		              	<i class="fas fa-times"></i>
+		            	</button>
+		          </div>
+		        </div>
+        		<div class="card-body p-0">
+			        <table class="table table-striped projects">
+			            <thead>
+			                <tr>
+			                    <th class="text-left">
+			                      Country
+			                    </th>
+			                    <th class="text-center">
+			                    	City
+			                    </th>
+			                    <th class="text-center">
+			                    	School Name
+			                    </th>
+			                    <th class="text-center">
+			                    	Course Name
+			                    </th>
+			                    <th class="text-center">
+			                    	File
+			                    </th>
+			                    <th class="text-center">
+			                    	created_at
+			                    </th>
+			                     <th class="text-center">
+			                        Active Status
+			                    </th>
+			                    
+			                    <th class="text-right">
+			                    	Action
+			                    </th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			            	{% for course in courses %}
+			                <tr>
+			                    
+			                    <td class="text-left">
+			                    	<a>{{course.ref_country}}</a>
+			                    </td>
+			                    <td class="text-center">
+			                    	{{course.ref_city}}
+			                    </td>
+			                    <td class="text-center">
+			                    	<a>{{course.ref_school}}</a>
+			                    </td>
+			                    <td class="text-center">
+			                    	{{course.title}}
+			                    </td>
+			                    <td class="text-center">
+			                    	{% if course.file %}
+			                    	<a href="{{course.file.url}}" target="_blank">{{course.file}}
+			                    	{% endif %}
+			                    </td>
+			                    <td class="text-center">
+			                    	{{course.created_at}}
+			                    </td>
+			                    <td class="project-state text-center">
+			                        <span class="badge badge-success">{{course.status}}</span>
+			                    </td>
+			                    <td class="project-actions text-right">
+			                        <a class="btn btn-primary btn-sm" href="{% url 'web:detail_course' course.pk %}">
+			                            <i class="fas fa-folder">
+			                            </i>
+			                            View
+			                        </a>
+			                        {% if user.is_authenticated %}
+										{% if user.is_superuser%}
+			                        <a class="btn btn-info btn-sm" href="{% url 'web:edit_course' course.pk %}">
+			                            <i class="fas fa-pencil-alt">
+			                            </i>
+			                            Edit
+			                          </a>
+			                          <a class="btn btn-danger btn-sm" href="{% url 'web:delete_course' course.pk %}">
+			                            <i class="fas fa-trash">
+			                            </i>
+			                            Delete
+			                          </a>
+			                          	{% endif %}
+			                        {% endif %}
+			                    </td>
+			                </tr>
+			                {% endfor %}
+			            </tbody>
+			        </table>
+        		</div>
+        		<!-- /.card-body -->
+        		<div class="card-footer clearfix">
+					{% if is_paginated %}
+				        <div class="pagination">
+				            <span class="page-links">
+				                {% if page_obj.has_previous %}
+				                    <a href="/dashboard/courses?page={{ page_obj.previous_page_number }}">Previous</a>
+				                {% endif %}
+				                <span class="page-current">
+				                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+				                </span>
+				                {% if page_obj.has_next %}
+				                    <a href="/dashboard/courses?page={{ page_obj.next_page_number }}">Next</a>
+				                {% endif %}
+				            </span>
+				        </div>
+				    {% endif %}
+              	</div>
+      		</div>
+      		<!-- /.card -->
+
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}

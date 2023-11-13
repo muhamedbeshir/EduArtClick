@@ -1,0 +1,155 @@
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+    <title>Application</title>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap');
+
+        body {
+            font-family: 'Tajawal',
+        }
+        .header{
+        	background: #2196f39e; padding-left: 10px;padding-right: 10; 
+        	padding-top: 5;padding-bottom: 5px; text-align: center;
+        }
+        .leftContent{
+        	width: 100%;
+        	float: left;
+        }
+        .table {
+		  font-family: Arial, Helvetica, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		.table td, .table th {
+		  border: 1px solid #ddd;
+		  padding: 8px;
+		}
+
+		.table tr:nth-child(even){background-color: #f2f2f2;}
+
+		.table tr:hover {background-color: #ddd;}
+
+		.table th {
+		  padding-top: 12px;
+		  padding-bottom: 12px;
+		  text-align: left;
+		  background-color: #04AA6D;
+		  color: white;
+		}  
+    </style>
+    
+</head>
+
+<body class="" style="">
+	<div class="header">
+		<h1>Application Form</h1>
+		<p>Application code : {{code}}</p>
+	</div>
+	<div class="content">
+		<div class="leftContent">
+			<div class="studentInfo">
+				<h3 style="background:#327982; padding-top: 5px; padding-left: 10px;padding-bottom: 5px; color: #FFFFFF;">Student Info</h3>
+				<table class="table">
+					<tr>
+						<td>First Name : {{first_name}}</td>
+						<td>Last Name : {{last_name}}</td>  
+					</tr>
+					<tr>
+						<td>Gender</td>
+						<td>
+							{% for data in application_detail %}
+								{% if data.ap_gender == 0 %}
+							<input type="checkbox" checked="checked"><label>Male</label>
+							<input type="checkbox"><label>Female</label>
+								{% elif data.ap_gender == 1 %}
+							<input type="checkbox" ><label>Male</label>
+							<input type="checkbox" checked="checked"><label>Female</label>
+								{% else %}
+							<input type="checkbox"><label>Female</label>
+							<input type="checkbox"><label>Male</label>
+								{% endif %}
+							{% endfor %}
+							
+						</td>  
+					</tr>
+					<tr>
+						<td>Date of Birth</td>
+						<td>
+							{{date_of_birth}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Home address</td>
+						<td>
+							{{home_address}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Post code</td>
+						<td>
+							{{post_code}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Nationality</td>
+						<td>
+							{{nationality}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td>
+							{{ap_email}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td>
+							{{phone}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Religion</td>
+						<td>
+							{{religion}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Passport number</td>
+						<td>
+							{{passport_number}}
+						</td>  
+					</tr>
+					<tr>
+						<td>Passport expiry date</td>
+						<td>
+							{{passport_expiry_date}}
+						</td>  
+					</tr>
+				</table>
+			</div>
+			<div class="courseInfo">
+				<h3 style="background:#327982; padding-top: 5px; padding-left: 10px;padding-bottom: 5px; color: #FFFFFF;">Course Detail</h3>
+				<table class="table">
+					<tr>
+						<td colspan="3"><label>Course Name : </label> English</td>
+						
+					</tr>
+					<tr>
+	                    <td><label>Study Period :</label> 7 weeks</td>
+	                    <td><label>Start Date :</label> Dec. 19, 2021</td>
+	                    <td><label>End Date :</label> Feb. 3, 2022</td>
+	                </tr>
+				</table>
+			</div>
+		</div>
+		<div class="rightContent">
+			
+		</div>
+	</div>
+	</div>
+	
+</body>
+</html>

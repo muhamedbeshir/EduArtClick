@@ -1,0 +1,129 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}{{ title|title }}{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/list_page.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span> {{ title|title }}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:currency_list' %}">Currency</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{ title|title }}</li>
+			</ol>
+		</nav>
+
+		{% if formset.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for error in formset.errors %}
+				<strong></strong> {{ error }}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Add Currency</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<div class="form-group text-muted">
+													<table id="example1" class="table form-table table-borderless table-sm">
+														<thead class="text-center">
+														<tr>
+															<th class="text-left">Currency Title <strong class="text-danger">*</strong></th>
+															<th class="text-left">Currency Code <strong class="text-danger">*</strong></th>
+															<th class="text-left">Currency Symbol <strong class="text-danger">*</strong></th>
+															<th class="text-center">Action</th>
+														</tr>
+														</thead>
+														<tbody>
+															{% for form_data in formset %}
+															<tr class="item">
+																<td>
+																	{{ form_data.title }}
+																</td>
+																<td>
+																	{{ form_data.currency_short }}
+																</td>
+																<td>
+																	{{ form_data.currency_symbol }}
+																</td>
+																<td class="text-center">
+																	<a type="button" class="remove-form-row" id="{{ formset.prefix }}">
+																		<i class="ri-delete-bin-line ri-lg text-muted"></i>
+																	</a>
+																</td>
+															</tr>
+														{% endfor %}
+														
+														<tr>
+															<td colspan="9"
+																style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+																<button type="button" class="btn btn-sm btn-success add-form-row"
+																		id="{{ formset.prefix }}">
+																   Add
+																</button>
+															</td>
+														</tr>
+														</tbody>
+													</table>
+													{{ formset.management_form }}  
+												</div>
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+{% endblock%}

@@ -1,0 +1,135 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Edit Address{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		  <!-- Main content -->
+		  <section class="content">
+			<div class="error-page">
+			  <h2 class="headline text-warning"> 403 Error</h2>	  
+			  <div class="error-content">
+				<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>	  
+				<p>
+				  We could not find the page you were looking for.
+				</p>
+			  </div>
+			  <!-- /.error-content -->
+			</div>
+			<!-- /.error-page -->
+		  </section>
+		  <!-- /.content -->
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Edit Address</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:school_teacher_detail' address.ref_user.teacheruserprofile.id %}">Teacher Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Edit Address</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+    				{% for error in errors %}
+						{% if field == '__all__' %}
+							<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+							<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Address Form</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Address Line 1 <strong class="text-danger">*</strong></label>
+												<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Address Line 1" name="street_1" maxlength="100" required id="id_street_1" value="{{address.street_1}}">
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Address Line 2 <strong class="text-danger">*</strong></label>
+												<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Address Line 2" name="street_2" maxlength="100" id="id_street_2" value="{{address.street_2}}" required>
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">City <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control form-control-lg text-capitalize" placeholder="City Name" name="city" maxlength="100" required id="id_city" value="{{address.city}}">
+												</div>
+												<div class="col">
+													<label class="form-label" for="">State <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control form-control-lg text-capitalize" placeholder="State Name" name="state" maxlength="100" id="id_state" value="{{address.state}}" required>
+												</div>
+												<div class="col">
+													<label class="form-label" for="">Zip Code <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control form-control-lg text-capitalize" placeholder="Zip Code" name="code" maxlength="100" id="id_code" value="{{address.code}}" required>
+												</div>
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center" type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+
+{% endblock%}

@@ -1,0 +1,199 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Transaction List{% endblock %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- No Transaction Container -->
+		{% if transactions|length == 0 %}
+		<h4 class="fw-bold pt-3 mb-0"><span class="text-muted fw-light"></span> No Transaction Done</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:dashboard' %}">Dashboard</a></li>
+				<li class="breadcrumb-item active" aria-current="page">No Transaction Done</li>
+			</ol>
+		</nav>
+		<!-- Bootstrap modals -->
+		<div class="cmb-4 d-flex justify-content-center align-items-center w-100 empty-div-height">
+            <div class="text-center col-md-3 mx-auto">
+                <img src="{% static 'img/no-school.png' %}" class="mb-2" style="width: 250px;">
+                <p class="text-dark h5">No Transaction done yet!</p>
+			</div>
+		</div>
+		<!--/ Bootstrap modals -->
+		{% else %}
+		<!-- Currency Found -->
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="border-end pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Transaction List</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'web:dashboard' %}">Dashboard</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Transaction List</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="bread-number ps-3">
+						<span>{{ transactions|length }} Transaction</span>
+				</div>
+		  	</div>
+			<div class="ms-md-3 d-flex align-items-center my-3 my-md-0">
+				<div class="input-group new-group">
+					<span class="input-group-text border-0" id="basic-addon1"><i class="ri-search-line"></i></span>
+					<input type="text" class="form-control border-0" type="search" placeholder="Search" aria-label="Search" id="search">
+				</div>
+			</div>
+			</div>
+		</div>
+		
+		<div class="card">
+			<div class="card-body">
+				<table id="example1" class="table table-borderless table-hover dataTable dtr-inline">
+					<thead>
+						<tr>
+							<th>SL</th>
+							<th>Application</th>
+							<th>Student</th>
+							<!-- <th>Service</th>
+							<th>Accommodation</th> -->
+							<th>Payment Id</th>
+							<th>Status</th>
+							<!-- <th>Currency</th> -->
+							<th>Amount</th>
+							<th>Created At</th>
+						</tr>
+					</thead>
+					<tbody class="table-border-bottom-0">
+						{% for transaction in transactions %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>
+								{% if transaction.application %}
+									{{ transaction.application }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{% if transaction.application %}
+									-
+								{% else %}
+									{{ transaction.user.username }}
+								{% endif %}
+							</td>
+							<!-- <td>
+								{% if transaction.ref_school_service %}
+									{{ transaction.ref_school_service.pk }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{% if transaction.ref_school_accommodation_service %}
+									{{ transaction.ref_school_accommodation_service.pk }}
+								{% else %}
+									-
+								{% endif %}
+							</td> -->
+							<td>{{ transaction.payment_id }}</td>
+							<td>
+								{% if transaction.payment_status_title == 'Success' %}
+									<span class="badge bg-label-success me-1">{{ transaction.payment_status_title }}</span>
+								{% else %}
+									<span class="badge bg-label-danger me-1">{{ transaction.payment_status_title }}</span>
+								{% endif %}
+							</td>
+							<!-- <td>{{ transaction.currency|upper }}</td> -->
+							<td>{{ transaction.currency|upper }} {{ transaction.amount|intcomma }} /-</td>
+							<td>{{ transaction.created_at }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="delete-model-title">Delete Transaction</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="delete-model-body">
+		  <p>Do you want to delete the model <b>"model name"</b></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+</div>
+<!-- Delete Model -->
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<script>
+  $(function () {
+	oTable = $('#example1').DataTable({
+		"paging": true,
+		"lengthChange": true,
+		"searching": true,
+		"ordering": true,
+		"info": true,
+		"autoWidth": false,
+      	"responsive": true,
+		"order": [[6, 'desc']],
+		// lengthMenu: [
+		// 	[25, 50,100, -1],
+		// 	[25, 50,100, 'All'],
+		// ],
+		dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel'
+		]
+  	});
+	$('#search').keyup(function(){
+		oTable.search($(this).val()).draw() ;
+	});
+
+	// Hide In-build Searchbar
+	$('#example1_filter').addClass('d-none')
+  });
+</script>
+
+{% endblock%}

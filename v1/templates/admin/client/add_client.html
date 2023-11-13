@@ -1,0 +1,171 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add client{% endblock %}
+{% load static %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">Create new client</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+	      	<div class="container-fluid">
+		        <div class="row">
+		          	<!-- left column -->
+		          	<div class="col-md-12">
+		            	<!-- general form elements -->
+		            	<div class="card card-primary">
+		              		<div class="card-header">
+		                	<h3 class="card-title">Client Form</h3>
+		              		</div>
+		              		{% if form.errors %}
+						      <p class="login-box-msg">
+						      	{{form.non_field_errors}}
+						      </p>
+						    {% endif %}
+		              		<!-- form start -->
+			              	<form action="" method="post" enctype="multipart/form-data" id="clientForm" data-city-url="{% url 'web:get_city' %}" data-schools-url="{% url 'web:get_schools' %}" data-course-url="{% url 'web:get_course_ajax' %}" autocomplete="off">
+			              		{% csrf_token %}
+				                <div class="card-body">
+					                <div class="row">
+					                  	<div class="col-6">
+					                  		<div class="form-group">
+						                  		
+						                    	{{form}}
+						                    </div>
+					                  	</div>
+					                </div>
+
+					                <div class="row">
+					                  	<div class="col-6">
+					                  		
+						                  		
+						                    	<label>File Add</label>
+						<table class="table form-table table-bordered table-sm">
+                            <thead class="text-center">
+                            <tr>
+                                <th style="text-align: left;">File</th>
+                                <th style="text-align: left;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for form_data in formset %}
+                                <tr class="item">
+                                    <td>
+                                        {{ form_data.file }}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm remove-form-row"
+                                                id="{{ formset.prefix }}">
+                                          
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="9"
+                                    style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+                                    <button type="button" class="btn btn-sm btn-success add-form-row"
+                                            id="{{ formset.prefix }}">
+                                       Add
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {{ formset.management_form }}
+
+
+						                   
+					                  	</div>
+					                </div>
+				                </div>
+				                <!-- /.card-body -->
+
+				                <div class="card-footer">
+				                  	<button type="submit" class="btn btn-primary">Submit</button>
+				                </div>
+			              	</form>
+		            	</div>
+		            	<!-- /.card -->
+
+		          	</div>
+		          	<!--/.col (left) -->
+		        
+		        </div>
+		        <!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}
+{% block extra_script %}
+
+<script>
+  
+  $("#id_s_country").change(function () {
+    var url = $("#clientForm").attr("data-city-url");  // get the url of the `load_schools` view
+    var countryId = $(this).val();  // get the selected country ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'country': countryId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_s_city").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+  $("#id_s_city").change(function () {
+    var url = $("#clientForm").attr("data-schools-url");  // get the url of the `load_schools` view
+    var cityId = $(this).val();  // get the selected country ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'city': cityId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_s_school").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+  $("#id_s_school").change(function () {
+    var url = $("#clientForm").attr("data-course-url");  // get the url of the `load_schools` view
+    var schoolId = $(this).val();  
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'school': schoolId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_s_course").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+
+</script>
+
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+
+{% endblock%}

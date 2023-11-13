@@ -1,0 +1,142 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Course Detail{% endblock %}
+{% load static %}
+{% block content %}
+
+	<!-- Content Wrapper. Contains page content -->
+  	<div class="content-wrapper d-block d-block px-5 py-3">
+    	<!-- Content Header (Page header) -->
+    	<div class="content-header">
+	      	<div class="container-fluid">
+		        <div class="row mb-2">
+		          	<div class="col-sm-6">
+		            	<h1 class="m-0">Course Detail</h1>
+		          	</div><!-- /.col -->
+		        </div><!-- /.row -->
+	      	</div><!-- /.container-fluid -->
+    	</div>
+    	<!-- /.content-header -->
+
+    	<!-- Main content -->
+    	<section class="content">
+
+      		<!-- Default box -->
+	      	<div class="card">
+		        <div class="card-header">
+		        		<h3 class="card-title">School name : {{course.ref_school}}</h3>
+		          	
+
+		          	<div class="card-tools">
+		            	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+		              	<i class="fas fa-minus"></i>
+		            	</button>
+		            	<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+		              	<i class="fas fa-times"></i>
+		            	</button>
+		          </div>
+		        </div>
+        		<div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+            
+               
+                
+                
+              <div class="row">
+                <div class="col-12">
+                	<h4>Courses name : {{course.title}}</h4>
+                	{% if course.file %}              
+                	<a href="{{ course.file.url }}" class="btn btn-info">View File</a>
+                	{% endif %}
+                	<br>
+                  <h3>List of price</h3>
+                  <table class="table table-striped projects">
+			            <thead>
+			                <tr>
+			                    
+			                    {% if user.is_authenticated %}
+														{% if user.is_superuser%}
+			                    <th class="text-left">
+			                    	Duration (week)
+			                    </th>
+			                    <th class="text-center">
+			                      Course price
+			                    </th>
+			                    
+			                    <th class="text-center">
+			                    	Status
+			                    </th>
+			                    <th class="text-right">
+			                    	Action
+			                    </th>
+			                    	{% else %}
+			                    <th class="text-left">
+			                    	Duration (week)
+			                    </th>
+			                    <th class="text-right">
+			                      Course price
+			                    </th>
+			                    	{% endif %}
+			                    	
+			                    {% endif %}
+
+			                </tr>
+			            </thead>
+			            <tbody>
+			            	{% for price in prices %}
+			                <tr>
+			                    
+			                    {% if user.is_authenticated %}
+														{% if user.is_superuser%}
+			                    <td class="text-left">
+			                    	<a>{{price.min_weak}} - {{price.max_weak}}</a>
+			                    </td>
+			                    <td class="text-center">
+			                    	<a>{{price.currency}} {{price.price}}</a>
+			                    </td>
+			                    
+			                    <td class="project-state text-center">
+			                        <span class="badge badge-success">{{price.status}}</span>
+			                    </td>
+			                    <td class="project-actions text-right">
+			                        
+			                        <a class="btn btn-info btn-sm" href="#">
+			                            <i class="fas fa-pencil-alt">
+			                            </i>
+			                            Edit
+			                          </a>
+			                          <a class="btn btn-danger btn-sm" href="#">
+			                            <i class="fas fa-trash">
+			                            </i>
+			                            Delete
+			                          </a>
+			                    </td>
+			                    	{% else %}
+			                    <td class="text-left">
+			                    	<a>{{price.min_weak}} - {{price.max_weak}}</a>
+			                    </td>
+			                    <td class="text-right">
+			                    	<a>{{price.price}}</a>
+			                    </td>
+			                    	{% endif %}
+
+			                    {% endif %}
+			                </tr>
+			                {% endfor %}
+			            </tbody>
+			        </table>
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        		<!-- /.card-body -->
+      		</div>
+      		<!-- /.card -->
+
+    	</section>
+    	<!-- /.content -->
+  	</div>
+
+{% endblock %}

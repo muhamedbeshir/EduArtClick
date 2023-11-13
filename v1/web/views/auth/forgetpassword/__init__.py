@@ -1,0 +1,1 @@
+from .views import password_reset_request, MyPasswordResetView

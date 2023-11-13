@@ -1,0 +1,282 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %} {{title}} {% endblock %}
+{% load static %}
+
+{% block extra_head %}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- BS Stepper -->
+<link rel="stylesheet" href="{% static 'admin/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="{% static 'admin/plugins/inputmask/jquery.inputmask.min.js'%}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js'%}"></script>
+<style>
+	input[type="date"]::-webkit-inner-spin-button,
+	input[type="date"]::-webkit-calendar-picker-indicator {
+		display: none;
+		-webkit-appearance: none;
+	}
+</style>
+<!-- HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.4"></script>
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<!-- <h1>403 Error Page</h1> -->
+					</div>
+				</div>
+			</div><!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>
+						We could not find the page you were looking for.
+					</p>
+				</div>
+				<!-- /.error-content -->
+			</div>
+			<!-- /.error-page -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>{{title}}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:detail_school_course' class.id %}">Class Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+					{% for error in errors %}
+						{% if field == '__all__' %}
+						<strong>Error : </strong> {{ error|escape }}<br>
+						{% else %}
+						<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" id="schoolForm"
+			data-schools-url="{% url 'web:get_city' %}" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Time Table Details</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel"
+								aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="row mb-3">
+												<div class="col">
+													<label class="form-label" for="">Start Date <strong class="text-danger">*</strong></label>
+													<div class="input-group date" id="reservationdate" data-target-input="nearest">
+														<input 
+															type="text" 
+															class="form-control form-control-lg datetimepicker-input"
+															name="start_date" 
+															id="datepicker"
+															placeholder="yyyy-mm-dd" required />
+														
+														<div class="input-group-append"
+															data-target="#reservationdate"
+															data-toggle="datetimepicker">
+															<div class="input-group-text h-100">
+																<i class="ri-calendar-line ri-lg"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col">
+													<label class="form-label" for="">End Date <strong class="text-danger">*</strong></label>
+													<div class="input-group date" id="reservationdate1" data-target-input="nearest">
+
+														<input type="text" class="form-control form-control-lg datetimepicker-input"
+															name="end_date" id="datepicker1" placeholder="yyyy-mm-dd" required />
+														
+														<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker">
+															<div class="input-group-text h-100">
+																<i class="ri-calendar-line ri-lg"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="hidden_div" class="d-none">
+
+												<div class="row mb-3">
+													<div class="col">
+														<label class="form-label" for="">Select Schedule <strong
+																class="text-danger">*</strong></label>
+														{{form.ref_schedule}}
+													</div>
+													<div class="col">
+														<label class="form-label" for="">Select Teacher <strong
+															class="text-danger">*</strong></label>
+														{{ form.ref_teacher }}
+													</div>
+												</div>
+												<div class="mb-3">
+													<label class="form-label" for="">Select Room <strong
+														class="text-danger">*</strong></label>
+													{{ form.ref_room }}
+												</div>
+												<div class="mb-3">
+													<label class="form-label" for="">Note</label>
+													{{ form.note }}
+												</div>
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<button type="submit"
+													class="btn btn-success px-4 d-flex align-items-center">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'js/button_navigation.js' %}"></script>
+
+<!-- Select2 -->
+<script src="{% static 'admin/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- BS-Stepper -->
+<script src="{% static 'admin/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'admin/js/formset.js' %}"></script>
+
+<script>
+	$(document).on("keyup, keydown, keypress", "#datepicker, #datepicker1", function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	$(document).ready( () => {
+		const options = ['<option value="" selected="">---------</option>'];
+		$("#id_ref_room").html(options);
+		$("#id_ref_teacher").html(options);
+		
+		$('#datepicker, #datepicker1').datepicker({
+			beforeShowDay: function (date) {
+				var dayOfWeek = date.getDay();
+				// 0 : Sunday, 1 : Monday, ...
+				let temp_days="{{ class.datetimepicuresdays }}";
+				if (temp_days.includes(dayOfWeek))	return [true];
+				else return [false];
+			},
+			dateFormat: 'yy-mm-dd',
+			minDate: "{{ today }}",
+			maxDate: "{{ class.summar_end }}",
+		});
+
+		$('#datepicker, #datepicker1').on('change', () => {
+			const start_date = $('#datepicker').val();
+			const end_date = $('#datepicker1').val();
+			if (start_date && end_date ) {
+				$('#hidden_div').removeClass('d-none');
+			} else {
+				$('#hidden_div').addClass('d-none');
+			}
+		});
+
+		$(document).on("change", "#id_ref_schedule", () => {
+			const start_date = $('#datepicker').val();
+			const end_date = $('#datepicker1').val();
+			schedule = $("#id_ref_schedule option:selected").val();
+			class_id = "{{ class.pk }}";
+
+			if (!schedule) {
+				$("#id_ref_room").html(options);
+				$("#id_ref_teacher").html(options);
+			}
+
+			if (start_date && end_date && schedule && class_id ) {
+				$.ajax({
+					method: "GET",
+					url: "{% url 'web:check_available_schedule' %}",
+					data: { start_date, end_date, schedule, class_id }
+				})
+				.done(function(res) {
+					const room_options = ['<option value="" selected="">---------</option>'];
+					const teacher_options = ['<option value="" selected="">---------</option>'];
+					
+					for (let record of res.rooms) {
+						let option = `<option value="${record.pk}">${record.fields.name}</option>`;
+						room_options.push(option);
+					}
+					$("#id_ref_room").html(room_options);
+
+					for (let record of res.teachers) {
+						let option = `<option value="${record.fields.ref_user}">${record.fields.first_name} ${record.fields.last_name}</option>`;
+						teacher_options.push(option);
+					}
+					$("#id_ref_teacher").html(teacher_options);
+				});
+			}
+		});
+	});
+</script>
+{% endblock%}

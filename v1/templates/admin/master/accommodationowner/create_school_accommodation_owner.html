@@ -1,0 +1,329 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add Accommodation Owner{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add Accommodation Owner : {{school}}</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' school.id %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add Accommodation Owner</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="tab-1-link" data-bs-toggle="pill"
+										data-bs-target="#tab-1" type="button" role="tab" aria-controls="v-pills-home"
+										aria-selected="true">Organization Details</a>
+								</li>
+								<li>
+									<span>2</span>
+									<a class="nav-link" id="tab-2-link" data-bs-toggle="pill" data-bs-target="#tab-2"
+										type="button" role="tab" aria-controls="v-pills-profile"
+										aria-selected="false">School Details</a>
+								</li>
+								<li>
+									<span>3</span>
+									<a class="nav-link" id="tab-3-link" data-bs-toggle="pill" data-bs-target="#tab-3"
+										type="button" role="tab" aria-controls="v-pills-messages"
+										aria-selected="false">Country Details</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active tab-1" id="tab-1" role="tabpanel"
+								aria-labelledby="tab-1">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Accommodation Type <strong class="text-danger">*</strong></label>
+												<select name="accommodation_type" class="form-select form-select-lg"
+													required="" id="id_accommodation_type"
+													onchange="accommodationType(this);">
+													<option value="" selected="">Select One</option>
+													<option value="0">Host family</option>
+													<option value="1">Resident</option>
+													<option value="2">Hotel/Hostel</option>
+												</select>
+											</div>
+											<div class="mb-3">
+												<div class="row" id="hiddenFormFiled"></div>
+											</div>
+											<div class="next-prev-div nav d-flex justify-content-end w-100">
+												<a id="btn-tab-1" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="true"
+													class="btn btn-primary px-4 d-flex align-items-center tab-2-btn nav-link text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade tab-2" id="tab-2" role="tabpanel"
+								aria-labelledby="v-pills-profile-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="">Address <strong class="text-danger">*</strong></label>
+												{{form.address}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">City <strong class="text-danger">*</strong></label>
+												{{form.city}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Country <strong class="text-danger">*</strong></label>
+												{{form.country}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="">Postal code <strong class="text-danger">*</strong></label>
+												{{form.postal_code}}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-2" data-bs-toggle="pill" data-bs-target="#tab-1"
+													type="button" role="tab" aria-controls="tab-1" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center tab-2 text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<a id="btn-tab-3" data-bs-toggle="pill" data-bs-target="#tab-3"
+													type="button" role="tab" aria-controls="tab-3" aria-selected="false"
+													class="btn btn-primary px-4 d-flex align-items-center text-white btnNext">Next
+													<i class="ri-arrow-right-line ms-3 me-0"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane fade tab-3" id="tab-3" role="tabpanel"
+								aria-labelledby="v-pills-messages-tab">
+
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label class="form-label" for="id_email">Email <strong class="text-danger">*</strong></label>
+												{{form.email}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="id_email">Phone <strong class="text-danger">*</strong></label>
+												{{form.phone}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="id_email">Capacity <strong class="text-danger">*</strong></label>
+												{{form.capacity}}
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="id_email">Notes <strong class="text-danger">*</strong></label>
+												{{form.notes}}
+											</div>
+											<div class="nav next-prev-div d-flex justify-content-end w-100">
+												<a id="btn-tab-4" data-bs-toggle="pill" data-bs-target="#tab-2"
+													type="button" role="tab" aria-controls="tab-2" aria-selected="false"
+													class="btn btn-secondary px-4 me-3 d-flex align-items-center text-white btnPrevious"><i
+														class="ri-arrow-left-line me-3 me-0"></i> Previous </a>
+												<button type="submit"
+													class="btn btn-success px-4 d-flex align-items-center">Submit
+													<i class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="{% static 'js/button_navigation.js' %}"></script>
+<script type="text/javascript">
+	function accommodationType(sel) {
+		var accommodationType = document.getElementById('id_accommodation_type');
+		var hiddenFormFiledData = document.getElementById('hiddenFormFiled');
+		if (sel.options[sel.selectedIndex].value == "0") {
+			hiddenFormFiledData.innerHTML = '<div class="col"><label class="form-label" for="id_accommodation_title">First Name <strong class="text-danger">*</strong></label><input type="text" name="first_name" class="form-control form-control-lg" required="" id="id_first_name"></div><div class="col"><label class="form-label" for="id_last_name">Last Name <strong class="text-danger">*</strong></label><input type="text" name="last_name" class="form-control form-control-lg" required="" id="id_last_name"></div>';
+		}
+		else if (sel.options[sel.selectedIndex].value == "1") {
+			hiddenFormFiledData.innerHTML = '<div class="col"><label class="form-label" for="id_company_name">Resident Name <strong class="text-danger">*</strong></label><input type="text" name="company_name" class="form-control form-control-lg" required="" id="id_company_name"></div>';
+		}
+		else if (sel.options[sel.selectedIndex].value == "2") {
+			hiddenFormFiledData.innerHTML = '<div class="col"><label class="form-label" for="id_company_name">Hotel/Hotsel Name <strong class="text-danger">*</strong></label><input type="text" name="company_name" class="form-control form-control-lg" required="" id="id_company_name"></div>';
+		}
+		else if (sel.options[sel.selectedIndex].value == "") {
+			hiddenFormFiledData.innerHTML = "";
+		}
+
+	}
+</script>
+<script>
+	$(document).ready(() => {
+		$('#btn-tab-1').addClass('disabled');
+		$('#btn-tab-3').addClass('disabled');
+
+		// Step-1
+		$('select[name="accommodation_type"]').change(function (e) {
+			let validate = false;
+			if ($(this).val()) {
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="first_name"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				$('input[name="last_name"]').val() ? validate = true : ''
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="last_name"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				$('input[name="first_name"]').val() ? validate = true : ''
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="company_name"]', function (e) {
+			let validate = false;
+			$(this).val() ? validate = true : validate = false;
+
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+		});
+
+		// Step-2
+		$(document).on('keyup', 'textarea[name="address"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('input[name="city"]').val() && $('input[name="country"]').val() && $('input[name="postal_code"]').val()) ? validate = true : validate = false
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="city"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('textarea[name="address"]').val() && $('input[name="country"]').val() && $('input[name="postal_code"]').val()) ? validate = true : validate = false
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="country"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('textarea[name="address"]').val() && $('input[name="city"]').val() && $('input[name="postal_code"]').val()) ? validate = true : validate = false
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+		$(document).on('keyup', 'input[name="postal_code"]', function (e) {
+			let validate = false;
+			if ($(this).val()) {
+				($('textarea[name="address"]').val() && $('input[name="city"]').val() && $('input[name="country"]').val()) ? validate = true : validate = false
+			} else {
+				validate = false;
+			}
+
+			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled')
+		});
+	});
+</script>
+<script>
+	$(document).ready(function () {
+		let invalidChars = ["-", "+", "e", "."];
+		$(document).on('keydown', '#id_capacity', function (e) {
+			if (invalidChars.includes(e.key)) {
+				e.preventDefault();
+			}
+		});
+		$(document).on('change', '#id_capacity', function (e) {
+			if ($(this).val() < 0) {
+				alert("Please enter only positive number");
+				$(this).val('0');
+			}
+		});
+	});
+</script>
+{% endblock%}

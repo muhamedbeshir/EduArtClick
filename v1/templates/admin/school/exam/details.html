@@ -1,0 +1,476 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}School Exam Details{% endblock %}
+{% load static %}
+{% load auth_extras %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables-buttons/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<div class="d-md-flex justify-content-between mb-3">
+			<div class="d-md-flex">
+				<div class="d-flex align-items-center">
+					<div class="pe-3">
+						<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>School Exam Details</h4>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item active"><a
+										href="{% url 'web:details_school_course' exam.ref_course.ref_course.id %}">Course Details</a></li>
+								<li class="breadcrumb-item active" aria-current="page">School Exam Details</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-building-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCHOOL</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.ref_course.ref_school.school_name}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-organization-chart"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EXAM TITLE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.title}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-map-pin-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">EXAM TYPE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.ref_exam_type.name}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-mail-open-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">COURSE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.ref_course.title}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">DURATION</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.duration}} Minutes</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">SCORE</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.score}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">TOTAL QUESTIONS</span>
+						</div>
+						<span class="d-block border-top pt-3">{{exam.total_questions}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title mb-2 d-flex align-items-start justify-content-start">
+							<span class="text-center me-2">
+								<i class="ri-currency-line"></i>
+							</span>
+							<span class="fw-semibold d-block mb-1 text-center">TEACHER</span>
+						</div>
+						<span class="d-block border-top pt-3">
+							{% if exam.ref_course.ref_teacher_name.first_name %}
+							{{exam.ref_course.ref_teacher_name.first_name}}
+							{{exam.ref_course.ref_teacher_name.last_name}}
+							{% else %}
+							-
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card-title d-flex align-items-start justify-content-between rounded bg-light p-3 mb-3 mt-3">
+			<div class="">
+				<ul class="nav nav-pills" role="tablist">
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school-detail' in request.META.HTTP_REFERER or 'school/exam/category/' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="examcategory-tab" data-bs-toggle="tab" data-bs-target="#examcategory_table"
+							aria-controls="examcategory_table" aria-selected="true">
+							Exam Category
+						</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/exam/question/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="examquestion-tab" data-bs-toggle="tab" data-bs-target="#examquestion_table"
+							aria-controls="examquestion_table" aria-selected="false">Exam Questions</button>
+					</li>
+					<li class="nav-item">
+						<button type="button"
+							class="nav-link {% if 'school/exam/result/' in request.META.HTTP_REFERER %} active {% endif %}"
+							role="tab" id="studentanswer-tab" data-bs-toggle="tab" data-bs-target="#studentanswer_table"
+							aria-controls="studentanswer_table" aria-selected="false">Student Answers</button>
+					</li>
+				</ul>
+			</div>
+
+			<!-- <div class="dropdown">
+				<button class="btn p-0 d-flex align-items-center border px-2" type="button" id="cardOpt4"
+					data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="ri-add-line me-2"></i> Add Service
+				</button>
+				<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+					<a class="dropdown-item" href="{% url 'web:school_exam_category_add' exam.id %}">Exam Category</a>
+					<a class="dropdown-item" href="{% url 'web:school_exam_question_add' exam.id %}">Questions</a>
+				</div>
+			</div> -->
+		</div>
+
+		<div class="col-12 mb-4">
+			<div class="card">
+				<div class="card-body tab-content">
+					<!-- examcategory Table -->
+					<div role="tabpanel" aria-labelledby="examcategory-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school-detail' in request.META.HTTP_REFERER or 'school/exam/category/' in request.META.HTTP_REFERER or not request.META.HTTP_REFERER %} show active {% endif %}"
+						id="examcategory_table">
+
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_exam_category_add' exam.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Category
+							</a>
+						</div>
+
+						<table class="table" id="category">
+							<thead>
+								<tr>
+									<th>Exam Category Name</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for category in categories %}
+								<tr>
+									<td> {{category.name}} </td>
+									<td>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{category.name}}" data-title="Exam Category"
+											href="{% url 'web:school_exam_category_delete' category.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- examquestion Table -->
+					<div role="tabpanel" aria-labelledby="examquestion-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/exam/question/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="examquestion_table">
+
+						<div class="mb-4 d-flex justify-content-end">
+							<a href="{% url 'web:school_exam_question_add' exam.id %}" class="btn p-0 d-flex align-items-center border px-2 py-1 btn-outline-secondary" type="button">
+								<i class="ri-add-line me-2"></i> Add Question
+							</a>
+						</div>
+
+						<table class="table" id="questions">
+							<thead>
+								<tr>
+									<th>Exam Category</th>
+									<th>Exam Question</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for question in questions %}
+								<tr>
+									<td> {{question.ref_exam_category.name}} </td>
+									<td> {{question.question}} </td>
+									<td>
+										<a class="me-2" href="{% url 'web:school_exam_question_view' question.id %}">
+											<i class="ri-eye-line ri-lg"></i>
+										</a>
+										<a class="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-model"
+											data-name="{{question.question}}" data-title="Exam Question"
+											href="{% url 'web:school_exam_question_delete' question.id %}">
+											<i class="ri-delete-bin-5-line ri-lg"></i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- studentanswer Table -->
+					<div role="tabpanel" aria-labelledby="studentanswer-tab"
+						class="tab-pane fade table-responsive text-nowrap {% if 'school/exam/result/' in request.META.HTTP_REFERER %} show active {% endif %}"
+						id="studentanswer_table">
+						<table class="table" id="answers">
+							<thead>
+								<tr>
+									<th>Exam Title</th>
+									{% if exam.ref_exam_type.name == 'Initial' %}
+									<th>Application</th>
+									{% else %}
+									<th>Username</th>
+									<th>Level</th>
+									{% endif %}
+									<th>Exam Student</th>
+									<th>Student Score</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody class="table-border-bottom-0">
+								{% for answer in answers %}
+								<tr>
+									<td> {{answer.ref_exam.title}} </td>
+									{% if answer.ref_application %}
+									<td>
+										{{ answer.ref_application }} <!-- Application Number -->
+									</td>
+									{% else %}
+									<td>
+										{{ answer.ref_school_student.ref_user }} <!-- Student ID -->
+									</td>
+									<td>
+										{{ answer.ref_school_student.ref_course_level }} <!-- Course Level -->
+									</td>
+									{% endif %}
+									<td>
+										{% if answer.ref_application %}
+										{{answer.ref_student.first_name|title}} {{answer.ref_student.last_name|title}}
+										{% else %}
+										{{answer.ref_school_student.first_name|title}}
+										{{answer.ref_school_student.last_name|title}}
+										{% endif %}
+									</td>
+									<td> {{answer.score}} out of {{answer.ref_exam.score}} </td>
+									<td>
+										<a class="" href="{% url 'web:school_exam_result' answer.id %}">
+											Add / Update Remarks
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+<!-- Delete Model -->
+<div class="modal fade" id="delete-model" tabindex="-1" aria-labelledby="delete-model-title" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="delete-model-title">Delete Model</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="delete-model-body">
+				<p>Do you want to delete the model <b>"model name"</b></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="delete-model-yes" data-href="">Yes</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Model -->
+{% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'admin/plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'admin/plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- DATA TABLES -->
+<script>
+
+	$(document).ready(() => {
+		if ($('button.nav-link active').length == 0) {
+			// $.each($('button.nav-link'), (i, element) => {
+			// if ($(element).text() == 'Student') {
+			// $('#accomandation-tab').addClass('active')
+			// $('#accommodation_table').addClass('show active')
+			// }
+			// });
+		}
+
+		// Working on Delete logic
+		$(document).on('click', '.delete-btn', function () {
+			let name = $(this).attr('data-name')
+			let title = $(this).attr('data-title')
+			let del_link = $(this).attr('href')
+			$('#delete-model-title').html(
+				`Delete ${title}`
+			)
+			$('#delete-model-body').html(
+				`<p>Do you want to delete the ${title.toLowerCase()} <b>"${name}"</b></p>`
+			)
+			$('#delete-model-yes').attr('data-href', del_link)
+		})
+		$('#delete-model-yes').on('click', function () {
+			let del_link = $(this).attr('data-href')
+			// When user click on yes button delete
+			let $crf_token = "{{ csrf_token }}";
+			// AJAX Call
+			$.ajax({
+				url: del_link,
+				type: "POST",
+				headers: { "X-CSRFToken": $crf_token },
+				success: function (data, textStatus, jqXHR) {
+					//data - response from server
+					location.reload(); //Reload the current Page
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.log('error while ajax calling')
+				}
+			});
+		})
+	})
+
+	$(function () {
+		$('#category').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#questions').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+		$('#answers').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'copy', 'csv', 'excel'
+			]
+		});
+	});
+</script>
+{% endblock%}

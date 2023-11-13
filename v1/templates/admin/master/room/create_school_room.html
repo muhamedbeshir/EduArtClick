@@ -1,0 +1,156 @@
+{% extends "admin_main_base.html" %}
+{% block head_title %}Add School Classroom{% endblock %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+{% if permission %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<!-- Main content -->
+		<section class="content">
+			<div class="error-page">
+				<h2 class="headline text-warning"> 403 Error</h2>
+				<div class="error-content">
+					<h3><i class="ri-error-warning-line"></i> Oops! Permission denied.</h3>
+					<p>We could not find the page you were looking for.</p>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- Content -->
+</div>
+<!-- Content wrapper -->
+{% else %}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	<!-- Content -->
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="fw-bold mb-0"><span class="text-muted fw-light"></span>Add School Classroom</h4>
+		<nav aria-label="breadcrumb mb-4  ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{% url 'web:deatil_school' school.id %}">School Details</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Add School Classroom</li>
+			</ol>
+		</nav>
+
+		{% if form.errors %}
+		<div class="px-5 py-2 d-flex justify-content-center">
+			<div class="alert alert-warning alert-dismissible fade show text-dark" role="alert">
+				{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+				{% if field == '__all__' %}
+				<strong>Error : </strong> {{ error|escape }}<br>
+				{% else %}
+				<strong>{{ field|title }} : </strong> {{ error|escape }}<br>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		{% endif %}
+
+		<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+			{% csrf_token %}
+			<!-- Bootstrap modals -->
+			<div class="card mb-4 empty-div-height d-block">
+				<div class="row h-100h">
+					<div class="col-lg-3 h-100h">
+						<div class="bg-v-steps h-100">
+							<ul class="nav flex-column nav-pills list-v-steps" id="v-pills-tab" role="tablist"
+								aria-orientation="vertical">
+								<li class="active">
+									<span>1</span>
+									<a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+										data-bs-target="#v-pills-home" type="button" role="tab"
+										aria-controls="v-pills-home" aria-selected="true">Classroom Form</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-9 position-relative">
+						<div class="tab-content p-0" id="v-pills-tabContent">
+							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+								aria-labelledby="v-pills-home-tab">
+								<div class="row h-100h">
+									<div class="col-md-7 mt-5">
+										<div class="forms h-100 d-flex flex-column align-items-">
+											<div class="mb-3">
+												<label for="">Classroom Name <strong
+														class="text-danger">*</strong></label>
+												<input type="text" name="name"
+													class="form-control form-control-lg text-capitalize" required=""
+													id="id_name" placeholder="Classroom Name">
+											</div>
+											<div class="row mb-3">
+												<div class="col">
+													<label for="">Capacity <strong
+															class="text-danger">*</strong></label>
+													<input type="number" name="capacity"
+														class="form-control form-control-lg" required=""
+														id="id_capacity" placeholder="Room Capacity">
+												</div>
+												<div class="col">
+													<label for="">Minimum <strong class="text-danger">*</strong></label>
+													<input type="number" name="minimum"
+														class="form-control form-control-lg" required="" id="id_minimum"
+														placeholder="Minimum Member">
+												</div>
+											</div>
+											<div class="next-prev-div d-flex justify-content-end w-100">
+												<button class="btn btn-success px-4 d-flex align-items-center"
+													type="submit">Submit <i
+														class="ri-arrow-right-line ms-3 me-0"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ Bootstrap modals -->
+		</form>
+	</div>
+	<!-- / Content -->
+</div>
+<!-- Content wrapper -->
+{% endif %}
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+	$(document).ready(function () {
+		$(document).on('keypress keyup keydown', '#id_capacity, #id_minimum', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
+		$(document).on('change', '#id_capacity', function (e) {
+			if ($(this).val() < 0) {
+				alert("Please enter only positive number");
+				$(this).val('0');
+			}
+
+			if ($(this).val()) {
+				$('#id_minimum').val('0');
+				$('#id_minimum').attr('max', $(this).val());
+			}
+		});
+		$(document).on('change', '#id_minimum', function (e) {
+			if ($(this).val() < 0) {
+				alert("Please enter only positive number");
+				$(this).val('0');
+			}
+		});
+	});
+</script>
+{% endblock%}

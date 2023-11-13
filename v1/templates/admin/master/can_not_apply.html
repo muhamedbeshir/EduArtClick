@@ -1,0 +1,33 @@
+<label>Previous Classes <strong class="text-danger">*</strong></label>
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Days</th>
+            <th>Schedule</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="4">
+                <h2 class="fs-6 text-danger text-center">Sorry, You can't apply on these days. try another days</h2>
+            </td>
+        </tr>
+        {% for s_class in school_class %}
+        <tr>
+            <td>
+                {{s_class.ref_course}}
+            </td>
+            <td class="course_days">
+                {{s_class.ref_day_list}}
+            </td>
+            <td class="course_start_timeline">
+                {{s_class.ref_schedule}}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>
