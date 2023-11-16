@@ -8,16 +8,16 @@
 		{% if user.is_superuser or request.user|has_group:"admin" %}
 		<a href="{% url 'web:dashboard' %}" class="app-brand-link">
 			<span class="app-brand-logo demo">
-				<img src="{% static 'img/teachia_logo.png' %}">
+				<img src="{% static 'img/teachia_logo.png' %}" style="width: 48px;">
 			</span>
-			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Edu Art Click</div><br>
 		</a>
 		{% elif request.user|has_group:"school_student" %}
 		<a href="{% url 'web:school_student_dashboard' %}" class="app-brand-link">
 			<span class="app-brand-logo demo">
 				<img src="{% static 'img/teachia_logo.png' %}">
 			</span>
-			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Edu Art Click</div><br>
 		</a>
 		{% elif request.user|has_group:"school" %}
 		<a href="{% url 'web:dashboard' %}" class="app-brand-link">
@@ -31,7 +31,7 @@
 			{% if request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting %}
 				<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">{{request.user.organizationuserprofile.ref_school.rel_ref_school_school_setting}}</div><br>
 			{% else %}
-				<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+				<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Edu Art Click</div><br>
 			{% endif %}
 		</a>
 		{% else %}
@@ -39,7 +39,7 @@
 			<span class="app-brand-logo demo">
 				<img src="{% static 'img/teachia_logo.png' %}">
 			</span>
-			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Teachia</div><br>
+			<div class="app-brand-text demo menu-text fw-bolder ms-2 d-block text-capitalize">Edu Art Click</div><br>
 		</a>
 		{% endif %}
 
