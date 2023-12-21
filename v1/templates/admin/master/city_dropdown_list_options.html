@@ -1,8 +1,8 @@
 {% if cities %}
-	<option value="">---------</option>
+	<option value="">Select</option>
 	{% for city in cities %}
 	<option value="{{ city.pk }}">{{ city.city_name }}</option>
 	{% endfor %}
 {% else %}
-	<option value="">---------</option>
+	<option value="">Select</option>
 {% endif %}

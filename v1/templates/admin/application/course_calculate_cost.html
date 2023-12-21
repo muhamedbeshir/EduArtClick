@@ -6,6 +6,8 @@
 <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
 	thead {
 		background-color: gray;
@@ -149,13 +151,13 @@
 											<div class="row mb-3">
 												<div class="col">
 													<label class="form-label">Select
-														Course <strong class="text-danger">*</strong></label>
-													{{ form.s_course }}
+														Course Type<strong class="text-danger">*</strong></label>
+													{{ form.ref_course_type }}
 												</div>
 												<div class="col">
 													<label class="form-label">Select
-														Course Type<strong class="text-danger">*</strong></label>
-													{{ form.ref_course_type }}
+														Course <strong class="text-danger">*</strong></label>
+													{{ form.s_course }}
 												</div>
 											</div>
 											<div class="mb-3">
@@ -251,7 +253,7 @@
 													Type<strong class="text-danger">*</strong></label>
 												<select name="accommodation_type" class="form-select form-select-lg"
 													required="" id="id_accommodation_type">
-													<option value="" selected>---------</option>
+													<option value="" selected>Select</option>
 												</select>
 											</div>
 											<div class="mb-3">
@@ -665,55 +667,84 @@
 </script>
 <script>
 	$(document).ready(() => {
+		// In your Javascript (external .js resource or <script> tag)
+	    // $('select').select2();
+	});
+</script>
+<script>
+	$(document).ready(() => {
+
 		$('#btn-tab-1').addClass('disabled');
 		$('#btn-tab-3').addClass('disabled');
 		$('#btn-tab-5').addClass('disabled');
 
 		// Step-1
+		const s_city_field = $('select[name="s_city"]');
+		const s_school_field = $('select[name="s_school"]');
+		const s_school_address = $('#school_address');
+		
+		if (!$('#id_s_country option:selected').val()){
+			s_city_field.parent('div').addClass('d-none');
+		}
+		
+		if (!$('#id_s_city option:selected').val()){
+			s_school_field.parent('div').addClass('d-none');
+		}
+
+		if ($('#id_s_country option:selected').val() && $('#id_s_city option:selected').val() && $('#id_s_school option:selected').val()) {
+			$('#btn-tab-1').removeClass('disabled');
+		}
+
+
 		$('select[name="s_country"]').change(function (e) {
-			let validate = false;
 			if ($(this).val()) {
-				if ($('select[name="s_city"]').val() && $('select[name="s_school"]').val()) {
-					validate = true;
-				} else {
-					validate = false;
-				}
+				s_city_field.parent('div').removeClass('d-none');
 			} else {
-				validate = false;
+				s_city_field.parent('div').addClass('d-none');
 			}
 
-			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+			s_school_field.parent('div').addClass('d-none');
+			s_school_address.addClass('d-none');
+			$('#btn-tab-1').addClass('disabled');
 		});
+
 		$('select[name="s_city"]').change(function (e) {
-			let validate = false;
 			if ($(this).val()) {
-				if ($('select[name="s_country"]').val() && $('select[name="s_school"]').val()) {
-					validate = true;
-				} else {
-					validate = false;
-				}
+				s_school_field.parent('div').removeClass('d-none');
 			} else {
-				validate = false;
+				s_school_field.parent('div').addClass('d-none');
 			}
-
-			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+			
+			s_school_address.addClass('d-none');
+			$('#btn-tab-1').addClass('disabled');
 		});
+
 		$('select[name="s_school"]').change(function (e) {
 			let validate = false;
 			if ($(this).val()) {
-				if ($('select[name="s_country"]').val() && $('select[name="s_city"]').val()) {
-					validate = true;
-				} else {
-					validate = false;
-				}
+				s_school_address.removeClass('d-none');
+				validate = true;
+				s_school_address.removeClass('d-none');
 			} else {
+				s_school_address.addClass('d-none');
 				validate = false;
+				s_school_address.addClass('d-none');
 			}
 
-			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled')
+			(validate) ? $('#btn-tab-1').removeClass('disabled') : $('#btn-tab-1').addClass('disabled');
 		});
 
 		// Step-2
+		const s_course_field = $('select[name="s_course"]');
+		const ref_ap_coupon_field = $('select[name="ref_ap_coupon"]');
+
+		if (!$('#id_ref_course_type option:selected').val()){
+			s_course_field.parent('div').addClass('d-none');
+		}
+		
+		ref_ap_coupon_field.parent('div').addClass('d-none');
+
+
 		function validateStepTwo(s_course, ref_course_type, study_period, s_start_date, course_class_details) {
 			let validate = false;
 
@@ -734,6 +765,20 @@
 			(validate) ? $('#btn-tab-3').removeClass('disabled') : $('#btn-tab-3').addClass('disabled');
 		}
 
+		$('select[name="ref_course_type"]').change( function (e) {
+			if ($(this).val()) {
+				s_course_field.parent('div').removeClass('d-none');
+			} else {
+				s_course_field.parent('div').addClass('d-none');
+			}
+			
+			$('#btn-tab-3').addClass('disabled');
+		});
+
+		$('select[name="s_course"], select[name="ref_course_type"]').change(function (e) {
+			ref_ap_coupon_field.parent('div').addClass('d-none');
+		});
+
 		$('select[name="s_course"], select[name="ref_course_type"], select[name="study_period"], input[name="s_start_date"]').change(function (e) {
 			validateStepTwoFields();
 		});
@@ -741,6 +786,7 @@
 
 		$(document).on('click', 'input:radio[name="course_class_details"]', function (e) {
 			validateStepTwoFields();
+			ref_ap_coupon_field.parent('div').removeClass('d-none');
 		});
 
 		// Step-3

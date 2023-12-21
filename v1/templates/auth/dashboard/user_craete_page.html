@@ -131,7 +131,8 @@
 					</div>
 				</div>
 			</div>
-
+			
+			<!-- 
 			<div class="col-lg-2 col-md-4 col-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -184,8 +185,9 @@
 									class="ri-add-line me-2"></i> Organization User</small> </a>
 					</div>
 				</div>
-			</div>
-
+			</div> -->
+			
+			<!-- 
 			<div class="col-lg-2 col-md-4 col-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -237,7 +239,7 @@
 									class="ri-add-line me-2"></i> School User</small> </a>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="col-lg-2 col-md-4 col-6 mb-4">
 				<div class="card">
@@ -372,16 +374,16 @@
 										data-bs-target="#agent_table"
 										aria-controls="agent_table" aria-selected="false">Agent</button>
 									</li>
-									<li class="nav-item" role="presentation">
+									<!-- <li class="nav-item" role="presentation">
 										<button type="button" class="nav-link {% if 'organization-user' in request.META.HTTP_REFERER %} active {% endif %}" id="organization-tab" role="tab" data-bs-toggle="tab"
 										data-bs-target="#organization_table"
 										aria-controls="organization_table" aria-selected="false">Organization</button>
-									</li>
-									<li class="nav-item" role="presentation">
+									</li> -->
+									<!-- <li class="nav-item" role="presentation">
 										<button type="button" class="nav-link {% if 'school-user' in request.META.HTTP_REFERER %} active {% endif %}" id="school-tab" role="tab" data-bs-toggle="tab"
 										data-bs-target="#school_table"
 										aria-controls="school_table" aria-selected="false">School User</button>
-									</li>
+									</li> -->
 									<li class="nav-item" role="presentation">
 										<button type="button" class="nav-link {% if 'staff-user' in request.META.HTTP_REFERER %} active {% endif %}" id="staff-tab" role="tab" data-bs-toggle="tab"
 										data-bs-target="#staff_table"
@@ -402,8 +404,8 @@
 								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
 									<a class="dropdown-item" href="{% url 'web:create_student_user' %}">Student</a>
 									<a class="dropdown-item" href="{% url 'web:create_agent_user' %}">Agent</a>
-									<a class="dropdown-item" href="{% url 'web:create_organization_user' %}">Organization</a>
-									<a class="dropdown-item" href="{% url 'web:create_school_user' %}">School User</a>
+									<!-- <a class="dropdown-item" href="{% url 'web:create_organization_user' %}">Organization</a>
+									<a class="dropdown-item" href="{% url 'web:create_school_user' %}">School User</a> -->
 									<a class="dropdown-item" href="{% url 'web:create_staff_user' %}">Staff User</a>
 									<a class="dropdown-item" href="{% url 'web:create_admin_user' %}">Admin User</a>
 								</div>
@@ -525,7 +527,7 @@
 							</div>
 
 							<!-- Organization Table -->
-							<div role="tabpanel" aria-labelledby="organization-tab" class="tab-pane fade table-responsive text-nowrap {% if 'organization-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="organization_table">
+							<!-- <div role="tabpanel" aria-labelledby="organization-tab" class="tab-pane fade table-responsive text-nowrap {% if 'organization-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="organization_table">
 								<table class="table" id="organization">
 									<thead>
 										<tr>
@@ -577,10 +579,10 @@
 										{% endfor %}
 									</tbody>
 								</table>
-							</div>
+							</div> -->
 
 							<!-- School Table -->
-							<div role="tabpanel" aria-labelledby="school-tab" class="tab-pane fade table-responsive text-nowrap {% if 'school-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="school_table">
+							<!-- <div role="tabpanel" aria-labelledby="school-tab" class="tab-pane fade table-responsive text-nowrap {% if 'school-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="school_table">
 								<table class="table" id="school">
 									<thead>
 										<tr>
@@ -634,7 +636,7 @@
 										{% endfor %}
 									</tbody>
 								</table>
-							</div>
+							</div> -->
 
 							<!-- Staff Table -->
 							<div role="tabpanel" aria-labelledby="staff-tab" class="tab-pane fade table-responsive text-nowrap {% if 'staff-user' in request.META.HTTP_REFERER %} show active {% endif %}" id="staff_table">

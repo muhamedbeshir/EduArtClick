@@ -1,4 +1,6 @@
-<option value="">---------</option>
 {% for school in schools %}
+<option value="">Select</option>
 <option value="{{ school.pk }}">{{ school.school_name }}</option>
+{% empty %}
+<option value="">No School Found</option>
 {% endfor %}

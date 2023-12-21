@@ -174,12 +174,12 @@
 							role="tab" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam_table"
 							aria-controls="exam_table" aria-selected="false">Exams</button>
 					</li>
-					<li class="nav-item">
+					<!-- <li class="nav-item">
 						<button type="button"
 							class="nav-link {% if 'school/certificate/content/' in request.META.HTTP_REFERER %} active {% endif %}"
 							role="tab" id="certificate-tab" data-bs-toggle="tab" data-bs-target="#certificate_table"
 							aria-controls="certificate_table" aria-selected="false">Certificates</button>
-					</li>
+					</li> -->
 					<li class="nav-item">
 						<button type="button"
 							class="nav-link {% if 'school-class/' in request.META.HTTP_REFERER %} active {% endif %}"
@@ -254,7 +254,7 @@
 						</table>
 					</div>
 					<!-- certificate Table -->
-					<div role="tabpanel" aria-labelledby="certificate-tab"
+					<!-- <div role="tabpanel" aria-labelledby="certificate-tab"
 						class="tab-pane fade table-responsive text-nowrap {% if 'school/certificate/content/' in request.META.HTTP_REFERER %} show active {% endif %}"
 						id="certificate_table">
 
@@ -298,7 +298,7 @@
 								{% endfor %}
 							</tbody>
 						</table>
-					</div>
+					</div> -->
 					<!-- class Table -->
 					<div role="tabpanel" aria-labelledby="class-tab"
 						class="tab-pane fade table-responsive text-nowrap {% if 'school-class/' in request.META.HTTP_REFERER %} show active {% endif %}"

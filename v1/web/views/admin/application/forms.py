@@ -133,6 +133,9 @@ class CalculateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        for field in ('s_country', 's_city', 's_school', 's_course', 'ref_ap_coupon'):
+            self.fields[field].empty_label = 'Select'
+
         self.fields['s_city'].queryset = City.objects.none()
         self.fields['s_school'].queryset = School.objects.none()
         self.fields['s_course'].queryset = SchoolCourse.objects.none()
@@ -197,8 +200,8 @@ class ApplicationForm(forms.ModelForm):
     ),  widget=forms.Select(attrs={'class': 'form-select form-select-lg'}))
 
     ref_sponsor = forms.ModelChoiceField(queryset=SchoolSponsor.objects.all(
-    ),  widget=forms.Select(attrs={'class': 'form-select form-select-lg'}), required=False)
-
+    ),  widget=forms.Select(attrs={'class': 'form-select form-select-lg'}), required=False, empty_label='Select')
+    
     ap_passport_number = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control form-control-lg'
     }), label="Passport Number", label_suffix="", required=False)
@@ -263,6 +266,12 @@ class ApplicationForm(forms.ModelForm):
             'ref_sponsor',
             'sponsor_document_file'
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in ('ap_gender', 'ref_ap_nationality', 'ref_sponsor',):
+            self.fields[field].empty_label = 'Select'
 
 
 class ServiceForm(forms.Form):
