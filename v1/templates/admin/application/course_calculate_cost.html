@@ -203,6 +203,7 @@
 																</div>
 															</div> -->
 														</div>
+														<!-- <label for="" id="id_application_course_end_date"></label> -->
 													</div>
 
 													<!--
@@ -571,57 +572,58 @@
 		var url = $("#clientForm").attr("data-class-days-url");
 		let course = $(this).val();
 
-		let current_year = parseInt("{% now 'Y' %}");
-		let next_year = current_year + 1
-		let current_month = parseInt("{% now 'm' %}");
-		let current_day = parseInt("{% now 'd' %}");
-		let minDate = new Date(current_year, current_month - 1, current_day)
+		// let current_year = parseInt("{% now 'Y' %}");
+		// let next_year = current_year + 1
+		// let current_month = parseInt("{% now 'm' %}");
+		// let current_day = parseInt("{% now 'd' %}");
+		// let minDate = new Date(current_year, current_month - 1, current_day)
 
-		$('#datepicker').datepicker("destroy");
+		// $('#datepicker').datepicker("destroy");
 
-		if (course) {
-			$.ajax({
-				url: url,
-				data: {
-					'course': course,
-				},
-				success: function (data) {
-					// Implementation of Study Start Date
-					let class_days_str = JSON.stringify(data);
-					let class_days_obj = JSON.parse(class_days_str);
-					let class_days = class_days_obj['days'];
-					// ============ Custom Datepicker ==========
+		// if (course) {
+		// 	$.ajax({
+		// 		url: url,
+		// 		data: {
+		// 			'course': course,
+		// 		},
+		// 		success: function (data) {
+		// 			// Implementation of Study Start Date
+		// 			let class_days_str = JSON.stringify(data);
+		// 			let class_days_obj = JSON.parse(class_days_str);
+		// 			let class_days = class_days_obj['days'];
+		// 			// ============ Custom Datepicker ==========
 
-					$('#datepicker').datepicker({
-						beforeShowDay: function (date) {
-							var dayOfWeek = date.getDay();
-							// 0 : Sunday, 1 : Monday, ...
-							if (class_days.includes(dayOfWeek)) return [true];
-							else return [false];
-						},
-						dateFormat: 'yy-mm-dd',
-						// yearRange: `${current_year}:${next_year}`,
-						minDate: minDate,
-						// maxDate: "+7D",
-					});
+		// 			$('#datepicker').datepicker({
+		// 				beforeShowDay: function (date) {
+		// 					var dayOfWeek = date.getDay();
+		// 					// 0 : Sunday, 1 : Monday, ...
+		// 					if (class_days.includes(dayOfWeek)) return [true];
+		// 					else return [false];
+		// 				},
+		// 				dateFormat: 'yy-mm-dd',
+		// 				// yearRange: `${current_year}:${next_year}`,
+		// 				minDate: minDate,
+		// 				// maxDate: "+7D",
+		// 			});
 
-					let start_dates = class_days_obj['start_date'].split('-');
-					let course_start_date = new Date(start_dates[0], start_dates[1] - 1 , start_dates[2]);
+		// 			let start_dates = class_days_obj['start_date'].split('-');
+		// 			let course_start_date = new Date(start_dates[0], start_dates[1] - 1 , start_dates[2]);
 
-					(course_start_date >= minDate) ? $('#datepicker').datepicker("option", "minDate", course_start_date) : '';
+		// 			(course_start_date >= minDate) ? $('#datepicker').datepicker("option", "minDate", course_start_date) : '';
 					
-					// If Course Type is Regular or Others
-					let course_type = $('#id_ref_course_type option:selected').text();
-					if (course_type == "Regular") {
-						$('#datepicker').datepicker("option", "maxDate", class_days_obj['end_date']);
-					} else {
-						$('#datepicker').datepicker("option", "maxDate", "+7D");
-					}
+		// 			// If Course Type is Regular or Others
+		// 			let course_type = $('#id_ref_course_type option:selected').text();
+		// 			if (course_type == "Regular") {
+		// 				$('#datepicker').datepicker("option", "maxDate", class_days_obj['end_date']);
+		// 			} else {
+		// 				$('#datepicker').datepicker("option", "maxDate", "+7D");
+		// 			}
 
 					
-				}
-			});
-		}
+		// 		}
+		// 	});
+		// }
+
 	});
 
 	// For Course Study Period
@@ -662,6 +664,59 @@
 				$("#price_data").html(data);
 			}
 		});
+
+		var x_url = $("#clientForm").attr("data-class-days-url");
+		let current_year = parseInt("{% now 'Y' %}");
+		let next_year = current_year + 1
+		let current_month = parseInt("{% now 'm' %}");
+		let current_day = parseInt("{% now 'd' %}");
+		let minDate = new Date(current_year, current_month - 1, current_day)
+
+		$('#datepicker').datepicker("destroy");
+
+		if (courseId && periodId) {
+			$.ajax({
+				url: x_url,
+				data: {
+					'course': courseId,
+					'study_period': periodId,
+				},
+				success: function (data) {
+					// Implementation of Study Start Date
+					let class_days_str = JSON.stringify(data);
+					let class_days_obj = JSON.parse(class_days_str);
+					let class_days = class_days_obj['days'];
+					// ============ Custom Datepicker ==========
+
+					$('#datepicker').datepicker({
+						beforeShowDay: function (date) {
+							var dayOfWeek = date.getDay();
+							// 0 : Sunday, 1 : Monday, ...
+							if (class_days.includes(dayOfWeek)) return [true];
+							else return [false];
+						},
+						dateFormat: 'yy-mm-dd',
+						// yearRange: `${current_year}:${next_year}`,
+						minDate: minDate,
+						// maxDate: "+7D",
+					});
+
+					let start_dates = class_days_obj['start_date'].split('-');
+					let course_start_date = new Date(start_dates[0], start_dates[1] - 1 , start_dates[2]);
+					
+					(course_start_date >= minDate) ? $('#datepicker').datepicker("option", "minDate", course_start_date) : '';
+					
+					// If Course Type is Regular or Others
+					let course_type = $('#id_ref_course_type option:selected').text();
+					if (course_type == "Regular") {
+						$('#datepicker').datepicker("option", "maxDate", class_days_obj['end_date']);
+					} else {
+						$('#datepicker').datepicker("option", "maxDate", "+7D");
+					}					
+				}
+			});
+		}
+		
 	});
 
 </script>
