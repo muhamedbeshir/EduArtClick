@@ -406,6 +406,7 @@ urlpatterns = [
          DownloadApprovedLetter.as_view(), name='application_approved_letter'),
 
 
+    path('dashboard/get_application_course_end_date/', get_application_course_end_date, name='get_application_course_end_date'),
     path('dashboard/get_city/', get_city, name='get_city'),
     path('dashboard/get_school_for_org/',
          get_school_for_org, name='get_school_for_org'),
