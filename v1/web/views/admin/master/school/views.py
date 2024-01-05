@@ -1707,6 +1707,9 @@ def create_dynamic_school_application_form_field(request, pk):
     return render(request, 'admin/master/create_dynamic_school_application_form_field.html', context)
 
 
+def get_application_course_end_date(request):
+    return JsonResponse({'start': ''})
+
 def get_city(request):
     country_id = request.GET.get('country')
     if country_id:
@@ -1942,7 +1945,7 @@ def get_course_end_date_ajax(request):
 
 def get_course_class_days_ajax(request):
     course_id = request.GET.get('course')
-
+    study_period = int(request.GET.get('study_period'))
     if course_id:
         coureses = get_object_or_404(SchoolClass, pk=course_id)
         course_days = coureses.ref_day_list
@@ -1983,7 +1986,7 @@ def get_course_class_days_ajax(request):
                     class_days.append(6)
 
         # print(coureses.ref_day)
-        return JsonResponse({'start_date': coureses.summar_start, 'end_date': coureses.summar_end, 'days': class_days})
+        return JsonResponse({'start_date': coureses.summar_start, 'end_date': coureses.summar_end - timedelta(days=study_period*7), 'days': class_days})
     else:
         return JsonResponse({'start_date': '', 'end_date': '', 'days': []})
 
