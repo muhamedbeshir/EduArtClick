@@ -1,0 +1,383 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Edu Art Click — Study Abroad Consultancy | Free Guidance for Saudi Students</title>
+    <meta name="description" content="Edu Art Click helps Saudi students study languages, earn degrees, and join summer schools abroad. Our guidance is completely free. Book your consultation today.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dripicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+    {% include "web/inc/header.html" %}
+
+    <main>
+        <!-- search-popup -->
+        <div class="modal fade bs-example-modal-lg search-bg popup1" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content search-popup">
+                    <div class="text-center">
+                        <a href="#" class="close2" data-dismiss="modal" aria-label="Close">× close</a>
+                    </div>
+                    <div class="row search-outer">
+                        <div class="col-md-11"><input type="text" placeholder="Search for courses..." /></div>
+                        <div class="col-md-1 text-right"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- slider-area -->
+        <section id="home" class="slider-area slider-four fix p-relative">
+            <div class="slider-active">
+                <div class="single-slider slider-bg d-flex align-items-center"
+                     style="background: url({% static 'img/slider/slider_img_bg.png' %}) no-repeat; background-position: center center;">
+                    <div class="container">
+                        <div class="row justify-content-center pt-50 pb-150">
+                            <div class="col-lg-7">
+                                <div class="slider-content s-slider-content mt-200">
+                                    <h2 data-animation="fadeInUp" data-delay=".4s">Your Future Starts Abroad — We'll Take You There</h2>
+                                    <p data-animation="fadeInUp" data-delay=".6s">
+                                        Edu Art Click helps students from Saudi Arabia study languages, earn degrees,
+                                        and spend unforgettable summers at top schools in the UK, USA, Europe, and beyond.
+                                        <strong>Our guidance is completely free for you.</strong>
+                                    </p>
+                                    <div class="slider-btn mt-30" data-animation="fadeInUp" data-delay=".8s">
+                                        <a href="#" class="btn ss-btn mr-3">Book a Free Consultation</a>
+                                        <a href="#" class="btn ss-btn style2">Explore Destinations</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="slider-img" data-animation="fadeInUp" data-delay=".4s">
+                                    <img src="{% static 'img/slider/slider_img05.png' %}" alt="Study Abroad">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- slider-area-end -->
+
+        <!-- about-area -->
+        <section id="about" class="about-area about-p pt-70 pb-120 p-relative"
+                 style="background: url({% static 'img/features/about-bg-aliments.png' %}) no-repeat; background-position: center center;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12 pr-30">
+                        <div class="s-about-img p-relative wow fadeInLeft animated" data-animation="fadeInLeft" data-delay=".4s">
+                            <img src="{% static 'img/features/about_img.png' %}" alt="Edu Art Click">
+                            <div class="about-text second-about">
+                                <div class="all-text">
+                                    <h3>100%</h3>
+                                    <span>Free <br> Guidance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="about-content s-about-content wow fadeInRight animated" data-animation="fadeInRight" data-delay=".4s">
+                            <div class="about-title second-atitle pb-25">
+                                <h5>Why Edu Art Click</h5>
+                                <h2>Guidance That Costs You Nothing</h2>
+                            </div>
+                            <p>We're paid by the schools and universities we partner with — never by you. Expert advice, application support, and honest recommendations at zero cost to you or your family.</p>
+                            <div class="about-content3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="green">
+                                            <li><strong>We Handle the Hard Parts</strong> — From choosing the right program to visa paperwork, accommodation, and airport pickup — we're with you at every step.</li>
+                                            <li><strong>Programs for Every Goal</strong> — Language courses, university degrees, and summer schools — for teenagers, young adults, and professionals.</li>
+                                            <li><strong>Safety and Success, Together</strong> — We prioritize vetted schools, supervised housing, and constant communication.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-btn mt-10">
+                                <a href="{% url 'web:about' %}" class="btn ss-btn">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- about-area-end -->
+
+        <!-- vedio-area -->
+        <section id="vedio" class="vedio-area pt-120 pb-90 fix"
+                 style="background-image: url({% static 'img/video/vedio-bg.png' %}); background-repeat: no-repeat;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align text-center">
+                            <h5>Watch Us</h5>
+                            <h2>Start Growing With Community</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="video-img wow fadeInRight animated" data-animation="fadeInDown animated" data-delay=".2s"
+                             style="background-image:url({% static 'img/video/vedio-img.png' %}); background-repeat: no-repeat; background-position: center;">
+                            <a href="https://www.youtube.com/watch?v=gyGsPlt06bo" class="video-i popup-video">
+                                <img src="{% static 'img/video/play.svg' %}" alt="img" class="active-icon">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- vedio-area-end -->
+
+        <!-- services-area -->
+        <section id="services" class="services-area pb-90 fix"
+                 style="background: url({% static 'img/bg/services-bg-aliments.png' %}) no-repeat; background-position: center;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="about-title second-atitle pb-20">
+                            <h5>How It Works</h5>
+                            <h2>Your Journey in 5 Simple Steps</h2>
+                            <p>From your first consultation to your arrival abroad — we guide you through every stage.</p>
+                        </div>
+                        <div class="slider-btn mt-10">
+                            <a href="#" class="btn ss-btn">Start Your Journey</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-12">
+                        <div class="row">
+                            {% for step in "12345"|make_list %}
+                            {% endfor %}
+                            <div class="col-lg-6 col-md-6">
+                                <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                    <div class="services-icon"><span class="step-number">1</span></div>
+                                    <div class="services-content2">
+                                        <h5>Free Consultation</h5>
+                                        <p>Tell us your goals, budget, and timeline.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                    <div class="services-icon"><span class="step-number">2</span></div>
+                                    <div class="services-content2">
+                                        <h5>Personalized Plan</h5>
+                                        <p>We match you with the right program and destination.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                    <div class="services-icon"><span class="step-number">3</span></div>
+                                    <div class="services-content2">
+                                        <h5>Application &amp; Visa</h5>
+                                        <p>We handle documents, deadlines, and paperwork.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                    <div class="services-icon"><span class="step-number">4</span></div>
+                                    <div class="services-content2">
+                                        <h5>Pre-Departure Prep</h5>
+                                        <p>Orientation, packing, accommodation, arrival.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                    <div class="services-icon"><span class="step-number">5</span></div>
+                                    <div class="services-content2">
+                                        <h5>You Fly — We Stay Connected</h5>
+                                        <p>Support throughout your journey.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- services-area-end -->
+
+        <!-- featured-courses-area -->
+        <section id="courses" class="courses-area fix">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align text-center mb-50">
+                            <h5>Destinations</h5>
+                            <h2>Study Where You've Always Dreamed</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="featured-courses-active">
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="UK"></a>
+                                <div class="text">
+                                    <h5>🇬🇧</h5>
+                                    <h3><a href="#">United Kingdom</a></h3>
+                                </div>
+                            </div>
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img2.png' %}" alt="USA"></a>
+                                <div class="text">
+                                    <h5>🇺🇸</h5>
+                                    <h3><a href="#">United States</a></h3>
+                                </div>
+                            </div>
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img3.png' %}" alt="Canada"></a>
+                                <div class="text">
+                                    <h5>🇨🇦</h5>
+                                    <h3><a href="#">Canada</a></h3>
+                                </div>
+                            </div>
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img4.png' %}" alt="Australia"></a>
+                                <div class="text">
+                                    <h5>🇦🇺</h5>
+                                    <h3><a href="#">Australia</a></h3>
+                                </div>
+                            </div>
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img5.png' %}" alt="Ireland"></a>
+                                <div class="text">
+                                    <h5>🇮🇪</h5>
+                                    <h3><a href="#">Ireland</a></h3>
+                                </div>
+                            </div>
+                            <div class="box-courses">
+                                <a href="#"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="Malta"></a>
+                                <div class="text">
+                                    <h5>🇲🇹</h5>
+                                    <h3><a href="#">Malta</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- blog-area -->
+        <section id="blog" class="blog-area p-relative pt-120 pb-90 fix"
+                 style="background-image: url({% static 'img/bg/blog-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align text-center mb-50">
+                            <h5>Our Blog</h5>
+                            <h2>Latest News Feed</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="single-post2 mb-30 wow fadeInDown animated">
+                            <div class="blog-thumb2">
+                                <a href="#"><img src="{% static 'img/blog/blog_img01.png' %}" alt="img"></a>
+                            </div>
+                            <div class="blog-content2 text-center">
+                                <div class="b-meta">
+                                    <div class="date-b"><i class="fal fa-calendar-alt"></i> 12 March, 2026</div>
+                                </div>
+                                <h4><a href="#">Top Effective Strategies for Successful Online Exam Preparation</a></h4>
+                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="single-post2 mb-30 wow fadeInUp animated">
+                            <div class="blog-thumb2">
+                                <a href="#"><img src="{% static 'img/blog/blog_img02.png' %}" alt="img"></a>
+                            </div>
+                            <div class="blog-content2 text-center">
+                                <div class="b-meta">
+                                    <div class="date-b"><i class="fal fa-calendar-alt"></i> 15 March, 2026</div>
+                                </div>
+                                <h4><a href="#">Understanding the Importance of Modern Skill-Based Learning Pathways</a></h4>
+                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="single-post2 mb-30 wow fadeInDown animated">
+                            <div class="blog-thumb2">
+                                <a href="#"><img src="{% static 'img/blog/blog_img03.png' %}" alt="img"></a>
+                            </div>
+                            <div class="blog-content2 text-center">
+                                <div class="b-meta">
+                                    <div class="date-b"><i class="fal fa-calendar-alt"></i> 20 March, 2026</div>
+                                </div>
+                                <h4><a href="#">How Virtual Classrooms are Transforming Higher Education Systemics</a></h4>
+                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-area pt-120 pb-120"
+                 style="background-image: url({% static 'img/bg/cta-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center; background-color: #fe8366;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 style="color: #fff;">Ready to Begin?</h2>
+                        <p style="color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px;">
+                            Your first consultation is free — and it could change everything.
+                        </p>
+                        <a href="#" class="btn ss-btn"
+                           style="background: #fff; color: #fe8366; font-weight: bold; border-color: #f39c12;">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include "web/inc/footer.html" %}
+
+    <!-- JS here -->
+    <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/one-page-nav-min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/paroller.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/js_isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.min.js' %}"></script>
+    <script src="{% static 'js/parallax.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/parallax-scroll.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/element-in-view.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

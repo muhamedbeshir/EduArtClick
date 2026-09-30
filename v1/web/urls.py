@@ -15,6 +15,8 @@ from v1.web.views.admin.master.timetable.views import CreateClassTimeTable, Crea
 from v1.web.views.admin.master.school.sponsor.views import CreateSchoolSponsor, UpdateSchoolSponsor, DeleteSchoolSponsor
 from v1.web.views.admin.master.installment.views import CreateSchoolClassInstallment, UpdateSchoolClassInstallment, DeleteSchoolClassInstallment
 
+from .views.home import HomeView, AboutView
+
 from v1.web.views.auth.signup.views import edit_admin_user, edit_organization_user, edit_school_user, edit_staff_user, edit_student_user, edit_agent_user
 from .views.admin.application.views import DownloadApprovedLetter, DownloadPaymentInvoice, DownloadTransactionPDF, create_payment_session, webhook, payment_cancel, payment_success
 from .views import *
@@ -25,6 +27,10 @@ from django.conf.urls.static import static
 
 app_name = 'web'
 urlpatterns = [
+
+    path('home/', HomeView.as_view(), name='home'),
+    path('about/', AboutView.as_view(), name='about'),
+    
     path('', login_page, name='login_page'),
 #     path('school-student-login', school_student_login,
 #          name='school_student_login'),

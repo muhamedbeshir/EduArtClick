@@ -1,0 +1,78 @@
+{% load static %}
+<!-- footer -->
+<footer class="footer-area footer-bg pt-100 pb-40"
+        style="background-image: url({% static 'img/bg/footer-bg.png' %}); background-repeat: no-repeat; background-position: center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="footer-widget mb-50">
+                    <div class="footer-logo mb-30">
+                        <a href="{% url 'web:home' %}">
+                            <img src="{% static 'img/logo/logo.png' %}" alt="Edu Art Click">
+                        </a>
+                    </div>
+                    <div class="footer-text mb-30">
+                        <p>We help students from Saudi Arabia study abroad with confidence. Our guidance is completely free.</p>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-6">
+                <div class="footer-widget mb-50">
+                    <div class="footer-widget-title mb-25">
+                        <h4>Quick Links</h4>
+                    </div>
+                    <div class="footer-link">
+                        <ul>
+                            <li><a href="{% url 'web:home' %}">Home</a></li>
+                            <li><a href="{% url 'web:about' %}">About</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6">
+                <div class="footer-widget mb-50">
+                    <div class="footer-widget-title mb-25">
+                        <h4>Our Services</h4>
+                    </div>
+                    <div class="footer-link">
+                        <ul>
+                            <li><a href="#">Language Courses</a></li>
+                            <li><a href="#">Higher Education</a></li>
+                            <li><a href="#">Summer Schools</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6">
+                <div class="footer-widget mb-50">
+                    <div class="footer-widget-title mb-25">
+                        <h4>Contact Info</h4>
+                    </div>
+                    <div class="footer-link">
+                        <ul>
+                            <li><i class="fal fa-map-marker-alt"></i> Saudi Arabia</li>
+                            <li><i class="fal fa-envelope"></i> info@eduArtClick.com</li>
+                            <li><i class="fal fa-phone"></i> +966 XX XXX XXXX</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="copyright-text text-center">
+                    <p>Copyright &copy; 2026 Edu Art Click. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer-end -->

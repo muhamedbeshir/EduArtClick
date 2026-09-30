@@ -174,4 +174,24 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# === macOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Static files (collected) ===
+staticfiles/
+
+# === Keep .env.example committed ===
+!.env.example
+
 # End of https://www.toptal.com/developers/gitignore/api/django

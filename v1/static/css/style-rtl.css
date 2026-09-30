@@ -1,0 +1,686 @@
+/* ============================================================
+   RTL SUPPORT — Edu Art Click
+   Load AFTER style.css, only when dir="rtl"
+   ============================================================ */
+
+/* ---------- 1. Base ---------- */
+html[dir="rtl"] body {
+   direction: rtl;
+   text-align: right;
+   font-family: 'Tajawal', 'Cairo', 'Roboto', sans-serif;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6 {
+   font-family: 'Tajawal', 'Cairo', 'Jost', sans-serif;
+   letter-spacing: 0 !important;
+}
+
+/* ---------- 2. Global alignment flips ---------- */
+html[dir="rtl"] .text-left  { text-align: right !important; }
+html[dir="rtl"] .text-right { text-align: left  !important; }
+
+html[dir="rtl"] .f-left  { float: right; }
+html[dir="rtl"] .f-right { float: left;  }
+
+html[dir="rtl"] .pull-left  { float: right; }
+html[dir="rtl"] .pull-right { float: left;  }
+
+/* ---------- 3. Margin / Padding utility flips ---------- */
+html[dir="rtl"] .ml-1, html[dir="rtl"] .ml-2, html[dir="rtl"] .ml-3,
+html[dir="rtl"] .ml-4, html[dir="rtl"] .ml-5 { margin-left: 0 !important; }
+html[dir="rtl"] .mr-1 { margin-right: 0 !important; margin-left: .25rem !important; }
+html[dir="rtl"] .mr-2 { margin-right: 0 !important; margin-left: .5rem  !important; }
+html[dir="rtl"] .mr-3 { margin-right: 0 !important; margin-left: 1rem   !important; }
+html[dir="rtl"] .mr-4 { margin-right: 0 !important; margin-left: 1.5rem !important; }
+html[dir="rtl"] .mr-5 { margin-right: 0 !important; margin-left: 3rem   !important; }
+html[dir="rtl"] .ml-1 { margin-left: 0 !important; margin-right: .25rem !important; }
+html[dir="rtl"] .ml-2 { margin-left: 0 !important; margin-right: .5rem  !important; }
+html[dir="rtl"] .ml-3 { margin-left: 0 !important; margin-right: 1rem   !important; }
+html[dir="rtl"] .ml-4 { margin-left: 0 !important; margin-right: 1.5rem !important; }
+html[dir="rtl"] .ml-5 { margin-left: 0 !important; margin-right: 3rem   !important; }
+
+html[dir="rtl"] .pl-30 { padding-left: 0   !important; padding-right: 30px !important; }
+html[dir="rtl"] .pr-30 { padding-right: 0  !important; padding-left:  30px !important; }
+
+/* ---------- 4. Header ---------- */
+html[dir="rtl"] .header-cta ul li {
+   margin-left: 0;
+   margin-right: 30px;
+   border-right: none;
+   border-left: 2px solid #687282;
+   padding-right: 0;
+   padding-left: 30px;
+}
+html[dir="rtl"] .header-cta ul li:first-child { margin-right: 0; }
+html[dir="rtl"] .header-cta ul li:last-child  { padding-left: 0; border-left: none; }
+html[dir="rtl"] .header-cta ul li i          { margin-right: 0; margin-left: 5px; }
+
+html[dir="rtl"] .header-social a            { margin-left: 0; margin-right: 15px; }
+html[dir="rtl"] .header-social:first-child a { margin-right: 0; }
+
+/* Main menu */
+html[dir="rtl"] .main-menu ul li            { margin-left: 0; margin-right: 25px; }
+html[dir="rtl"] .main-menu ul li:first-child { margin-right: 0; }
+html[dir="rtl"] .main-menu ul li a          { text-align: right; }
+
+/* Sub-menu / dropdown */
+html[dir="rtl"] .main-menu .sub > ul {
+   right: 0;
+   left: auto;
+   text-align: right;
+}
+html[dir="rtl"] .main-menu .sub li          { float: right; text-align: right; }
+html[dir="rtl"] .main-menu .sub li a        { padding: 15px 15px; }
+
+html[dir="rtl"] .main-menu .sub > ul > .sub > ul {
+   margin-left: 0;
+   margin-right: -255px;
+   left: auto;
+   right: 100%;
+}
+html[dir="rtl"] .main-menu .sub > ul > .sub > ul > .sub > ul {
+   margin-left: 0;
+   margin-right: 255px;
+}
+
+/* Offcanvas */
+html[dir="rtl"] .offcanvas-menu {
+   right: auto;
+   left: 0;
+   transform: translateX(-100%);
+}
+html[dir="rtl"] .offcanvas-menu.active { transform: translateX(0); }
+
+/* Search popup */
+html[dir="rtl"] .search-outer input {
+   text-align: right;
+   direction: rtl;
+}
+html[dir="rtl"] .search-bg .close2 {
+   float: left;
+}
+
+/* ---------- 5. Buttons ---------- */
+html[dir="rtl"] .btn,
+html[dir="rtl"] .btn.ss-btn {
+   direction: rtl;
+   text-align: center;
+}
+html[dir="rtl"] .btn-icon {
+   left: auto;
+   right: 10px;
+}
+html[dir="rtl"] .btn.ss-btn i,
+html[dir="rtl"] .btn.ss-btn .btn-icon {
+   margin-left: 8px;
+   margin-right: 0;
+   transform: scaleX(-1);
+}
+html[dir="rtl"] .slider-btn { direction: rtl; }
+
+/* ---------- 6. Slider / Hero ---------- */
+html[dir="rtl"] .slider-content { text-align: right; }
+html[dir="rtl"] .slider-active .slick-track::before {
+   right: auto;
+   left: 0;
+}
+html[dir="rtl"] .slider-active .slick-dots {
+   left: auto;
+   right: 22%;
+}
+html[dir="rtl"] .slider-active .slick-arrow {
+   left: auto;
+   right: 70px;
+}
+html[dir="rtl"] .slider-active .slick-next {
+   right: auto;
+   left: 70px;
+}
+html[dir="rtl"] .slider-content p span {
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .s-slider-content p { padding-right: 0; padding-left: 50px; }
+
+/* Subscribe inline form on hero */
+html[dir="rtl"] .subricbe form,
+html[dir="rtl"] .subricbe .contact-form { direction: rtl; }
+html[dir="rtl"] .subricbe .contact-form label {
+   width: 180px;
+   border-right: none;
+   border-left: 1px solid #777;
+   margin-left: 0;
+   margin-right: 15px;
+   text-align: right;
+}
+html[dir="rtl"] .subricbe .contact-form label i { margin-right: 0; margin-left: 5px; }
+html[dir="rtl"] .subricbe .header-input { text-align: right; }
+html[dir="rtl"] .subricbe .header-btn {
+   right: auto;
+   left: 10px;
+}
+
+/* ---------- 7. Breadcrumb ---------- */
+html[dir="rtl"] .breadcrumb-wrap.text-left { text-align: right !important; }
+html[dir="rtl"] .breadcrumb { flex-direction: row-reverse; justify-content: flex-end; }
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
+   padding-right: 0;
+   padding-left: 15px;
+   content: "|";
+}
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item { padding-left: 0; padding-right: 10px; }
+
+/* ---------- 8. About section ---------- */
+html[dir="rtl"] .about-content { text-align: right; }
+html[dir="rtl"] .about-content li .icon i,
+html[dir="rtl"] .ab-ul li .icon i {
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .about-title p span {
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .about-content3 li::before {
+   margin-right: 0;
+   margin-left: 10px;
+}
+html[dir="rtl"] .second-about {
+   transform: translate(37%, -80px);
+   left: auto;
+   right: 74%;
+}
+html[dir="rtl"] .about-text { right: auto; left: 30px; }
+
+/* ---------- 9. Services ---------- */
+html[dir="rtl"] .services-box,
+html[dir="rtl"] .services-content2 { text-align: right; }
+html[dir="rtl"] .services-box .ss-btn2 {
+   left: auto;
+   right: 42%;
+}
+html[dir="rtl"] .services-02 ul li { border-right: none; border-left: 2px solid #F5F5F5; }
+html[dir="rtl"] .services-02 ul li:last-child { border-left: none; }
+html[dir="rtl"] .services-content-02 .ss-btn2 span {
+   margin-left: 0;
+   margin-right: -10px;
+}
+html[dir="rtl"] .services-content-02 .ss-btn2:hover span,
+html[dir="rtl"] .services-02 ul li:hover .ss-btn2 span {
+   margin-right: 5px;
+   margin-left: 0;
+}
+html[dir="rtl"] .services-two ul li::before,
+html[dir="rtl"] .services-three ul li::before,
+html[dir="rtl"] .services-box-04 .services-content-02 li::before {
+   margin-right: 0;
+   margin-left: 10px;
+}
+html[dir="rtl"] .services-icon2 { right: auto; left: 5%; }
+
+/* ---------- 10. Featured courses / destinations ---------- */
+html[dir="rtl"] .box-courses .text { text-align: right; }
+html[dir="rtl"] .couress-box .product__content { text-align: right; }
+html[dir="rtl"] .couress-box .price {
+   right: auto;
+   left: 30px;
+}
+html[dir="rtl"] .course-meta2 {
+   left: auto;
+   right: 30px;
+}
+html[dir="rtl"] .course-meta.desc li::after {
+   right: auto;
+   left: -20px;
+}
+html[dir="rtl"] .course-meta.review.style2 li {
+   float: right;
+   padding-right: 0;
+   padding-left: 50px;
+}
+html[dir="rtl"] .course-meta.review.style2 .thumb {
+   float: right;
+   margin-right: 0;
+   margin-left: 15px;
+}
+html[dir="rtl"] .course-meta.review.style2 .text { float: right; }
+html[dir="rtl"] .course-meta.review.style2 li::after {
+   right: auto;
+   left: 19px;
+}
+
+/* ---------- 11. Events ---------- */
+html[dir="rtl"] .eventes-box { direction: rtl; }
+html[dir="rtl"] .eventes-box .date-box {
+   margin-right: 0;
+   margin-left: 30px;
+}
+html[dir="rtl"] .eventes-box .text ul li {
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .eventes-box .text li i {
+   margin-right: 0;
+   margin-left: 5px;
+}
+
+/* ---------- 12. Testimonials ---------- */
+html[dir="rtl"] .single-testimonial,
+html[dir="rtl"] .testimonial-active .single-testimonial { direction: rtl; text-align: right; }
+html[dir="rtl"] .testi-author img {
+   float: right;
+   margin-right: 0;
+   margin-left: 15px;
+}
+html[dir="rtl"] .testimonial-active .ta-info {
+   float: right;
+   margin-left: 0;
+   margin-right: 15px;
+   text-align: right;
+}
+html[dir="rtl"] .testimonial-active .testi-img {
+   float: right;
+   left: auto;
+   right: 0;
+}
+html[dir="rtl"] .testimonial-active .com-icon,
+html[dir="rtl"] .testimonial-active .qt-img {
+   right: auto;
+   left: 30px;
+}
+html[dir="rtl"] .testimonial-active .slick-arrow { left: auto; right: 0; }
+html[dir="rtl"] .testimonial-active .slick-next { right: 40px; left: auto; }
+html[dir="rtl"] .single-testimonial-bg {
+   float: left;
+   padding: 30px 150px 100px 50px;
+}
+html[dir="rtl"] .testimonial-active2 .slider-nav { float: left; }
+html[dir="rtl"] .testimonial-active2 .slick-arrow { left: auto; right: -82px; }
+html[dir="rtl"] .testimonial-active2 .slick-next { right: auto; left: -82px; }
+
+/* ---------- 13. Blog / posts ---------- */
+html[dir="rtl"] .single-post,
+html[dir="rtl"] .single-post2,
+html[dir="rtl"] .bsingle__post,
+html[dir="rtl"] .bsingle__content { direction: rtl; text-align: right; }
+
+html[dir="rtl"] .bsingle__content h2 { padding-right: 0; padding-left: 0; }
+html[dir="rtl"] .bsingle__content .admin {
+   right: auto;
+   left: 20px;
+}
+html[dir="rtl"] .bsingle__content .admin i {
+   margin-right: 0;
+   margin-left: 10px;
+}
+
+html[dir="rtl"] .meta-info ul li,
+html[dir="rtl"] .blog-details-wrap .meta-info ul li {
+   margin-right: 0;
+   margin-left: 15px;
+   padding-right: 0;
+   padding-left: 15px;
+   border-right: none;
+   border-left: 2px solid #f5f5f5;
+}
+html[dir="rtl"] .meta-info ul li:last-child,
+html[dir="rtl"] .blog-details-wrap .meta-info ul li:last-child {
+   border-left: none;
+}
+html[dir="rtl"] .meta-info ul li i { margin-right: 0; margin-left: 5px; }
+
+html[dir="rtl"] .b-meta i { margin-right: 0; margin-left: 5px; }
+
+html[dir="rtl"] .blog-btn a i {
+   margin-left: 0;
+   margin-right: 5px;
+   transform: scaleX(-1);
+   display: inline-block;
+}
+
+html[dir="rtl"] .quote-post .quote-icon {
+   float: right;
+   margin-right: 0;
+   margin-left: 30px;
+}
+
+html[dir="rtl"] .posts_navigation .next-link { text-align: left !important; }
+html[dir="rtl"] .posts_navigation .prev-link { text-align: right !important; }
+
+html[dir="rtl"] .single__comment .comments-avatar {
+   float: right;
+   margin-right: 0;
+   margin-left: 30px;
+}
+html[dir="rtl"] .single__comment.children { margin-left: 0; margin-right: 130px; }
+html[dir="rtl"] .comment-text .avatar-name .comment-reply {
+   float: left;
+}
+html[dir="rtl"] .comment-text .avatar-name .comment-reply i {
+   margin-right: 0;
+   margin-left: 5px;
+   transform: scaleX(-1);
+   display: inline-block;
+}
+
+html[dir="rtl"] .related-post-wrap .rp__content { text-align: right; }
+html[dir="rtl"] .avatar__wrap { text-align: center; }
+
+/* Comment form */
+html[dir="rtl"] .comment-form i {
+   right: auto;
+   left: 30px;
+}
+html[dir="rtl"] .comment-form input,
+html[dir="rtl"] .comment-form textarea {
+   padding-right: 20px;
+   padding-left: 50px;
+   text-align: right;
+   direction: rtl;
+}
+
+/* ---------- 14. Sidebar / widgets ---------- */
+html[dir="rtl"] .sidebar-widget,
+html[dir="rtl"] .widget,
+html[dir="rtl"] .widget-title { text-align: right; direction: rtl; }
+
+html[dir="rtl"] .sidebar-widget .widgettitle,
+html[dir="rtl"] .sidebar-widget .widget-title {
+   border-left: none;
+   border-right: 4px solid #fe8366;
+   padding-left: 0;
+   padding-right: 15px;
+   text-align: right;
+}
+html[dir="rtl"] .sidebar-widget .widget a { text-align: right; }
+html[dir="rtl"] .sidebar-widget .widget a:hover {
+   padding-left: 0;
+   padding-right: 10px;
+}
+html[dir="rtl"] .sidebar-widget .widget li { float: right; }
+html[dir="rtl"] .sidebar-widget .widget_archive,
+html[dir="rtl"] .sidebar-widget .widget_categories { text-align: left; }
+html[dir="rtl"] .sidebar-widget .widget .widget_archive a,
+html[dir="rtl"] .sidebar-widget .widget_categories a,
+html[dir="rtl"] .sidebar-widget .widget_archive a {
+   float: right;
+}
+
+html[dir="rtl"] .widget__post-thumb {
+   float: right;
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .widget__post-content { text-align: right; }
+html[dir="rtl"] .widget__post-content h6 { padding-right: 0; padding-left: 15px; }
+html[dir="rtl"] .widget__post-content span i { margin-right: 0; margin-left: 8px; }
+
+html[dir="rtl"] .widget-social a { margin: 0 3px; }
+
+html[dir="rtl"] .search-form input,
+html[dir="rtl"] .search-form .search-submit {
+   direction: rtl;
+   text-align: right;
+}
+html[dir="rtl"] .search-form .search-submit {
+   right: auto;
+   left: 0;
+}
+
+html[dir="rtl"] .tagcloud { text-align: right; }
+html[dir="rtl"] .tag-cloud-link { margin: 5px 1px; }
+
+html[dir="rtl"] .widget__banner-overly { text-align: center; }
+
+/* ---------- 15. FAQ ---------- */
+html[dir="rtl"] .faq-wrap .card-header h2 button,
+html[dir="rtl"] .faq-btn {
+   text-align: right;
+   direction: rtl;
+   padding-left: 75px;
+   padding-right: 30px;
+}
+html[dir="rtl"] .faq-wrap .card-header h2 button::after {
+   left: auto;
+   right: 18px;
+}
+html[dir="rtl"] .card-body {
+   text-align: right;
+   direction: rtl;
+}
+
+/* ---------- 16. Pricing ---------- */
+html[dir="rtl"] .pricing-box { direction: rtl; text-align: center; }
+
+/* ---------- 17. Contact ---------- */
+html[dir="rtl"] .contact-area { direction: rtl; }
+html[dir="rtl"] .contact-field { padding-right: 0; padding-left: 15px; }
+html[dir="rtl"] .contact-field label { text-align: right; }
+html[dir="rtl"] .contact-field input,
+html[dir="rtl"] .contact-field textarea,
+html[dir="rtl"] .contact-field select {
+   text-align: right;
+   direction: rtl;
+}
+html[dir="rtl"] .contact-field::after {
+   right: auto;
+   left: 25px;
+}
+html[dir="rtl"] .contact-area .map {
+   right: auto;
+   left: 0;
+}
+html[dir="rtl"] .contact-img { right: auto; left: 170px; }
+
+/* ---------- 18. Footer ---------- */
+html[dir="rtl"] .footer-widget,
+html[dir="rtl"] .f-widget-title { text-align: right; direction: rtl; }
+
+html[dir="rtl"] .footer-link ul li a:hover {
+   padding-left: 0;
+   padding-right: 5px;
+}
+html[dir="rtl"] .footer-link ul li i {
+   margin-right: 0;
+   margin-left: 5px;
+   transform: scaleX(-1);
+   display: inline-block;
+}
+html[dir="rtl"] .footer-social span { margin-right: 0; margin-left: 20px; }
+html[dir="rtl"] .footer-social a   { margin-left: 0; margin-right: 5px; }
+
+html[dir="rtl"] .f-insta ul li { margin-right: 0; margin-left: 10px; }
+
+html[dir="rtl"] .copyright-wrap { text-align: center; }
+html[dir="rtl"] .copyright-wrap li {
+   padding-left: 0;
+   padding-right: 15px;
+   margin-left: 0;
+   margin-right: 10px;
+}
+html[dir="rtl"] .copyright-wrap li::before {
+   left: auto;
+   right: 0;
+   margin: 12px 4px 0 0;
+}
+
+html[dir="rtl"] .f-contact .icon { margin-right: 0; margin-left: 20px; }
+
+/* Newsletter footer form */
+html[dir="rtl"] .newslater .input-bg,
+html[dir="rtl"] .newslater .input-bg2 {
+   float: right;
+   padding-right: 0;
+   padding-left: 5px;
+}
+html[dir="rtl"] .newslater .input-bg2 { margin-left: 0; margin-right: -35px; }
+html[dir="rtl"] .newslater button {
+   right: auto;
+   left: 0;
+}
+html[dir="rtl"] .newslater-area #contact-form4 { float: left; }
+
+/* ---------- 19. Pagination ---------- */
+html[dir="rtl"] .pagination-wrap .pagination li { margin-right: 0; margin-left: 6px; }
+html[dir="rtl"] .pagination .page-item a i,
+html[dir="rtl"] .pagination-wrap .pagination li a i {
+   transform: scaleX(-1);
+   display: inline-block;
+}
+
+/* ---------- 20. Portfolio / filter ---------- */
+html[dir="rtl"] .button-group { direction: rtl; }
+html[dir="rtl"] .gallery-image figcaption span {
+   padding-left: 0;
+   padding-right: 40px;
+}
+html[dir="rtl"] .gallery-image figcaption span::before { left: auto; right: 0; }
+html[dir="rtl"] .gallery-image figcaption .icon { right: auto; left: 0; }
+html[dir="rtl"] .single-project .project-info {
+   right: auto;
+   left: 13px;
+   border-radius: 0px 20px 20px 0px;
+}
+html[dir="rtl"] .portfolio-active .slick-arrow { left: auto; right: 69.5%; }
+html[dir="rtl"] .portfolio-active .slick-next  { left: 73.5%; right: auto; }
+
+/* ---------- 21. Project detail ---------- */
+html[dir="rtl"] .project-detail { direction: rtl; text-align: right; }
+html[dir="rtl"] .project-detail .pr-ul li .icon i {
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .project-detail .project-info li {
+   padding-left: 0;
+   padding-right: 30px;
+}
+html[dir="rtl"] .project-detail .project-info li .icon {
+   left: auto;
+   right: 0;
+}
+html[dir="rtl"] .project-detail .text-column .inner-column .dropcap {
+   float: right;
+   margin-right: 0;
+   margin-left: 20px;
+}
+html[dir="rtl"] .project-detail .text-column .inner-column { padding-right: 0; padding-left: 30px; }
+
+/* ---------- 22. Service detail ---------- */
+html[dir="rtl"] .service-detail { padding-left: 0; padding-right: 20px; }
+html[dir="rtl"] .service-detail .content-box { text-align: right; }
+html[dir="rtl"] .list-style-one li {
+   padding-left: 0;
+   padding-right: 25px;
+}
+html[dir="rtl"] .list-style-one li::before {
+   left: auto;
+   right: 0;
+   transform: scaleX(-1);
+   display: inline-block;
+}
+
+/* ---------- 23. Steps (How It Works) ---------- */
+html[dir="rtl"] .step-number { direction: ltr; }
+
+/* ---------- 24. Team ---------- */
+html[dir="rtl"] .single-team { direction: rtl; }
+html[dir="rtl"] .team-area-content li .icon { margin-right: 0; margin-left: 10px; }
+html[dir="rtl"] .team-area-content li .icon i { margin-right: 0; margin-left: 10px; }
+
+/* ---------- 25. Counter / CTA ---------- */
+html[dir="rtl"] .cta-content p { padding-right: 0; padding-left: 80px; }
+
+/* ---------- 26. Shop / WooCommerce ---------- */
+html[dir="rtl"] .product,
+html[dir="rtl"] .product__content,
+html[dir="rtl"] .wc-content { direction: rtl; text-align: right; }
+
+html[dir="rtl"] .woocommerce ul.products li.product .star-rating {
+   left: auto;
+   right: 15px;
+}
+html[dir="rtl"] .woocommerce .button.product_type_simple.add_to_cart_button.ajax_add_to_cart,
+html[dir="rtl"] .woocommerce .button.product_type_variable.add_to_cart_button,
+html[dir="rtl"] .woocommerce .button.product_type_grouped {
+   left: auto;
+   right: 21%;
+}
+
+html[dir="rtl"] .wc-prodcut .product-buttons a {
+   left: auto;
+   right: 32%;
+}
+
+html[dir="rtl"] .cart-plus-minus .qtybutton { left: auto; right: 17px; }
+html[dir="rtl"] .cart-plus-minus .inc { right: auto; left: 17px; }
+
+/* Product details tabs */
+html[dir="rtl"] .bakix-details-tab ul li a.active:before { left: auto; right: 0; }
+
+/* ---------- 27. Scroll top ---------- */
+html[dir="rtl"] #scrollUp { right: auto; left: 50px; }
+
+/* ---------- 28. Placeholders ---------- */
+html[dir="rtl"] ::placeholder,
+html[dir="rtl"] *::placeholder {
+   text-align: right;
+   direction: rtl;
+}
+
+/* ---------- 29. Select arrow flip ---------- */
+html[dir="rtl"] .woocommerce .orderby,
+html[dir="rtl"] select {
+   background-position: left .75rem center;
+   padding-left: 40px;
+   padding-right: 15px;
+}
+
+/* ---------- 30. Modal close button ---------- */
+html[dir="rtl"] .close2,
+html[dir="rtl"] .close {
+   float: left;
+}
+
+/* ---------- 31. Slick RTL tweaks (only when template uses LTR slick) ---------- */
+html[dir="rtl"] .slick-prev {
+   right: -25px;
+   left: auto;
+   transform: rotate(180deg);
+}
+html[dir="rtl"] .slick-next {
+   left: -25px;
+   right: auto;
+   transform: rotate(180deg);
+}
+
+/* ---------- 32. Blog home slider arrows ---------- */
+html[dir="rtl"] .home-blog-active .slick-arrow { left: auto; right: -84px; }
+html[dir="rtl"] .home-blog-active .slick-prev { right: auto; left: 80px; }
+html[dir="rtl"] .home-blog-active .slick-arrow.slick-next {
+   right: auto;
+   left: 35px;
+}
+
+/* ---------- 33. Destination cards (custom) ---------- */
+html[dir="rtl"] .destination-card { direction: rtl; text-align: center; }
+
+/* ---------- 34. Included list (custom) ---------- */
+html[dir="rtl"] .included-list li {
+   text-align: right;
+   direction: rtl;
+}
+html[dir="rtl"] .included-list li:hover {
+   padding-left: 0;
+   padding-right: 10px;
+}
+
+/* ---------- 35. Language switcher ---------- */
+html[dir="rtl"] .lang-switcher select {
+   margin-left: 0;
+   margin-right: 0;
+}
