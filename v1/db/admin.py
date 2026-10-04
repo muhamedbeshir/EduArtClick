@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .organization import Organization
 
-from .user import UserProfile,OrganizationUserProfile, StudentUserProfile, TeacherUserProfile, AggentUserProfile, AuthForgetPasswordToken, StudentProfileHasCourse
+from .user import UserProfile,OrganizationUserProfile, StudentUserProfile, TeacherUserProfile, AggentUserProfile, AuthForgetPasswordToken, StudentProfileHasCourse, ContactUs
 
 from .master import *
 
@@ -50,4 +50,15 @@ admin.site.register(SchoolCertificate)
 
 admin.site.register(SchoolLetterSend)
 admin.site.register(Transaction)
+
+
+@admin.register(ContactUs)
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'subject', 'created_at')
+    readonly_fields = ('name', 'email', 'subject', 'message', 'status', 'created_at', 'updated_at')
+    search_fields = ('name', 'email', 'subject', 'message')
+    list_filter = ('status',)
+
+    def has_add_permission(self, request):
+        return False
 

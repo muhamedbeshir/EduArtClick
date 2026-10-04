@@ -2,7 +2,7 @@ from .profile import UserProfile, StudentUserProfile, AggentUserProfile, Organiz
 from .forget_password import AuthForgetPasswordToken
 
 from .address import UserAddress
-from .contact import UserContact
+from .contact import UserContact, ContactUs
 from .certificate_teacher import CertificateTeacher
 from .teacher_profile_has_course import TeacherProfileHasCourse
 from .student_profile_has_course import StudentProfileHasCourse

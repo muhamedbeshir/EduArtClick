@@ -57,8 +57,8 @@
                                         <strong>Our guidance is completely free for you.</strong>
                                     </p>
                                     <div class="slider-btn mt-30" data-animation="fadeInUp" data-delay=".8s">
-                                        <a href="#" class="btn ss-btn mr-3">Book a Free Consultation</a>
-                                        <a href="#" class="btn ss-btn style2">Explore Destinations</a>
+                                        <a href="{% url 'web:contact' %}" class="btn ss-btn mr-3">Book a Free Consultation</a>
+                                        <a href="{% url 'web:projects' %}" class="btn ss-btn style2">Explore Destinations</a>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@
                             <p>From your first consultation to your arrival abroad — we guide you through every stage.</p>
                         </div>
                         <div class="slider-btn mt-10">
-                            <a href="#" class="btn ss-btn">Start Your Journey</a>
+                            <a href="{% url 'web:contact' %}" class="btn ss-btn">Start Your Journey</a>
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-12">
@@ -230,45 +230,45 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="featured-courses-active">
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="UK"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="UK"></a>
                                 <div class="text">
                                     <h5>🇬🇧</h5>
-                                    <h3><a href="#">United Kingdom</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">United Kingdom</a></h3>
                                 </div>
                             </div>
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img2.png' %}" alt="USA"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img2.png' %}" alt="USA"></a>
                                 <div class="text">
                                     <h5>🇺🇸</h5>
-                                    <h3><a href="#">United States</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">United States</a></h3>
                                 </div>
                             </div>
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img3.png' %}" alt="Canada"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img3.png' %}" alt="Canada"></a>
                                 <div class="text">
                                     <h5>🇨🇦</h5>
-                                    <h3><a href="#">Canada</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">Canada</a></h3>
                                 </div>
                             </div>
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img4.png' %}" alt="Australia"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img4.png' %}" alt="Australia"></a>
                                 <div class="text">
                                     <h5>🇦🇺</h5>
-                                    <h3><a href="#">Australia</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">Australia</a></h3>
                                 </div>
                             </div>
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img5.png' %}" alt="Ireland"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img5.png' %}" alt="Ireland"></a>
                                 <div class="text">
                                     <h5>🇮🇪</h5>
-                                    <h3><a href="#">Ireland</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">Ireland</a></h3>
                                 </div>
                             </div>
                             <div class="box-courses">
-                                <a href="#"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="Malta"></a>
+                                <a href="{% url 'web:projects' %}"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt="Malta"></a>
                                 <div class="text">
                                     <h5>🇲🇹</h5>
-                                    <h3><a href="#">Malta</a></h3>
+                                    <h3><a href="{% url 'web:projects' %}">Malta</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -293,42 +293,42 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="single-post2 mb-30 wow fadeInDown animated">
                             <div class="blog-thumb2">
-                                <a href="#"><img src="{% static 'img/blog/blog_img01.png' %}" alt="img"></a>
+                                <a href="{% url 'web:blog' %}"><img src="{% static 'img/blog/blog_img01.png' %}" alt="img"></a>
                             </div>
                             <div class="blog-content2 text-center">
                                 <div class="b-meta">
                                     <div class="date-b"><i class="fal fa-calendar-alt"></i> 12 March, 2026</div>
                                 </div>
-                                <h4><a href="#">Top Effective Strategies for Successful Online Exam Preparation</a></h4>
-                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                                <h4><a href="{% url 'web:blog' %}">Top Effective Strategies for Successful Online Exam Preparation</a></h4>
+                                <div class="blog-btn"><a href="{% url 'web:blog' %}"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <div class="single-post2 mb-30 wow fadeInUp animated">
                             <div class="blog-thumb2">
-                                <a href="#"><img src="{% static 'img/blog/blog_img02.png' %}" alt="img"></a>
+                                <a href="{% url 'web:blog' %}"><img src="{% static 'img/blog/blog_img02.png' %}" alt="img"></a>
                             </div>
                             <div class="blog-content2 text-center">
                                 <div class="b-meta">
                                     <div class="date-b"><i class="fal fa-calendar-alt"></i> 15 March, 2026</div>
                                 </div>
-                                <h4><a href="#">Understanding the Importance of Modern Skill-Based Learning Pathways</a></h4>
-                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                                <h4><a href="{% url 'web:blog' %}">Understanding the Importance of Modern Skill-Based Learning Pathways</a></h4>
+                                <div class="blog-btn"><a href="{% url 'web:blog' %}"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <div class="single-post2 mb-30 wow fadeInDown animated">
                             <div class="blog-thumb2">
-                                <a href="#"><img src="{% static 'img/blog/blog_img03.png' %}" alt="img"></a>
+                                <a href="{% url 'web:blog' %}"><img src="{% static 'img/blog/blog_img03.png' %}" alt="img"></a>
                             </div>
                             <div class="blog-content2 text-center">
                                 <div class="b-meta">
                                     <div class="date-b"><i class="fal fa-calendar-alt"></i> 20 March, 2026</div>
                                 </div>
-                                <h4><a href="#">How Virtual Classrooms are Transforming Higher Education Systemics</a></h4>
-                                <div class="blog-btn"><a href="#"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
+                                <h4><a href="{% url 'web:blog' %}">How Virtual Classrooms are Transforming Higher Education Systemics</a></h4>
+                                <div class="blog-btn"><a href="{% url 'web:blog' %}"><i class="fal fa-chevron-circle-right"></i> Read More</a></div>
                             </div>
                         </div>
                     </div>
@@ -338,7 +338,7 @@
 
         <!-- CTA -->
         <section class="cta-area pt-120 pb-120"
-                 style="background-image: url({% static 'img/bg/cta-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center; background-color: #fe8366;">
+                 style="background-image: url({% static 'img/bg/services-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center; background-color: #fe8366;">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
@@ -346,7 +346,7 @@
                         <p style="color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px;">
                             Your first consultation is free — and it could change everything.
                         </p>
-                        <a href="#" class="btn ss-btn"
+                        <a href="{% url 'web:contact' %}" class="btn ss-btn"
                            style="background: #fff; color: #fe8366; font-weight: bold; border-color: #f39c12;">
                             Book Now
                         </a>

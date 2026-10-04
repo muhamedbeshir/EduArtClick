@@ -1,78 +1,125 @@
 {% load static %}
 <!-- footer -->
-<footer class="footer-area footer-bg pt-100 pb-40"
+<footer class="footer-bg footer-p fix"
         style="background-image: url({% static 'img/bg/footer-bg.png' %}); background-repeat: no-repeat; background-position: center;">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="footer-widget mb-50">
-                    <div class="footer-logo mb-30">
+    <div class="footer-top pt-70 pb-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-12">
+                    <div class="footer-widget mb-30">
                         <a href="{% url 'web:home' %}">
                             <img src="{% static 'img/logo/logo.png' %}" alt="Edu Art Click">
                         </a>
                     </div>
-                    <div class="footer-text mb-30">
-                        <p>We help students from Saudi Arabia study abroad with confidence. Our guidance is completely free.</p>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-sm-12">
+                    <div class="footer-widget footer-link mt-20 text-center">
+                        <ul>
+                            <li><a href="{% url 'web:home' %}">Home</a></li>
+                            <li><a href="{% url 'web:about' %}">About Us</a></li>
+                            <li><a href="{% url 'web:services' %}">Services</a></li>
+                            <li><a href="{% url 'web:courses' %}">Courses</a></li>
+                            <li><a href="{% url 'web:blog' %}">Blog</a></li>
+                            <li><a href="{% url 'web:contact' %}">Contact Us</a></li>
+                        </ul>
                     </div>
-                    <div class="footer-social">
+                </div>
+                <div class="col-xl-2 col-lg-2 col-sm-12">
+                    <div class="footer-widget footer-social mt-15 text-right text-xl-right">
                         <a href="https://www.tiktok.com/@edu_art_click" target="_blank"><i class="fab fa-tiktok"></i></a>
                         <a href="https://www.instagram.com/edu_art_click/" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.linkedin.com/company/edu-art-click/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-                <div class="footer-widget mb-50">
-                    <div class="footer-widget-title mb-25">
-                        <h4>Quick Links</h4>
-                    </div>
-                    <div class="footer-link">
-                        <ul>
-                            <li><a href="{% url 'web:home' %}">Home</a></li>
-                            <li><a href="{% url 'web:about' %}">About</a></li>
-                            <li><a href="{% url 'web:services' %}">Services</a></li>
-                            <li><a href="{% url 'web:courses' %}">Courses</a></li>
-                            <li><a href="{% url 'web:schools' %}">Schools</a></li>
-                            <li><a href="{% url 'web:blog' %}">Blog</a></li>
-                            <li><a href="{% url 'web:contact' %}">Contact</a></li>
-                        </ul>
+        </div>
+    </div>
+    <div class="footer-center pt-70 pb-40">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-xl-3 col-lg-3 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>About Us</h2>
+                        </div>
+                        <div class="footer-link">
+                            We're paid by the schools and universities we partner with &mdash; never by you. Expert advice, application support, and honest recommendations at zero cost to you or your family.
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-6">
-                <div class="footer-widget mb-50">
-                    <div class="footer-widget-title mb-25">
-                        <h4>Our Services</h4>
-                    </div>
-                    <div class="footer-link">
-                        <ul>
-                            <li><a href="{% url 'web:services' %}">Language Courses</a></li>
-                            <li><a href="{% url 'web:services' %}">Higher Education</a></li>
-                            <li><a href="{% url 'web:services' %}">Summer Schools</a></li>
-                        </ul>
+                <div class="col-xl-3 col-lg-3 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>Contact Us</h2>
+                        </div>
+                        <div class="f-contact">
+                            <ul>
+                                <li>
+                                    <i class="icon fal fa-map-marker-check"></i>
+                                    <span>Dist King Abdulaziz Rd, <br> King Fahad, Riyadh, 12274, <br> <span style="margin-left: 60px;">Saudi Arabia</span></span>
+                                </li>
+                                <li>
+                                    <i class="icon fal fa-phone"></i>
+                                    <span><a href="tel:+966540740000">+966540740000</a></span>
+                                </li>
+                                <li>
+                                    <i class="icon fal fa-envelope"></i>
+                                    <span>
+                                        <a href="mailto:info@edu.theartclick.com">info@edu.theartclick.com</a>
+                                        <br>
+                                        <a href="mailto:help@edu.theartclick.com">help@edu.theartclick.com</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-6">
-                <div class="footer-widget mb-50">
-                    <div class="footer-widget-title mb-25">
-                        <h4>Contact Info</h4>
+                <div class="col-xl-3 col-lg-3 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>Our Services</h2>
+                        </div>
+                        <div class="footer-link">
+                            <ul>
+                                <li><a href="{% url 'web:services' %}">Language Courses</a></li>
+                                <li><a href="{% url 'web:courses' %}">Higher Education</a></li>
+                                <li><a href="{% url 'web:schools' %}">Partner Schools</a></li>
+                                <li><a href="{% url 'web:projects' %}">Destinations</a></li>
+                                <li><a href="{% url 'web:contact' %}">Summer Schools</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="footer-link">
-                        <ul>
-                            <li><i class="fal fa-map-marker-alt"></i> Dist King Abdulaziz Rd, King Fahad, Riyadh, 12274, Saudi Arabia</li>
-                            <li><i class="fal fa-envelope"></i> <a href="mailto:info@edu.theartclick.com">info@edu.theartclick.com</a></li>
-                            <li><i class="fal fa-envelope"></i> <a href="mailto:help@edu.theartclick.com">help@edu.theartclick.com</a></li>
-                            <li><i class="fal fa-phone"></i> <a href="tel:+966540740000">+966540740000</a></li>
-                        </ul>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>Our Gallery</h2>
+                        </div>
+                        <div class="f-insta">
+                            <ul>
+                                <li><a href="{% static 'img/instagram/f-galler-01.png' %}" class="popup-image"><img src="{% static 'img/instagram/f-galler-01.png' %}" alt="img"></a></li>
+                                <li><a href="{% static 'img/instagram/f-galler-02.png' %}" class="popup-image"><img src="{% static 'img/instagram/f-galler-02.png' %}" alt="img"></a></li>
+                                <li><a href="{% static 'img/instagram/f-galler-03.png' %}" class="popup-image"><img src="{% static 'img/instagram/f-galler-03.png' %}" alt="img"></a></li>
+                                <li><a href="{% static 'img/instagram/f-galler-04.png' %}" class="popup-image"><img src="{% static 'img/instagram/f-galler-04.png' %}" alt="img"></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="copyright-text text-center">
-                    <p>Copyright &copy; 2026 Edu Art Click. All rights reserved.</p>
+    </div>
+    <div class="copyright-wrap">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    Copyright &copy; 2026 Edu Art Click. All rights reserved.
+                </div>
+                <div class="col-lg-6 text-right text-xl-right">
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Legal</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

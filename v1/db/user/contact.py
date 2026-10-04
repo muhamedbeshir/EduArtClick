@@ -24,3 +24,20 @@ class UserContact(BaseModel, models.Model):
 	emergency_phone = models.CharField(max_length=40, blank=True, null=True)
 
 	Meta = BaseModelMeta( attr={"db_table": "user_contact"}, app_name='db' )
+
+
+class ContactUs(models.Model):
+	name = models.CharField(max_length=255, blank=True, null=True)
+	email = models.CharField(max_length=255, blank=True, null=True)
+	subject = models.CharField(max_length=255, blank=True, null=True)
+	message = models.TextField(blank=True, null=True)
+	status = models.BooleanField(default=True)
+	created_at = models.DateTimeField(blank=True, null=True)
+	updated_at = models.DateTimeField(blank=True, null=True)
+
+	class Meta:
+		managed = False
+		db_table = 'nqraa_contactus'
+
+	def __str__(self):
+		return '%s' % (self.name or '')

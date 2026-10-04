@@ -1,37 +1,47 @@
 {% load static %}
 <!-- header -->
-<header>
-    <div id="header-sticky" class="header-area header-2 header-3">
+<header class="header-area header-three">
+    <div id="header-sticky" class="menu-area">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-3 col-lg-3">
-                    <div class="logo">
-                        <a href="{% url 'web:home' %}">
-                            <img src="{% static 'img/logo/logo.png' %}" alt="Edu Art Click">
-                        </a>
+            <div class="second-menu">
+                <div class="row align-items-center">
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="logo">
+                            <a href="{% url 'web:home' %}">
+                                <img src="{% static 'img/logo/logo.png' %}" alt="Edu Art Click">
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xl-6 col-lg-6">
-                    <div class="main-menu text-center">
-                        <nav id="mobile-menu">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="main-menu text-right text-xl-right">
+                            <nav id="mobile-menu" style="display: block;">
+                                <ul>
+                                    <li><a href="{% url 'web:home' %}">Home</a></li>
+                                    <li><a href="{% url 'web:about' %}">About Us</a></li>
+                                    <li><a href="{% url 'web:services' %}">Services</a></li>
+                                    <li><a href="{% url 'web:courses' %}">Courses</a></li>
+                                    <li><a href="{% url 'web:projects' %}">Destinations</a></li>
+                                    <li><a href="{% url 'web:schools' %}">Schools</a></li>
+                                    <li><a href="{% url 'web:blog' %}">Blog</a></li>
+                                    <li><a href="{% url 'web:contact' %}">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2 text-right d-none d-xl-block">
+                        <div class="search-top2">
                             <ul>
-                                <li><a href="{% url 'web:home' %}">Home</a></li>
-                                <li><a href="{% url 'web:about' %}">About</a></li>
-                                <li><a href="{% url 'web:services' %}">Services</a></li>
-                                <li><a href="{% url 'web:courses' %}">Courses</a></li>
-                                <li><a href="{% url 'web:projects' %}">Destinations</a></li>
-                                <li><a href="{% url 'web:schools' %}">Schools</a></li>
-                                <li><a href="{% url 'web:blog' %}">Blog</a></li>
-                                <li><a href="{% url 'web:faq' %}">FAQ</a></li>
-                                <li><a href="{% url 'web:contact' %}">Contact</a></li>
-                                <li><a href="{% url 'web:login_page' %}">Login</a></li>
+                                {% if user.is_authenticated %}
+                                <li><a href="{% url 'web:logout_view' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a></li>
+                                {% else %}
+                                <li><a href="{% url 'web:login_page' %}" title="Login"><i class="fas fa-user"></i></a></li>
+                                {% endif %}
+                                <li><a href="#" class="menu-tigger"><img src="{% static 'img/icon/menu.png' %}" alt="menu"></a></li>
                             </ul>
-                        </nav>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-3">
-                    <div class="header-btn text-right">
-                        <a href="{% url 'web:contact' %}" class="btn ss-btn">Book a Free Consultation</a>
+                    <div class="col-12">
+                        <div class="mobile-menu"></div>
                     </div>
                 </div>
             </div>
@@ -39,3 +49,38 @@
     </div>
 </header>
 <!-- header-end -->
+
+<!-- offcanvas-area -->
+<div class="offcanvas-menu">
+    <span class="menu-close"><i class="fas fa-times"></i></span>
+    <form role="search" method="get" class="searchform" action="{% url 'web:courses' %}">
+        <input type="text" name="s" placeholder="Search" />
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+    <div id="cssmenu3" class="menu-one-page-menu-container">
+        <ul id="menu-one-page-menu-2" class="menu">
+            <li><a href="{% url 'web:home' %}">Home</a></li>
+            <li><a href="{% url 'web:about' %}">About Us</a></li>
+            <li><a href="{% url 'web:services' %}">Services</a></li>
+            <li><a href="{% url 'web:courses' %}">Courses</a></li>
+            <li><a href="{% url 'web:projects' %}">Destinations</a></li>
+            <li><a href="{% url 'web:schools' %}">Schools</a></li>
+            <li><a href="{% url 'web:blog' %}">Blog</a></li>
+            <li><a href="{% url 'web:faq' %}">FAQ</a></li>
+            <li><a href="{% url 'web:contact' %}">Contact</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'web:logout_view' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'web:login_page' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div id="cssmenu2" class="menu-one-page-menu-container">
+        <ul id="menu-one-page-menu-1" class="menu">
+            <li><a href="tel:+966540740000"><span>+966540740000</span></a></li>
+            <li><a href="mailto:info@edu.theartclick.com"><span>info@edu.theartclick.com</span></a></li>
+        </ul>
+    </div>
+</div>
+<div class="offcanvas-overly"></div>
+<!-- offcanvas-end -->
