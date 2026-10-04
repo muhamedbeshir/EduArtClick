@@ -1,0 +1,236 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Product Details — Edu Art Click</title>
+    <meta name="description" content="Edu Art Click helps Saudi students study languages, earn degrees, and join summer schools abroad. Our guidance is completely free.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dripicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+    {% include "web/inc/header.html" %}
+    <!-- main-area -->
+    <main>
+
+        <!-- search-popup -->
+        <div class="modal fade bs-example-modal-lg search-bg popup1" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content search-popup">
+                    <div class="text-center">
+                        <a href="#" class="close2" data-dismiss="modal" aria-label="Close">× close</a>
+                    </div>
+                    <div class="row search-outer">
+                        <div class="col-md-11"><input type="text" placeholder="Search for products..." /></div>
+                        <div class="col-md-1 text-right"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /search-popup -->
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="background-image:url({% static 'img/testimonial/test-bg.png' %})">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <h2>Shop Details</h2>
+                                <div class="breadcrumb-wrap">
+
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb-area-end -->
+
+        <!-- shop-banner-area start -->
+        <section class="shop-banner-area pt-120 pb-90 " data-animation="fadeInUp animated" data-delay=".2s">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7">
+                        <div class="shop-thumb-tab mb-30">
+                            <ul class="nav" id="myTab2" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-selected="true"><img src="{% static 'img/shop/details/thumb1.jpg' %}" alt="Thumbnail 1"> </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-selected="false"><img src="{% static 'img/shop/details/thumb2.jpg' %}" alt="Thumbnail 2"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile1" role="tab" aria-selected="false"><img src="{% static 'img/shop/details/thumb3.jpg' %}" alt="Thumbnail 3"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-details-img mb-30">
+                            <div class="tab-content" id="myTabContent2">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel">
+                                    <div class="product-large-img">
+                                        <img src="{% static 'img/shop/details/large1.jpg' %}" alt="Large Product 1">
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel">
+                                    <div class="product-large-img">
+                                        <img src="{% static 'img/shop/details/large2.jpg' %}" alt="Large Product 2">
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile1" role="tabpanel">
+                                    <div class="product-large-img">
+                                        <img src="{% static 'img/shop/details/large3.jpg' %}" alt="Large Product 3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5">
+                        <div class="product-details mb-30">
+                            <div class="product-details-title">
+                                <p>Educato Bundles</p>
+                                <h1>Premium Academic Study Kit</h1>
+                                <div class="price details-price pb-30 mb-20">
+                                    <span>$70.00</span>
+                                    <span class="old-price">$82.00</span>
+                                </div>
+                            </div>
+                            <p>Boost your course learning path directly with our comprehensive premium study kit. This structured resource pack includes curated master reference guides, interactive workspace models, and verified practice papers perfect for optimizing test preparation parameters across timezones.</p>
+                            <div class="product-cat mt-30 mb-30">
+                                <span>Category: </span>
+                                <a href="#">Education,</a>
+                                <a href="#">Study Materials</a>
+                            </div>
+                            <div class="product-details-action">
+                                <form action="#">
+                                    <div class="plus-minus">
+                                        <div class="cart-plus-minus"><input type="text" value="1" /></div>
+                                    </div>
+                                    <button class="btn btn-black" type="submit">add to cart</button>
+                                </form>
+                            </div>
+                            <div class="product-social mt-45">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- shop-banner-area end -->
+        <!-- product-desc-area start -->
+        <section class="product-desc-area pb-55">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bakix-details-tab">
+                            <ul class="nav text-center justify-content-center pb-30 mb-50" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="desc-tab" data-toggle="tab" href="#id-desc" role="tab" aria-controls="home" aria-selected="true">Description </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="id-add-in" data-toggle="tab" href="#id-add" role="tab" aria-controls="profile" aria-selected="false">Additional Information</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="id-r" data-toggle="tab" href="#id-rev" role="tab" aria-controls="profile" aria-selected="false">Reviews(10)</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="id-desc" role="tabpanel" aria-labelledby="desc-tab">
+                                <div class="event-text mb-40">
+                                    <p>Our premium bundle provides detailed structural learning parameters designed directly around verified college syllabus metrics. Students can leverage these high-quality resources to master difficult data structures, cross-device layout principles, and critical architectural rules without tracking conflicting research materials manually.</p>
+                                    <p>Deploying verified references ensures smooth conceptual evaluation transitions. Each resource segment includes step-by-step modular examples, detailed breakdown charts, and verified answer configurations engineered to commanded clean academic progress under strict semester timelines.</p>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="id-add" role="tabpanel" aria-labelledby="id-add-in">
+                                <div class="additional-info">
+                                    <div class="table-responsive">
+                                        <h4>Additional information</h4>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Format</th>
+                                                    <td class="product_weight">Digital PDF & ePub</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>File Size</th>
+                                                    <td class="product_dimensions">45 MB Digital Download</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Access Level</th>
+                                                    <td class="product_dimensions">Lifetime Personal License</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="id-rev" role="tabpanel" aria-labelledby="id-r">
+                                <div class="additional-info">
+                                    <div class="event-text mb-40">
+                                        <p>Students from global universities praise the precise layout formatting of these notes. The inclusion of responsive self-assessment parameters inside each module eliminates exam anxieties, letting users structure their weekly goals efficiently while achieving excellent grades seamlessly.</p>
+                                        <p>The interactive review boards continue to confirm significant score improvements. Integrating these verified study metrics with live classroom instructions bridges learning voids effortlessly, preparing students thoroughly for corporate network recruitment drives.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- product-desc-area end -->
+
+
+    </main>
+    <!-- main-area-end -->
+    {% include "web/inc/footer.html" %}
+
+    <!-- JS here -->
+    <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/one-page-nav-min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/paroller.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/js_isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.min.js' %}"></script>
+    <script src="{% static 'js/parallax.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/parallax-scroll.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/element-in-view.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

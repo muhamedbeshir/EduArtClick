@@ -1,0 +1,234 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FAQ — Edu Art Click</title>
+    <meta name="description" content="Frequently asked questions about Edu Art Click courses, certificates, financial aid, instructors, and job placement support.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dripicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+    {% include "web/inc/header.html" %}
+    <!-- main-area -->
+    <main>
+
+        <!-- search-popup -->
+        <div class="modal fade bs-example-modal-lg search-bg popup1" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content search-popup">
+                    <div class="text-center">
+                        <a href="#" class="close2" data-dismiss="modal" aria-label="Close">× close</a>
+                    </div>
+                    <div class="row search-outer">
+                        <div class="col-md-11"><input type="text" placeholder="Search for products..." /></div>
+                        <div class="col-md-1 text-right"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /search-popup -->
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="background-image:url({% static 'img/testimonial/test-bg.png' %})">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <h2>Faq</h2>
+                                <div class="breadcrumb-wrap">
+
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Faq</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- team-area -->
+        <section id="faq" class="faq-area pt-120 pb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="faq-wrap">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                How do I enroll in an online course?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            To enroll in a course, simply browse our course catalog, select the program you are interested in, and click on the "Enroll Now" button to complete the registration process.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                Are the certificates globally recognized?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            Yes, all certificates provided upon course completion are verified and globally recognized by top international universities and leading industry corporate partners.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingThree">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                Can I access my learning materials on mobile devices?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            Absolutely. Our education platform is fully responsive, allowing you to access video lectures, assignments, and digital resources anytime from your smartphone or tablet.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingFour">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                Is financial aid available for students?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            Yes, we offer various scholarship programs and flexible financial aid options for eligible students based on academic merit and background assessment.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="faq-wrap">
+                            <div class="accordion" id="accordionExample1">
+                                <div class="card">
+                                    <div class="card-header" id="headingfive">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+                                                What are the prerequisites for advanced courses?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapsefive" class="collapse" aria-labelledby="headingfive" data-parent="#accordionExample1" style="">
+                                        <div class="card-body">
+                                            Prerequisites vary by course. Most advanced subjects require basic foundational knowledge or completion of an introductory level class before final approval.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingSix">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                                                How can I contact my course instructor?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseSix" class="collapse show" aria-labelledby="headingSix" data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            You can directly communicate with instructors via the dedicated student dashboard message boards, virtual office hours, or through scheduled weekly email support.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingSeveen">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseSeveen" aria-expanded="false" aria-controls="collapseSeveen">
+                                                Do you provide job placement assistance?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseSeveen" class="collapse" aria-labelledby="headingSeveen" data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            Yes, we offer comprehensive career support, including resume building workshops, interview preparation sessions, and direct placement opportunities with top companies.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingEighte">
+                                        <h2 class="mb-0">
+                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseEighte" aria-expanded="false" aria-controls="collapseEighte">
+                                                Can I request a refund if I cancel my course?
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseEighte" class="collapse" aria-labelledby="headingEighte" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            We offer a full refund within the first 14 days of enrollment if you are not fully satisfied with the curriculum structure or learning environment.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+        <!-- team-area-end -->
+
+
+
+    </main>
+    <!-- main-area-end -->
+
+    {% include "web/inc/footer.html" %}
+
+    <!-- JS here -->
+    <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/one-page-nav-min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/paroller.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/js_isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.min.js' %}"></script>
+    <script src="{% static 'js/parallax.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/parallax-scroll.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/element-in-view.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

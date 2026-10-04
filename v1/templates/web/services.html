@@ -1,0 +1,364 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Services — Edu Art Click</title>
+    <meta name="description" content="Edu Art Click helps Saudi students study languages, earn degrees, and join summer schools abroad. Our guidance is completely free. Book your consultation today.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dripicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+    {% include "web/inc/header.html" %}
+    <!-- main-area -->
+    <main>
+
+        <!-- search-popup -->
+        <div class="modal fade bs-example-modal-lg search-bg popup1" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content search-popup">
+                    <div class="text-center">
+                        <a href="#" class="close2" data-dismiss="modal" aria-label="Close">× close</a>
+                    </div>
+                    <div class="row search-outer">
+                        <div class="col-md-11"><input type="text" placeholder="Search for products..." /></div>
+                        <div class="col-md-1 text-right"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /search-popup -->
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="background-image:url({% static 'img/testimonial/test-bg.png' %})">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <h2>Services</h2>
+                                <div class="breadcrumb-wrap">
+
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- services-area -->
+        <section id="services" class="services-area pt-120 pb-120 fix" style=" background-image: url({% static 'img/bg/services-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center;">
+            <div class="container">
+
+                <div class="row align-items-center">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="about-title text-center second-atitle pb-20">
+                            <h5>Services</h5>
+                            <h2>
+                                What We Provide To You
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon1.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Skilled Lecturers</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon2.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Hot Stone Message</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon3.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Book Library</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon4.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Online Classes</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon5.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Home Projects</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon4.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Online Classes</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon2.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">Hot Stone Message</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown  animated" data-delay=".5s">
+                                <div class="services-icon">
+                                    <img src="{% static 'img/icon/pv-icon6.png' %}" alt="icon01">
+                                </div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:service_details' %}">24x7 Support</a> </h5>
+                                    <p>Cras ornare sagittis tortor a facilisis nteger augue quam, placerat.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </section>
+        <!-- services-area-end -->
+
+        <!-- testimonial-area -->
+        <section class="testimonial-area pt-120 pb-120" style=" background-image: url({% static 'img/testimonial/test-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center; background-color: #fff7f5;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="about-title second-atitle pt-15">
+                            <h5>Testimonial</h5>
+                            <h2>
+                                See What Our <br>Client Say’s
+                            </h2>
+                            <p class="pt-15">Curabitur tristique, sem id sagittis varius, lacus ligula mollis dui, ac condimentum felis metus ut nulla. Aenean ut ultricies turpis, sed sollicitudin eros. Aliquam quis dui ut diam lobortis dignissim ut aliquet ex.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="testimonial-active">
+                            <div class="single-testimonial">
+                                <div class="testi-author">
+                                    <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="img">
+                                    <div class="ta-info">
+                                        <h6>Eity Akhter</h6>
+                                        <span>Student</span>
+                                    </div>
+                                </div>
+                                <div class="qt-img">
+                                    <img src="{% static 'img/testimonial/qt-icon.png' %}" alt="img">
+                                </div>
+                                <p>Etiam quis lacinia ipsum. Aliquam blandit, mauris nec molestie interdum, quam massa finibus turpis, ut eleifend tellus massa eget nunc. Maecenas luctus diam id augue fringilla ornare. Sed varius massa non sem rutrum malesuada.</p>
+
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="testi-author">
+                                    <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="img">
+                                    <div class="ta-info">
+                                        <h6>Margie R. Robinson</h6>
+                                        <span>Web Developer</span>
+                                    </div>
+                                </div>
+                                <div class="qt-img">
+                                    <img src="{% static 'img/testimonial/qt-icon.png' %}" alt="img">
+                                </div>
+                                <p>Etiam quis lacinia ipsum. Aliquam blandit, mauris nec molestie interdum, quam massa finibus turpis, ut eleifend tellus massa eget nunc. Maecenas luctus diam id augue fringilla ornare. Sed varius massa non sem rutrum malesuada.</p>
+
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="testi-author">
+                                    <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="img">
+                                    <div class="ta-info">
+                                        <h6>Margie R. Robinson</h6>
+                                        <span>Web Developer</span>
+                                    </div>
+                                </div>
+                                <div class="qt-img">
+                                    <img src="{% static 'img/testimonial/qt-icon.png' %}" alt="img">
+                                </div>
+                                <p>Etiam quis lacinia ipsum. Aliquam blandit, mauris nec molestie interdum, quam massa finibus turpis, ut eleifend tellus massa eget nunc. Maecenas luctus diam id augue fringilla ornare. Sed varius massa non sem rutrum malesuada.</p>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- testimonial-area-end -->
+
+
+        <!-- pricing-area -->
+        <section id="pricing" class="pricing-area pt-120 pb-90">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align text-center mb-50">
+                            <h5>Pricing</h5>
+                            <h2>
+                                Our Plan
+                            </h2>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="pricing-box text-center mb-60 ">
+                            <div class="pricing-head">
+                                <div class="glyph-icon flaticon-pie-chart"></div>
+                                <h4>Basic Plan</h4>
+                            </div>
+                            <div class="pricing-body mb-30 text-center">
+                                <p>Morbi sollicitudin eros urna, eu posuere est pulvinar nec.</p>
+                                <p>Sed pharetra ligula et tempus tincidunt.</p>
+                                <p>Proin sed rhoncus neque.</p>
+                            </div>
+                            <div class="price-count mb-30">
+                                <h2>$49 <span>/ Monthly</span></h2>
+                            </div>
+                            <div class="pricing-btn">
+                                <a href="#" class="btn">Join Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="pricing-box active text-center mb-60 ">
+                            <div class="pricing-head">
+                                <div class="glyph-icon flaticon-graphic"></div>
+                                <h4>Standard Plan</h4>
+                            </div>
+                            <div class="pricing-body mb-30 text-center">
+                                <p>Morbi sollicitudin eros urna, eu posuere est pulvinar nec.</p>
+                                <p>Sed pharetra ligula et tempus tincidunt.</p>
+                                <p>Proin sed rhoncus neque.</p>
+
+                            </div>
+                            <div class="price-count mb-30">
+                                <h2>$99 <span>/ Monthly</span></h2>
+                            </div>
+                            <div class="pricing-btn">
+                                <a href="#" class="btn">Join Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="pricing-box text-center mb-60 ">
+                            <div class="pricing-head">
+                                <div class="glyph-icon flaticon-research"></div>
+                                <h4>Premium Plan</h4>
+                            </div>
+                            <div class="pricing-body mb-30 text-center">
+                                <p>Morbi sollicitudin eros urna, eu posuere est pulvinar nec.</p>
+                                <p>Sed pharetra ligula et tempus tincidunt.</p>
+                                <p>Proin sed rhoncus neque.</p>
+                            </div>
+                            <div class="price-count mb-30">
+                                <h2>$149 <span>/ Monthly</span></h2>
+                            </div>
+                            <div class="pricing-btn">
+                                <a href="#" class="btn">Join Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- pricing-area-end -->
+
+
+
+    </main>
+    <!-- main-area-end -->
+
+    {% include "web/inc/footer.html" %}
+
+    <!-- JS here -->
+    <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/one-page-nav-min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/paroller.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/js_isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.min.js' %}"></script>
+    <script src="{% static 'js/parallax.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/parallax-scroll.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/element-in-view.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

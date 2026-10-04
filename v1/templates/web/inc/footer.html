@@ -31,8 +31,10 @@
                         <ul>
                             <li><a href="{% url 'web:home' %}">Home</a></li>
                             <li><a href="{% url 'web:about' %}">About</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="{% url 'web:services' %}">Services</a></li>
+                            <li><a href="{% url 'web:courses' %}">Courses</a></li>
+                            <li><a href="{% url 'web:blog' %}">Blog</a></li>
+                            <li><a href="{% url 'web:contact' %}">Contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -44,9 +46,9 @@
                     </div>
                     <div class="footer-link">
                         <ul>
-                            <li><a href="#">Language Courses</a></li>
-                            <li><a href="#">Higher Education</a></li>
-                            <li><a href="#">Summer Schools</a></li>
+                            <li><a href="{% url 'web:services' %}">Language Courses</a></li>
+                            <li><a href="{% url 'web:services' %}">Higher Education</a></li>
+                            <li><a href="{% url 'web:services' %}">Summer Schools</a></li>
                         </ul>
                     </div>
                 </div>

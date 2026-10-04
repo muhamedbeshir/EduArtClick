@@ -192,4 +192,4 @@ USE_L10N = False
 DATE_FORMAT = 'Y-m-d'  # '2006-10-25'
 DATETIME_FORMAT = 'Y-m-d h:i:s A'     # '2006-10-25 14:30:59'
 
-LOGIN_URL = '/'
+LOGIN_URL = '/login/'

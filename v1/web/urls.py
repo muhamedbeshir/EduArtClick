@@ -15,7 +15,13 @@ from v1.web.views.admin.master.timetable.views import CreateClassTimeTable, Crea
 from v1.web.views.admin.master.school.sponsor.views import CreateSchoolSponsor, UpdateSchoolSponsor, DeleteSchoolSponsor
 from v1.web.views.admin.master.installment.views import CreateSchoolClassInstallment, UpdateSchoolClassInstallment, DeleteSchoolClassInstallment
 
-from .views.home import HomeView, AboutView
+from .views.home import (
+    HomeView, AboutView, ServicesView, ServiceDetailsView, CoursesView,
+    CourseDetailsView, ProjectsView, ProjectDetailsView, BlogView,
+    BlogDetailsView, FaqView, PricingView, TeamView, TeamDetailsView,
+    EventsView, EventDetailsView, ShopView, ShopDetailsView, ContactView,
+    ThankYouView,
+)
 
 from v1.web.views.auth.signup.views import edit_admin_user, edit_organization_user, edit_school_user, edit_staff_user, edit_student_user, edit_agent_user
 from .views.admin.application.views import DownloadApprovedLetter, DownloadPaymentInvoice, DownloadTransactionPDF, create_payment_session, webhook, payment_cancel, payment_success
@@ -28,10 +34,30 @@ from django.conf.urls.static import static
 app_name = 'web'
 urlpatterns = [
 
-    path('home/', HomeView.as_view(), name='home'),
+    path('', HomeView.as_view(), name='home'),
+    path('home/', HomeView.as_view()),
+
     path('about/', AboutView.as_view(), name='about'),
-    
-    path('', login_page, name='login_page'),
+    path('services/', ServicesView.as_view(), name='services'),
+    path('service-details/', ServiceDetailsView.as_view(), name='service_details'),
+    path('courses/', CoursesView.as_view(), name='courses'),
+    path('course-details/', CourseDetailsView.as_view(), name='course_details'),
+    path('projects/', ProjectsView.as_view(), name='projects'),
+    path('project-details/', ProjectDetailsView.as_view(), name='project_details'),
+    path('blog/', BlogView.as_view(), name='blog'),
+    path('blog-details/', BlogDetailsView.as_view(), name='blog_details'),
+    path('faq/', FaqView.as_view(), name='faq'),
+    path('pricing/', PricingView.as_view(), name='pricing'),
+    path('team/', TeamView.as_view(), name='team'),
+    path('team-details/', TeamDetailsView.as_view(), name='team_details'),
+    path('events/', EventsView.as_view(), name='events'),
+    path('event-details/', EventDetailsView.as_view(), name='event_details'),
+    path('shop/', ShopView.as_view(), name='shop'),
+    path('shop-details/', ShopDetailsView.as_view(), name='shop_details'),
+    path('contact/', ContactView.as_view(), name='contact'),
+    path('thank-you/', ThankYouView.as_view(), name='thank_you'),
+
+    path('login/', login_page, name='login_page'),
 #     path('school-student-login', school_student_login,
 #          name='school_student_login'),
     path('registration', RegistrationPage.as_view(), name='registration_page'),
