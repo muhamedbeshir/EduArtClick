@@ -48,13 +48,14 @@
                     <div class="col-xl-12 col-lg-12">
                         <div class="breadcrumb-wrap text-left">
                             <div class="breadcrumb-title">
-                                <h2>Gallery Details</h2>
+                                <h2>{{ country.country_name }}</h2>
                                 <div class="breadcrumb-wrap">
 
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                            <li class="breadcrumb-item"><a href="{% url 'web:projects' %}">Destinations</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">{{ country.country_name }}</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -71,63 +72,28 @@
             <div class="container">
                 <!-- Upper Box -->
                 <div class="upper-box">
-                    <div class="single-item-carousel owl-carousel owl-theme">
-                        <figure class="image"><img src="{% static 'img/gallery/protfolio-dt-img.png' %}" alt=""></figure>
-                    </div>
+                    <h2>{{ country.country_name }}</h2>
+                    <p>{{ schools|length }} schools available</p>
                 </div>
 
                 <!-- Lower Content -->
                 <div class="lower-content">
                     <div class="row">
-                        <div class="text-column col-lg-12 col-md-12 col-sm-12">
+                        {% for school in schools %}
+                        <div class="text-column col-lg-6 col-md-6 col-sm-12">
                             <div class="inner-column">
-                                <p><span class="dropcap">E</span> Ever heard of Maslow's hierarchy of needs? It's a theory of psychology that prioritizes the most <strong>fundamental human</strong> needs (like air, water, and physical safety) over more advanced needs (like esteem and social belonging). The theory is that you can't achieve the needs at the top without ensuring the more fundamental needs are met first. Love doesn't matter if you don't have food.</p>
-
-                                <p>The world of search engine optimization is complex and ever-changing, but you can easily <strong>understand the basics</strong>, and even a small amount of SEO knowledge can make a big difference. <strong>Free SEO education</strong> is also widely available on the web, including in guides like this! (Woohoo!) This guide is designed to describe all major aspects of SEO, from finding the terms and phrases (keywords) that can generate qualified traffic to your website, to making your site friendly to search engines, to building links and marketing the unique value of your site.</p>
-                                <h4>Using this beginner's guide, we can follow these seven steps to successful SEO:</h4>
-                                <ul class="pr-ul">
-                                    <li>
-                                        <div class="icon"><i class="fal fa-check"></i></div>
-                                        <div class="text pt-10">
-                                            Crawl accessibility so engines can read your website
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><i class="fal fa-check"></i></div>
-                                        <div class="text pt-10">
-                                            Share-worthy content that earns links, citations
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><i class="fal fa-check"></i></div>
-                                        <div class="text pt-10">
-                                            Keyword optimized to attract searchers & engines
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><i class="fal fa-check"></i></div>
-                                        <div class="text pt-10">
-                                            Title, URL, & description to draw high CTR in the rankings
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><i class="fal fa-check"></i></div>
-                                        <div class="text pt-10">
-                                            Great user experience including a fast load speed
-                                        </div>
-                                    </li>
-
-                                </ul>
+                                <div class="case-study-img">
+                                    <img src="{% static 'img/gallery/protfolio-img01.png' %}" alt="{{ school.school_name }}">
+                                </div>
+                                <h4><a href="{% url 'web:school_details' school.id %}">{{ school.school_name }}</a></h4>
+                                <p>{{ school.ref_city.city_name }}</p>
+                                <p>{{ school.email }}</p>
+                                <p>{{ school.address }}</p>
                             </div>
                         </div>
-
-
+                        {% empty %}<p>No schools listed for this country yet.</p>{% endfor %}
                     </div>
-
-
                 </div>
-
-
             </div>
         </section>
         <!--End Project Detail -->

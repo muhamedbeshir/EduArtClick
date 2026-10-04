@@ -3,7 +3,7 @@
 <html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Destinations — Edu Art Click</title>
+    <title>Schools — Edu Art Click</title>
     <meta name="description" content="Edu Art Click helps Saudi students study languages, earn degrees, and join summer schools abroad. Our guidance is completely free. Book your consultation today.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
@@ -48,13 +48,13 @@
                     <div class="col-xl-12 col-lg-12">
                         <div class="breadcrumb-wrap text-left">
                             <div class="breadcrumb-title">
-                                <h2>Destinations</h2>
+                                <h2>Our Partner Schools</h2>
                                 <div class="breadcrumb-wrap">
 
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Destinations</li>
+                                            <li class="breadcrumb-item active" aria-current="page">Schools</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -66,31 +66,57 @@
             </div>
         </section>
         <!-- breadcrumb-area-end -->
-        <!-- gallery-area -->
-        <section id="work" class="pt-120 pb-90">
+        <!-- schools-area -->
+        <section id="schools" class="services-area pt-120 pb-120 fix" style=" background-image: url({% static 'img/bg/services-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center;">
             <div class="container">
-                <div class="portfolio ">
+
+                <div class="row align-items-center">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="about-title text-center second-atitle pb-20">
+                            <h5>Schools</h5>
+                            <h2>
+                                Our Partner Schools
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+
                     <div class="row">
-                        {% for country in countries %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="case-study-box" style="margin-bottom:30px;">
-                                <div class="case-study-img">
-                                    <img src="{% static 'img/gallery/protfolio-img01.png' %}" alt="{{ country.country_name }}">
-                                </div>
-                                <div class="case-study-content">
-                                    <h5><a href="{% url 'web:project_details' country.id %}">{{ country.country_name }}</a></h5>
-                                    <p>{{ country.school_count }} school{{ country.school_count|pluralize }}</p>
+                        {% for school in page_obj %}
+                        <div class="col-lg-3 col-md-6">
+                            <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                <div class="services-icon"><img src="{% static 'img/gallery/protfolio-img01.png' %}" alt="{{ school.school_name }}"></div>
+                                <div class="services-content2">
+                                    <h5><a href="{% url 'web:school_details' school.id %}">{{ school.school_name }}</a></h5>
+                                    <p>{% if school.ref_city %}{{ school.ref_city.city_name }}, {% endif %}{{ school.ref_country.country_name }}</p>
                                 </div>
                             </div>
                         </div>
-                        {% empty %}<p>No destinations available.</p>{% endfor %}
+                        {% empty %}
+                        <div class="col-lg-12">
+                            <p class="text-center">No schools found.</p>
+                        </div>
+                        {% endfor %}
                     </div>
+
+                    {% if page_obj.has_other_pages %}
+                    <div class="row"><div class="col-lg-12"><div class="pagination-wrap text-center mt-30">
+                    <ul class="pagination" style="display:flex;gap:8px;justify-content:center;list-style:none;">
+                    {% if page_obj.has_previous %}<li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>{% endif %}
+                    {% for num in page_obj.paginator.page_range %}{% if num == page_obj.number %}<li class="active"><a href="#">{{ num }}</a></li>{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}<li><a href="?page={{ num }}">{{ num }}</a></li>{% endif %}{% endfor %}
+                    {% if page_obj.has_next %}<li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>{% endif %}
+                    </ul></div></div></div>
+                    {% endif %}
+
+
+
 
                 </div>
             </div>
         </section>
-        <!-- gallery-area-end -->
-
+        <!-- schools-area-end -->
 
     </main>
     <!-- main-area-end -->

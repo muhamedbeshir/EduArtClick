@@ -20,7 +20,7 @@ from .views.home import (
     CourseDetailsView, ProjectsView, ProjectDetailsView, BlogView,
     BlogDetailsView, FaqView, PricingView, TeamView, TeamDetailsView,
     EventsView, EventDetailsView, ShopView, ShopDetailsView, ContactView,
-    ThankYouView,
+    ThankYouView, SchoolsView, SchoolDetailsView,
 )
 
 from v1.web.views.auth.signup.views import edit_admin_user, edit_organization_user, edit_school_user, edit_staff_user, edit_student_user, edit_agent_user
@@ -39,11 +39,13 @@ urlpatterns = [
 
     path('about/', AboutView.as_view(), name='about'),
     path('services/', ServicesView.as_view(), name='services'),
-    path('service-details/', ServiceDetailsView.as_view(), name='service_details'),
+    path('services/<int:pk>/', ServiceDetailsView.as_view(), name='service_details'),
     path('courses/', CoursesView.as_view(), name='courses'),
-    path('course-details/', CourseDetailsView.as_view(), name='course_details'),
+    path('courses/<int:pk>/', CourseDetailsView.as_view(), name='course_details'),
     path('projects/', ProjectsView.as_view(), name='projects'),
-    path('project-details/', ProjectDetailsView.as_view(), name='project_details'),
+    path('projects/<int:pk>/', ProjectDetailsView.as_view(), name='project_details'),
+    path('schools/', SchoolsView.as_view(), name='schools'),
+    path('schools/<int:pk>/', SchoolDetailsView.as_view(), name='school_details'),
     path('blog/', BlogView.as_view(), name='blog'),
     path('blog-details/', BlogDetailsView.as_view(), name='blog_details'),
     path('faq/', FaqView.as_view(), name='faq'),

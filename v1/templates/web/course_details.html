@@ -49,13 +49,14 @@
                     <div class="col-xl-12 col-lg-12">
                         <div class="breadcrumb-wrap text-left">
                             <div class="breadcrumb-title">
-                                <h2>Courses Details</h2>
+                                <h2>{{ course.title }}</h2>
                                 <div class="breadcrumb-wrap">
 
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                            <li class="breadcrumb-item"><a href="{% url 'web:courses' %}">Courses</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -74,7 +75,7 @@
                 <div class="lower-content">
                     <div class="row">
                         <div class="text-column col-lg-8 col-md-8 col-sm-12">
-                            <h2>UI-UX Web Design, Graphic Design</h2>
+                            <h2>{{ course.title }}</h2>
                             <ul class="course-meta review style2 clearfix mb-30">
                                 <li class="author">
                                     <div class="thumb">
@@ -82,17 +83,17 @@
                                     </div>
 
                                     <div class="text">
-                                        <a href="#">Robto Jone</a>
-                                        <p>Teacher</p>
+                                        <a href="#">{{ course.ref_school.school_name }}</a>
+                                        <p>School</p>
                                     </div>
                                 </li>
                                 <li class="categories">
-                                    <a href="#" class="course-name">Photoshop</a>
-                                    <p>Categories</p>
+                                    <a href="{% url 'web:school_details' course.ref_school.id %}" class="course-name">{{ course.ref_school.school_name }}</a>
+                                    <p>School</p>
                                 </li>
                                 <li class="categories">
-                                    <a href="#" class="course-name">Price</a>
-                                    <p>$59.00</p>
+                                    <span class="course-name">{{ course.ref_school.ref_city.city_name }}, {{ course.ref_school.ref_country.country_name }}</span>
+                                    <p>Location</p>
                                 </li>
 
                             </ul>
@@ -164,6 +165,19 @@
                                     </li>
 
                                 </ul>
+                                {% if other_courses %}
+                                <h4>More courses at this school</h4>
+                                <ul class="pr-ul">
+                                    {% for oc in other_courses %}
+                                    <li>
+                                        <div class="icon"><i class="fal fa-check"></i></div>
+                                        <div class="text">
+                                            <a href="{% url 'web:course_details' oc.id %}">{{ oc.title }}</a>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -190,7 +204,7 @@
                                             <li>
                                                 <i class="fal fa-user-graduate"></i>
                                                 <span>Institution</span>
-                                                <span class="time">ABC University</span>
+                                                <span class="time">{{ course.ref_school.school_name }}</span>
                                             </li>
                                             <li>
                                                 <i class="fal fa-plus-hexagon"></i>

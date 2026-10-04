@@ -49,13 +49,13 @@
                     <div class="col-xl-12 col-lg-12">
                         <div class="breadcrumb-wrap text-left">
                             <div class="breadcrumb-title">
-                                <h2>Courses Details</h2>
+                                <h2>Courses</h2>
                                 <div class="breadcrumb-wrap">
 
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                                            <li class="breadcrumb-item active" aria-current="page">Courses</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -71,10 +71,11 @@
         <section class="shop-area pt-120 pb-120 p-relative " style=" background-image: url({% static 'img/bg/blog-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center center;background-attachment: fixed;">
             <div class="container">
                 <div class="row align-items-center">
+                    {% for course in page_obj %}
                     <div class="col-lg-4 col-md-6">
                         <div class="product couress-box mb-40">
                             <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt=""></a>
+                                <a href="{% url 'web:course_details' course.id %}"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt=""></a>
 
                             </div>
                             <div class="product__content pt-30">
@@ -95,8 +96,8 @@
                                 <div class="price">
                                     $95.00
                                 </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">Zero to Hero in Python 3</a></h4>
-                                <p>Master Python programming from scratch with hands-on exercises, real-world data science projects, and comprehensive structural backend scripts.</p>
+                                <h4 class="pro-title"><a href="{% url 'web:course_details' course.id %}">{{ course.title }}</a></h4>
+                                <p>{{ course.ref_school.school_name }} &mdash; {{ course.ref_school.ref_city.city_name }}, {{ course.ref_school.ref_country.country_name }}</p>
                                 <ul class="course-meta desc">
                                     <li>
                                         <h6>1 year</h6>
@@ -117,256 +118,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product couress-box mb-40">
-                            <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img2.png' %}" alt=""></a>
-
-                            </div>
-                            <div class="product__content pt-30">
-                                <ul class="course-meta course-meta2 review style2 clearfix mb-30">
-                                    <li class="author">
-                                        <div class="thumb">
-                                            <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="image">
-                                        </div>
-
-                                        <div class="text">
-                                            <a href="#">Robto Jone</a>
-                                            <p>Teacher</p>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <div class="price">
-                                    $95.00
-                                </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">Microsoft Excel Beginner</a></h4>
-                                <p>Learn essential spreadsheet functionalities including formulas, formatting rules, complex pivot tables, and dynamic visual data graphs easily.</p>
-                                <ul class="course-meta desc">
-                                    <li>
-                                        <h6>1 year</h6>
-                                        <span> Course</span>
-                                    </li>
-
-                                    <li>
-                                        <h6>25</h6>
-                                        <span> Class Size</span>
-                                    </li>
-
-                                    <li>
-                                        <h6><span class="course-time">7:00 - 10:00</span></h6>
-                                        <span> Class Duration</span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
+                    {% empty %}
+                    <div class="col-lg-12">
+                        <p class="text-center">No courses found</p>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product couress-box mb-40">
-                            <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img3.png' %}" alt=""></a>
-
-                            </div>
-                            <div class="product__content pt-30">
-                                <ul class="course-meta course-meta2 review style2 clearfix mb-30">
-                                    <li class="author">
-                                        <div class="thumb">
-                                            <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="image">
-                                        </div>
-
-                                        <div class="text">
-                                            <a href="#">Robto Jone</a>
-                                            <p>Teacher</p>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <div class="price">
-                                    $95.00
-                                </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">Digital Marketing Course</a></h4>
-                                <p>Build standard optimization skills covering organic search marketing, targeted campaign rules, and premium metrics analysis.</p>
-                                <ul class="course-meta desc">
-                                    <li>
-                                        <h6>1 year</h6>
-                                        <span> Course</span>
-                                    </li>
-
-                                    <li>
-                                        <h6>25</h6>
-                                        <span> Class Size</span>
-                                    </li>
-
-                                    <li>
-                                        <h6><span class="course-time">7:00 - 10:00</span></h6>
-                                        <span> Class Duration</span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product couress-box mb-40">
-                            <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img4.png' %}" alt=""></a>
-
-                            </div>
-                            <div class="product__content pt-30">
-                                <ul class="course-meta course-meta2 review style2 clearfix mb-30">
-                                    <li class="author">
-                                        <div class="thumb">
-                                            <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="image">
-                                        </div>
-
-                                        <div class="text">
-                                            <a href="#">Robto Jone</a>
-                                            <p>Teacher</p>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <div class="price">
-                                    $95.00
-                                </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">React JS, Angular</a></h4>
-                                <p>Develop dynamic single page application modules with structured state management systems and modern component rendering techniques.</p>
-                                <ul class="course-meta desc">
-                                    <li>
-                                        <h6>1 year</h6>
-                                        <span> Course</span>
-                                    </li>
-
-                                    <li>
-                                        <h6>25</h6>
-                                        <span> Class Size</span>
-                                    </li>
-
-                                    <li>
-                                        <h6><span class="course-time">7:00 - 10:00</span></h6>
-                                        <span> Class Duration</span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product couress-box mb-40">
-                            <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img5.png' %}" alt=""></a>
-
-                            </div>
-                            <div class="product__content pt-30">
-                                <ul class="course-meta course-meta2 review style2 clearfix mb-30">
-                                    <li class="author">
-                                        <div class="thumb">
-                                            <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="image">
-                                        </div>
-
-                                        <div class="text">
-                                            <a href="#">Robto Jone</a>
-                                            <p>Teacher</p>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <div class="price">
-                                    $95.00
-                                </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">Laravel API Development</a></h4>
-                                <p>Create highly secure RESTful endpoints using standard middleware architectures, validation mechanisms, and backend routing parameters.</p>
-                                <ul class="course-meta desc">
-                                    <li>
-                                        <h6>1 year</h6>
-                                        <span> Course</span>
-                                    </li>
-
-                                    <li>
-                                        <h6>25</h6>
-                                        <span> Class Size</span>
-                                    </li>
-
-                                    <li>
-                                        <h6><span class="course-time">7:00 - 10:00</span></h6>
-                                        <span> Class Duration</span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product couress-box mb-40">
-                            <div class="product__img">
-                                <a href="{% url 'web:course_details' %}"><img src="{% static 'img/featured-courses/courses-img1.png' %}" alt=""></a>
-
-                            </div>
-                            <div class="product__content pt-30">
-                                <ul class="course-meta course-meta2 review style2 clearfix mb-30">
-                                    <li class="author">
-                                        <div class="thumb">
-                                            <img src="{% static 'img/testimonial/testi_avatar.png' %}" alt="image">
-                                        </div>
-
-                                        <div class="text">
-                                            <a href="#">Robto Jone</a>
-                                            <p>Teacher</p>
-                                        </div>
-                                    </li>
-
-
-                                </ul>
-                                <div class="price">
-                                    $95.00
-                                </div>
-                                <h4 class="pro-title"><a href="{% url 'web:course_details' %}">Advanced Java Programming</a></h4>
-                                <p>Delve into concurrency libraries, complex data structural frameworks, enterprise application patterns, and memory optimization rules.</p>
-                                <ul class="course-meta desc">
-                                    <li>
-                                        <h6>1 year</h6>
-                                        <span> Course</span>
-                                    </li>
-
-                                    <li>
-                                        <h6>25</h6>
-                                        <span> Class Size</span>
-                                    </li>
-
-                                    <li>
-                                        <h6><span class="course-time">7:00 - 10:00</span></h6>
-                                        <span> Class Duration</span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
 
 
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="pagination-wrap mt-50 text-center">
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item"><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
-                                    <li class="page-item active"><a href="#">1</a></li>
-                                    <li class="page-item"><a href="#">2</a></li>
-                                    <li class="page-item"><a href="#">3</a></li>
-                                    <li class="page-item"><a href="#">...</a></li>
-                                    <li class="page-item"><a href="#">10</a></li>
-                                    <li class="page-item"><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                {% if page_obj.has_other_pages %}
+                <div class="row"><div class="col-lg-12"><div class="pagination-wrap text-center mt-30">
+                <ul class="pagination" style="display:flex;gap:8px;justify-content:center;list-style:none;">
+                {% if page_obj.has_previous %}<li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>{% endif %}
+                {% for num in page_obj.paginator.page_range %}{% if num == page_obj.number %}<li class="active"><a href="#">{{ num }}</a></li>{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}<li><a href="?page={{ num }}">{{ num }}</a></li>{% endif %}{% endfor %}
+                {% if page_obj.has_next %}<li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>{% endif %}
+                </ul></div></div></div>
+                {% endif %}
             </div>
         </section>
         <!-- shop-area-end -->

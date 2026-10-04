@@ -3,7 +3,7 @@
 <html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Destinations — Edu Art Click</title>
+    <title>School Details — Edu Art Click</title>
     <meta name="description" content="Edu Art Click helps Saudi students study languages, earn degrees, and join summer schools abroad. Our guidance is completely free. Book your consultation today.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
@@ -48,13 +48,14 @@
                     <div class="col-xl-12 col-lg-12">
                         <div class="breadcrumb-wrap text-left">
                             <div class="breadcrumb-title">
-                                <h2>Destinations</h2>
+                                <h2>{{ school.school_name }}</h2>
                                 <div class="breadcrumb-wrap">
 
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Destinations</li>
+                                            <li class="breadcrumb-item"><a href="{% url 'web:schools' %}">Schools</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">{{ school.school_name }}</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -66,31 +67,72 @@
             </div>
         </section>
         <!-- breadcrumb-area-end -->
-        <!-- gallery-area -->
-        <section id="work" class="pt-120 pb-90">
+        <!-- school-details-area -->
+        <section id="school-details" class="services-area pt-120 pb-120 fix" style=" background-image: url({% static 'img/bg/services-bg-aliments.png' %}); background-repeat: no-repeat; background-position: center;">
             <div class="container">
-                <div class="portfolio ">
+
+                <div class="row align-items-center">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="about-title text-center second-atitle pb-20">
+                            <h5>School</h5>
+                            <h2>
+                                {{ school.school_name }}
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+
                     <div class="row">
-                        {% for country in countries %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="case-study-box" style="margin-bottom:30px;">
-                                <div class="case-study-img">
-                                    <img src="{% static 'img/gallery/protfolio-img01.png' %}" alt="{{ country.country_name }}">
-                                </div>
-                                <div class="case-study-content">
-                                    <h5><a href="{% url 'web:project_details' country.id %}">{{ country.country_name }}</a></h5>
-                                    <p>{{ country.school_count }} school{{ country.school_count|pluralize }}</p>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                <div class="services-icon"><img src="{% static 'img/gallery/protfolio-img01.png' %}" alt="{{ school.school_name }}"></div>
+                                <div class="services-content2">
+                                    <h5>{{ school.school_name }}</h5>
+                                    <p>{% if school.ref_city %}{{ school.ref_city.city_name }}, {% endif %}{{ school.ref_country.country_name }}</p>
+                                    <p>Email: {{ school.email }}</p>
+                                    <p>Address: {{ school.address }}</p>
                                 </div>
                             </div>
                         </div>
-                        {% empty %}<p>No destinations available.</p>{% endfor %}
+
+                        <div class="col-lg-6 col-md-12">
+                            <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                <div class="services-content2">
+                                    <h5>Courses</h5>
+                                    <ul>
+                                        {% for c in courses %}
+                                        <li><a href="{% url 'web:course_details' c.id %}">{{ c.title }}</a></li>
+                                        {% empty %}
+                                        <li>No courses listed.</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="services-box wow fadeInDown animated" data-delay=".5s">
+                                <div class="services-content2">
+                                    <h5>Services</h5>
+                                    <ul>
+                                        {% for s in services %}
+                                        <li>{{ s.service_name }} &mdash; {{ s.service_type }} &mdash; {{ s.price }}</li>
+                                        {% empty %}
+                                        <li>No services listed.</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+
 
                 </div>
             </div>
         </section>
-        <!-- gallery-area-end -->
-
+        <!-- school-details-area-end -->
 
     </main>
     <!-- main-area-end -->
